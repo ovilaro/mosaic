@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosaic/screens/main_navigation_bar.dart';
+import 'package:mosaic/styles/app_styles.dart';
 
 void main() {
   runApp(const MainApp());
@@ -10,9 +11,6 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(), // TODO: themedata
-      home: MainNavigationBar(),
-    );
+    return MaterialApp(theme: AppStyles.themeData, home: MainNavigationBar());
   }
 }

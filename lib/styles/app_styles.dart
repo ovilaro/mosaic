@@ -7,40 +7,42 @@ class AppStyles {
   static const Color mediumGrey = Color(0xFF3A3A3A);
   static const Color lightGrey = Color(0xFF4A4A4A);
   static const Color veryLightGrey = Color(0xFF6C757D);
+  static const Color veryDarkWhite = Color(0xFFBBBBBB);
+  static const Color darkWhite = Color(0xFFDDDDDD);
   static const Color white = Color(0xFFFFFFFF);
 
   static TextStyle appBarTitle = TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.bold,
-    color: white,
+    color: darkGrey,
   );
 
   static AppBarTheme appBarTheme = AppBarTheme(
-    backgroundColor: lightGrey,
-    foregroundColor: white,
+    backgroundColor: darkWhite,
+    foregroundColor: darkGrey,
     titleTextStyle: appBarTitle,
     centerTitle: true,
   );
 
   static NavigationBarThemeData navigationBarThemeData = NavigationBarThemeData(
-    backgroundColor: AppStyles.veryLightGrey,
-    indicatorColor: AppStyles.blue,
+    backgroundColor: darkWhite,
+    indicatorColor: blue,
     labelTextStyle: WidgetStateProperty.resolveWith((state) {
       if (state.contains(WidgetState.selected)) {
-        return const TextStyle(color: white);
+        return const TextStyle(color: darkGrey);
       }
-      return const TextStyle(color: white);
+      return const TextStyle(color: darkGrey);
     }),
     iconTheme: WidgetStateProperty.resolveWith((state) {
       if (state.contains(WidgetState.selected)) {
         return IconThemeData(color: white);
       }
-      return IconThemeData(color: white);
+      return IconThemeData(color: darkGrey);
     }),
   );
 
   static ThemeData themeData = ThemeData(
-    appBarTheme: AppStyles.appBarTheme,
+    appBarTheme: appBarTheme,
     navigationBarTheme: navigationBarThemeData,
   );
 }
