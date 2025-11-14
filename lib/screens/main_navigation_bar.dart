@@ -32,8 +32,8 @@ class _MainNavigationBarState extends State<MainNavigationBar> {
               MaterialPageRoute(builder: (context) => const Search()),
             );
           },
-          foregroundColor: AppStyles.lightGrey,
-          backgroundColor: AppStyles.veryDarkWhite,
+          foregroundColor: AppStyles.darkGrey,
+          backgroundColor: AppStyles.darkWhite,
           // shape: ShapeBorde,
           child: const Icon(Icons.add),
         ),
