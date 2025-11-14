@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mosaic/screens/filters.dart';
 import 'package:mosaic/screens/main_navigation_bar.dart';
-import 'package:mosaic/styles/app_styles.dart';
+import 'package:mosaic/widgets/waterfall_item.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
 class WaterfallItems extends StatelessWidget {
@@ -16,7 +17,30 @@ class WaterfallItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar(mainAppBarType),
+      appBar: AppBar(
+        title: Text(getAppBarTitle(mainAppBarType)),
+        leading: IconButton(
+          onPressed: () {
+            debugPrint("sort button pressed!");
+          },
+          icon: Icon(Icons.sort),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return Filters(context: context);
+                },
+                isScrollControlled: true,
+                useSafeArea: true,
+              );
+            },
+            icon: Icon(Icons.filter_alt),
+          ),
+        ],
+      ),
       body: WaterfallFlow.builder(
         itemCount: items.length,
         gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
@@ -47,18 +71,15 @@ class WaterfallItems extends StatelessWidget {
           },
         ),
         itemBuilder: (BuildContext context, int index) {
-          return Card(
-            color: AppStyles.veryLightGrey,
-            child: Image.network(items[index]),
-          );
+          return WaterfallItem(item: items[index]);
         },
       ),
     );
   }
 
-  AppBar getAppBar(MainAppBarType mainAppBarType) {
+  String getAppBarTitle(MainAppBarType mainAppBarType) {
+    //TODO: should get strings from another place
     String title;
-    AppBar appBar;
     switch (mainAppBarType) {
       case MainAppBarType.inProgress:
         title = "In Progress";
@@ -73,16 +94,6 @@ class WaterfallItems extends StatelessWidget {
         title = "";
         break;
     }
-    appBar = AppBar(
-      title: Text(title),
-      leading: IconButton(
-        onPressed: () {
-          debugPrint("sort button pressed!");
-        },
-        icon: Icon(Icons.sort),
-      ),
-    );
-
-    return appBar;
+    return title;
   }
 }

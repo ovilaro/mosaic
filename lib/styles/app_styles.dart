@@ -11,6 +11,10 @@ class AppStyles {
   static const Color darkWhite = Color(0xFFDDDDDD);
   static const Color white = Color(0xFFFFFFFF);
 
+  static const SizedBox sizedBox10 = SizedBox(width: 10, height: 10);
+  static const SizedBox sizedBox20 = SizedBox(width: 20, height: 20);
+  static const SizedBox sizedBox40 = SizedBox(width: 40, height: 40);
+
   static TextStyle appBarTitle = TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.bold,
