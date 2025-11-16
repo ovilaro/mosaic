@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosaic/api_keys.dart';
-import 'package:mosaic/services/igdb_models/igdb_auth_result.dart';
+import 'package:mosaic/services/igdb/models/igdb_auth_result.dart';
 
 class IgdbService {
   static const String _authHost = "id.twitch.tv";

@@ -1,0 +1,486 @@
+[
+    {
+        "id": 103298,
+        "cover": {
+            "id": 172571,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co3p5n.jpg"
+        },
+        "first_release_date": 1584576000,
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            }
+        ],
+        "name": "Doom Eternal",
+        "platforms": [
+            {
+                "id": 170,
+                "abbreviation": "Stadia",
+                "name": "Google Stadia"
+            },
+            {
+                "id": 169,
+                "abbreviation": "Series X|S",
+                "name": "Xbox Series X|S"
+            },
+            {
+                "id": 48,
+                "abbreviation": "PS4",
+                "name": "PlayStation 4"
+            },
+            {
+                "id": 6,
+                "abbreviation": "PC",
+                "name": "PC (Microsoft Windows)"
+            },
+            {
+                "id": 167,
+                "abbreviation": "PS5",
+                "name": "PlayStation 5"
+            },
+            {
+                "id": 49,
+                "abbreviation": "XONE",
+                "name": "Xbox One"
+            },
+            {
+                "id": 130,
+                "abbreviation": "Switch",
+                "name": "Nintendo Switch"
+            }
+        ],
+        "summary": "Hell’s armies have invaded Earth. Become the Slayer in an epic single-player campaign to conquer demons across dimensions and stop the final destruction of humanity. The only thing they fear... is you.",
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 19,
+                "name": "Horror"
+            },
+            {
+                "id": 39,
+                "name": "Warfare"
+            }
+        ],
+        "game_type": {
+            "id": 0,
+            "type": "Main Game"
+        }
+    },
+    {
+        "id": 140521,
+        "cover": {
+            "id": 215600,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co4mcw.jpg"
+        },
+        "first_release_date": 851990400,
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            }
+        ],
+        "name": "Eternal Doom",
+        "platforms": [
+            {
+                "id": 6,
+                "abbreviation": "PC",
+                "name": "PC (Microsoft Windows)"
+            }
+        ],
+        "summary": "Eternal Doom is a 32-level megawad first released in 1996. Originally developed by a group known as Team Eternal, it was later acquired and worked on by TeamTNT. It features arguably some of the largest levels ever designed for vanilla Doom.",
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            }
+        ],
+        "game_type": {
+            "id": 5,
+            "type": "Mod"
+        }
+    },
+    {
+        "id": 119888,
+        "cover": {
+            "id": 86495,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co1uqn.jpg"
+        },
+        "first_release_date": 1584662400,
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            }
+        ],
+        "name": "Doom: Eternal - Deluxe Edition",
+        "platforms": [
+            {
+                "id": 169,
+                "abbreviation": "Series X|S",
+                "name": "Xbox Series X|S"
+            },
+            {
+                "id": 48,
+                "abbreviation": "PS4",
+                "name": "PlayStation 4"
+            },
+            {
+                "id": 6,
+                "abbreviation": "PC",
+                "name": "PC (Microsoft Windows)"
+            },
+            {
+                "id": 167,
+                "abbreviation": "PS5",
+                "name": "PlayStation 5"
+            },
+            {
+                "id": 49,
+                "abbreviation": "XONE",
+                "name": "Xbox One"
+            },
+            {
+                "id": 130,
+                "abbreviation": "Switch",
+                "name": "Nintendo Switch"
+            }
+        ],
+        "summary": "As the Doom Slayer you return to find Earth has suffered a demonic invasion. Discover the Slayer’s origins and his enduring mission to Raze Hell.\n\nThe Doom Eternal Deluxe Edition includes:\nYear One Pass with two campaign add-ons.\nDemonic Slayer Skin.\nClassic Weapon Sound Pack.",
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 19,
+                "name": "Horror"
+            },
+            {
+                "id": 39,
+                "name": "Warfare"
+            }
+        ],
+        "game_type": {
+            "id": 3,
+            "type": "Bundle"
+        }
+    },
+    {
+        "id": 293919,
+        "cover": {
+            "id": 504322,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/coat4y.jpg"
+        },
+        "first_release_date": 1603152000,
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            }
+        ],
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            }
+        ],
+        "name": "Doom Eternal: Year One Pass",
+        "platforms": [
+            {
+                "id": 169,
+                "abbreviation": "Series X|S",
+                "name": "Xbox Series X|S"
+            },
+            {
+                "id": 6,
+                "abbreviation": "PC",
+                "name": "PC (Microsoft Windows)"
+            },
+            {
+                "id": 49,
+                "abbreviation": "XONE",
+                "name": "Xbox One"
+            }
+        ],
+        "summary": "You pulled humanity back from the edge of extinction, but it came at a cost. The imbalance of power threatens all of creation. Now you must rise and set things right in DOOM Eternal: The Ancient Gods.",
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 18,
+                "name": "Science fiction"
+            },
+            {
+                "id": 19,
+                "name": "Horror"
+            }
+        ],
+        "game_type": {
+            "id": 3,
+            "type": "Bundle"
+        }
+    },
+    {
+        "id": 169908,
+        "cover": {
+            "id": 181048,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co3vp4.jpg"
+        },
+        "first_release_date": 1589846400,
+        "name": "Doom Eternal: The Rip and Tear Pack",
+        "platforms": [
+            {
+                "id": 6,
+                "abbreviation": "PC",
+                "name": "PC (Microsoft Windows)"
+            },
+            {
+                "id": 130,
+                "abbreviation": "Switch",
+                "name": "Nintendo Switch"
+            }
+        ],
+        "summary": "Raze Hell with the Rip and Tear Pack and get in-game cosmetic items and additional single player content.",
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            }
+        ],
+        "game_type": {
+            "id": 13,
+            "type": "Pack / Addon"
+        }
+    },
+    {
+        "id": 344310,
+        "cover": {
+            "id": 458790,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co9u06.jpg"
+        },
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            }
+        ],
+        "name": "Doom Eternal KaiserCampaign",
+        "summary": "A handcrafted and extensive overhaul of the entire base campaign for DOOM Eternal\n\nSlaughter new enemies, face new challenges and conquer 18 custom Master Levels in the most ambitious mod of it's kind.",
+        "game_type": {
+            "id": 5,
+            "type": "Mod"
+        }
+    },
+    {
+        "id": 144731,
+        "cover": {
+            "id": 159600,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co3f5c.jpg"
+        },
+        "first_release_date": 1616025600,
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            }
+        ],
+        "name": "Doom Eternal: The Ancient Gods - Part Two",
+        "platforms": [
+            {
+                "id": 170,
+                "abbreviation": "Stadia",
+                "name": "Google Stadia"
+            },
+            {
+                "id": 169,
+                "abbreviation": "Series X|S",
+                "name": "Xbox Series X|S"
+            },
+            {
+                "id": 48,
+                "abbreviation": "PS4",
+                "name": "PlayStation 4"
+            },
+            {
+                "id": 6,
+                "abbreviation": "PC",
+                "name": "PC (Microsoft Windows)"
+            },
+            {
+                "id": 167,
+                "abbreviation": "PS5",
+                "name": "PlayStation 5"
+            },
+            {
+                "id": 49,
+                "abbreviation": "XONE",
+                "name": "Xbox One"
+            },
+            {
+                "id": 130,
+                "abbreviation": "Switch",
+                "name": "Nintendo Switch"
+            }
+        ],
+        "storyline": "This is it. Your battle against the forces of Hell ends here. Prepare to siege Immora, the last bastion of the dark realm, challenge the Dark Lord in combat, and seal the demons withing Hell for good.",
+        "summary": "The Ancient Gods - Part Two is the epic conclusion to the Doom Slayer's Saga and the second campaign expansion to the critically acclaimed Doom Eternal.",
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            },
+            {
+                "id": 17,
+                "name": "Fantasy"
+            },
+            {
+                "id": 19,
+                "name": "Horror"
+            }
+        ],
+        "game_type": {
+            "id": 1,
+            "type": "DLC"
+        }
+    },
+    {
+        "id": 136539,
+        "cover": {
+            "id": 159599,
+            "url": "//images.igdb.com/igdb/image/upload/t_thumb/co3f5b.jpg"
+        },
+        "first_release_date": 1603152000,
+        "game_modes": [
+            {
+                "id": 1,
+                "name": "Single player"
+            },
+            {
+                "id": 2,
+                "name": "Multiplayer"
+            }
+        ],
+        "genres": [
+            {
+                "id": 5,
+                "name": "Shooter"
+            },
+            {
+                "id": 33,
+                "name": "Arcade"
+            }
+        ],
+        "name": "Doom Eternal: The Ancient Gods - Part One",
+        "platforms": [
+            {
+                "id": 170,
+                "abbreviation": "Stadia",
+                "name": "Google Stadia"
+            },
+            {
+                "id": 169,
+                "abbreviation": "Series X|S",
+                "name": "Xbox Series X|S"
+            },
+            {
+                "id": 48,
+                "abbreviation": "PS4",
+                "name": "PlayStation 4"
+            },
+            {
+                "id": 6,
+                "abbreviation": "PC",
+                "name": "PC (Microsoft Windows)"
+            },
+            {
+                "id": 167,
+                "abbreviation": "PS5",
+                "name": "PlayStation 5"
+            },
+            {
+                "id": 49,
+                "abbreviation": "XONE",
+                "name": "Xbox One"
+            },
+            {
+                "id": 130,
+                "abbreviation": "Switch",
+                "name": "Nintendo Switch"
+            }
+        ],
+        "storyline": "Your war is not over… slaying the Khan Maykr left an imbalance of power that threatens all of creation. The legions of Hell have razed the heavens, threatening to expand their control across dimensions. With the aid of an old ally, battle your way back to Urdak and decide the fate of the cosmos. Your mission is now your own.\n\nExperience a new mission in your eternal fight against evil. Unleash your vengeance and face your greatest test as you march back to the Maykr’s realm. Defeat powerful new threats, restore order to the heavens and unearth the corruption that has thrown the universe into chaos.",
+        "summary": "The Ancient Gods picks up after the end of the main story in a time where, due to the Slayer's actions, the armies of heaven and hell have fallen out of balance. The demons have flooded in to overtake the weakened angelic realm, so the Slayer's been called in to clean up the mess.",
+        "themes": [
+            {
+                "id": 1,
+                "name": "Action"
+            }
+        ],
+        "game_type": {
+            "id": 1,
+            "type": "DLC"
+        }
+    }
+]
