@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mosaic/provider/mosaic_data.dart';
 import 'package:mosaic/screens/main_navigation_bar.dart';
 import 'package:mosaic/styles/app_styles.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MainApp());
@@ -11,6 +13,9 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(theme: AppStyles.themeData, home: MainNavigationBar());
+    return ChangeNotifierProvider(
+      create: (context) => MosaicData(),
+      child: MaterialApp(theme: AppStyles.themeData, home: MainNavigationBar()),
+    );
   }
 }

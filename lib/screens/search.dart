@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mosaic/provider/mosaic_data.dart';
 import 'package:mosaic/screens/filters.dart';
 import 'package:mosaic/widgets/search_tile.dart';
+import 'package:provider/provider.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -12,7 +14,6 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   TextEditingController controller = TextEditingController();
   String lastTextSearched = "";
-  int fakeResults = 0;
 
   @override
   void initState() {
@@ -51,10 +52,14 @@ class _SearchState extends State<Search> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: fakeResults,
-              itemBuilder: (BuildContext context, int index) {
-                return SearchTile(index: index);
+            child: Consumer<MosaicData>(
+              builder: (context, mosaicData, child) {
+                return ListView(
+                  children: [
+                    for (int i = 0; i < mosaicData.searchResults.length; i++)
+                      SearchTile(item: mosaicData.searchResults[i]),
+                  ],
+                );
               },
             ),
           ),
@@ -82,13 +87,13 @@ class _SearchState extends State<Search> {
       return;
     }
 
+    context.read<MosaicData>().search(controller.text);
+
     if (controller.text.isEmpty) {
-      fakeResults = 0;
       setState(() {});
       return;
     }
 
-    fakeResults = controller.text.length;
     lastTextSearched = controller.text;
     setState(() {});
   }

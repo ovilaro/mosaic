@@ -26,37 +26,30 @@
         "platforms": [
             {
                 "id": 170,
-                "abbreviation": "Stadia",
                 "name": "Google Stadia"
             },
             {
                 "id": 169,
-                "abbreviation": "Series X|S",
                 "name": "Xbox Series X|S"
             },
             {
                 "id": 48,
-                "abbreviation": "PS4",
                 "name": "PlayStation 4"
             },
             {
                 "id": 6,
-                "abbreviation": "PC",
                 "name": "PC (Microsoft Windows)"
             },
             {
                 "id": 167,
-                "abbreviation": "PS5",
                 "name": "PlayStation 5"
             },
             {
                 "id": 49,
-                "abbreviation": "XONE",
                 "name": "Xbox One"
             },
             {
                 "id": 130,
-                "abbreviation": "Switch",
                 "name": "Nintendo Switch"
             }
         ],
@@ -111,7 +104,6 @@
         "platforms": [
             {
                 "id": 6,
-                "abbreviation": "PC",
                 "name": "PC (Microsoft Windows)"
             }
         ],
@@ -154,32 +146,26 @@
         "platforms": [
             {
                 "id": 169,
-                "abbreviation": "Series X|S",
                 "name": "Xbox Series X|S"
             },
             {
                 "id": 48,
-                "abbreviation": "PS4",
                 "name": "PlayStation 4"
             },
             {
                 "id": 6,
-                "abbreviation": "PC",
                 "name": "PC (Microsoft Windows)"
             },
             {
                 "id": 167,
-                "abbreviation": "PS5",
                 "name": "PlayStation 5"
             },
             {
                 "id": 49,
-                "abbreviation": "XONE",
                 "name": "Xbox One"
             },
             {
                 "id": 130,
-                "abbreviation": "Switch",
                 "name": "Nintendo Switch"
             }
         ],
@@ -234,17 +220,14 @@
         "platforms": [
             {
                 "id": 169,
-                "abbreviation": "Series X|S",
                 "name": "Xbox Series X|S"
             },
             {
                 "id": 6,
-                "abbreviation": "PC",
                 "name": "PC (Microsoft Windows)"
             },
             {
                 "id": 49,
-                "abbreviation": "XONE",
                 "name": "Xbox One"
             }
         ],
@@ -283,12 +266,10 @@
         "platforms": [
             {
                 "id": 6,
-                "abbreviation": "PC",
                 "name": "PC (Microsoft Windows)"
             },
             {
                 "id": 130,
-                "abbreviation": "Switch",
                 "name": "Nintendo Switch"
             }
         ],
@@ -350,37 +331,30 @@
         "platforms": [
             {
                 "id": 170,
-                "abbreviation": "Stadia",
                 "name": "Google Stadia"
             },
             {
                 "id": 169,
-                "abbreviation": "Series X|S",
                 "name": "Xbox Series X|S"
             },
             {
                 "id": 48,
-                "abbreviation": "PS4",
                 "name": "PlayStation 4"
             },
             {
                 "id": 6,
-                "abbreviation": "PC",
                 "name": "PC (Microsoft Windows)"
             },
             {
                 "id": 167,
-                "abbreviation": "PS5",
                 "name": "PlayStation 5"
             },
             {
                 "id": 49,
-                "abbreviation": "XONE",
                 "name": "Xbox One"
             },
             {
                 "id": 130,
-                "abbreviation": "Switch",
                 "name": "Nintendo Switch"
             }
         ],
@@ -436,37 +410,30 @@
         "platforms": [
             {
                 "id": 170,
-                "abbreviation": "Stadia",
                 "name": "Google Stadia"
             },
             {
                 "id": 169,
-                "abbreviation": "Series X|S",
                 "name": "Xbox Series X|S"
             },
             {
                 "id": 48,
-                "abbreviation": "PS4",
                 "name": "PlayStation 4"
             },
             {
                 "id": 6,
-                "abbreviation": "PC",
                 "name": "PC (Microsoft Windows)"
             },
             {
                 "id": 167,
-                "abbreviation": "PS5",
                 "name": "PlayStation 5"
             },
             {
                 "id": 49,
-                "abbreviation": "XONE",
                 "name": "Xbox One"
             },
             {
                 "id": 130,
-                "abbreviation": "Switch",
                 "name": "Nintendo Switch"
             }
         ],
