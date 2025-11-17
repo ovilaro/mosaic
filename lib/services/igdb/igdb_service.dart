@@ -6,7 +6,7 @@ import 'package:mosaic/services/igdb/models/igdb_game.dart';
 
 class IgdbService {
   static const Duration _intervalBetweenRequestsInMs = Duration(
-    milliseconds: 1000,
+    milliseconds: 250,
   );
   DateTime? _latestRequest;
   IgdbAuthResult? _igdbAuthResult;

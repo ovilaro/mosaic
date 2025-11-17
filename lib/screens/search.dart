@@ -13,7 +13,9 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   TextEditingController controller = TextEditingController();
-  String lastTextSearched = "";
+  String _lastTextSearched = "";
+  DateTime _lastDateTimeType = DateTime.timestamp();
+  static const Duration _intervalToWaitAfterType = Duration(milliseconds: 500);
 
   @override
   void initState() {
@@ -83,18 +85,22 @@ class _SearchState extends State<Search> {
   void textChanged() {
     debugPrint("search term: ${controller.text}");
 
-    if (controller.text == lastTextSearched) {
+    if (controller.text == _lastTextSearched) {
       return;
     }
 
-    context.read<MosaicData>().search(controller.text);
+    _lastTextSearched = controller.text;
+    _lastDateTimeType = DateTime.timestamp();
 
-    if (controller.text.isEmpty) {
-      setState(() {});
-      return;
-    }
-
-    lastTextSearched = controller.text;
-    setState(() {});
+    Future.delayed(_intervalToWaitAfterType, () {
+      if (DateTime.timestamp()
+              .difference(_lastDateTimeType)
+              .compareTo(_intervalToWaitAfterType) >
+          0) {
+        if (mounted) {
+          context.read<MosaicData>().search(controller.text);
+        }
+      }
+    });
   }
 }

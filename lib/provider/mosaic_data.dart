@@ -10,13 +10,13 @@ class MosaicData extends ChangeNotifier {
   Future<void> search(String str) async {
     if (str.isEmpty) {
       searchResults.clear();
+      notifyListeners();
       return;
     }
 
     var results = await _igdbService.search(str);
 
     if (results == null) {
-      searchResults.clear();
       return;
     }
 
