@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:mosaic/screens/search.dart';
@@ -72,30 +70,7 @@ class _MainNavigationBarState extends State<MainNavigationBar> {
     if (mainAppBarType == MainAppBarType.settings) {
       return Settings();
     } else {
-      //TODO: fake data
-      List<String> items = [];
-      int maxItems = 10;
-      for (var i = 0; i < maxItems; i++) {
-        int value = Random().nextInt(3);
-        switch (value) {
-          case 0:
-            items.add(
-              "https://www.ixpap.com/images/2021/08/RDR2-4K-Wallpaper.jpg",
-            );
-            break;
-          case 1:
-            items.add(
-              "https://www.gamespot.com/a/uploads/scale_medium/1197/11970954/3144793-rdr2_bannerart02.jpg",
-            );
-            break;
-          case 2:
-            items.add(
-              "https://www.ixpap.com/images/2021/08/RDR2-Wallpaper-4-768x1316.jpg",
-            );
-            break;
-        }
-      }
-      return WaterfallItems(mainAppBarType: mainAppBarType, items: items);
+      return WaterfallItems(mainAppBarType: mainAppBarType);
     }
   }
 }

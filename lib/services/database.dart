@@ -10,9 +10,13 @@ class Database {
 
   late Isar isar;
 
-  Future<void> init() async {
+  Future<void> init(Function(void event) whatcher) async {
     final dir = await getApplicationDocumentsDirectory();
     isar = await Isar.open([ItemSchema], directory: dir.path);
+
+    Stream<void> itemChanged = isar.items.watchLazy();
+
+    itemChanged.listen(whatcher);
   }
 
   Future<void> write(Item item) async {
@@ -60,7 +64,7 @@ class Database {
   //   return await isar.items.get(id);
   // }
 
-  //   Future<List<Item>> getAllItems() async {
-  //     return isar.items.where().findAll();
-  //   }
+  Future<List<Item>> getAllItems() async {
+    return isar.items.where().findAll();
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosaic/provider/mosaic_data.dart';
+import 'package:mosaic/styles/app_styles.dart';
 import 'package:provider/provider.dart';
 
 class SearchTile extends StatefulWidget {
@@ -21,7 +22,7 @@ class _SearchTileState extends State<SearchTile> {
         working = false;
         var item = mosaicData.searchResults[widget.index];
         return ListTile(
-          leading: Image.network(item.thumb),
+          leading: Image.network(item.thumb ?? AppStyles.noThumbImgUrl),
           title: Text(item.name),
           subtitle: Text(item.shortDesc),
           trailing: IconButton(

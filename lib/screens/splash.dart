@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mosaic/provider/mosaic_data.dart';
 import 'package:mosaic/screens/main_navigation_bar.dart';
-import 'package:mosaic/services/database.dart';
+import 'package:provider/provider.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -40,7 +41,13 @@ class _SplashState extends State<Splash> {
 
     status = "Opening database";
     setState(() {});
-    await Database.instance.init();
+    if (!mounted) return;
+    await context.read<MosaicData>().init();
+
+    status = "Reading database";
+    setState(() {});
+    if (!mounted) return;
+    await context.read<MosaicData>().readItems();
 
     if (!mounted) return;
     Navigator.pushReplacement(

@@ -5,6 +5,8 @@ part 'item.g.dart';
 
 enum ItemType { igdbGame }
 
+enum ItemStatus { inProgress, notStarted, finished }
+
 @collection
 class Item {
   Id id = Isar.autoIncrement;
@@ -15,6 +17,9 @@ class Item {
 
   @enumerated
   ItemType itemType = ItemType.igdbGame;
+
+  @enumerated
+  ItemStatus itemStatus = ItemStatus.notStarted;
 
   @ignore
   bool isAdded = false;
@@ -45,11 +50,24 @@ class Item {
     return "";
   }
 
-  String get thumb {
+  String? get thumb {
     if (igdbGame != null) {
-      return igdbGame!.thumb ??
-          "https://icons.iconarchive.com/icons/pixelkit/gentle-edges/128/Game-Controller-icon.png";
+      return igdbGame!.thumb;
     }
-    return "";
+    return null;
+  }
+
+  String? get coverSmall {
+    if (igdbGame != null) {
+      return igdbGame!.coverSmall;
+    }
+    return null;
+  }
+
+  String? get coverBig {
+    if (igdbGame != null) {
+      return igdbGame!.coverBig;
+    }
+    return null;
   }
 }

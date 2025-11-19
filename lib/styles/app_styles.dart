@@ -49,4 +49,9 @@ class AppStyles {
     appBarTheme: appBarTheme,
     navigationBarTheme: navigationBarThemeData,
   );
+
+  static const String noCoverImgUrl =
+      "https://vglist.co/packs/media/images/no-cover-369ad8f0ea82dde5923c942ba1a26482.png";
+  static const String noThumbImgUrl =
+      "https://icons.iconarchive.com/icons/pixelkit/gentle-edges/128/Game-Controller-icon.png";
 }

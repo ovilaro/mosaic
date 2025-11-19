@@ -7,6 +7,21 @@ class MosaicData extends ChangeNotifier {
   final IgdbService _igdbService = IgdbService();
 
   List<Item> searchResults = [];
+  List<Item> allItems = [];
+
+  init() async {
+    await Database.instance.init(onData);
+  }
+
+  void onData(void event) {
+    readItems();
+  }
+
+  Future<void> readItems() async {
+    allItems.clear();
+    allItems = await Database.instance.getAllItems();
+    notifyListeners();
+  }
 
   Future<void> search(String str) async {
     if (str.isEmpty) {
@@ -48,6 +63,10 @@ class MosaicData extends ChangeNotifier {
     await Database.instance.deleteItemApiId(item);
     item.isAdded = false;
     notifyListeners();
+  }
+
+  List<Item> getItemsWithStatus(ItemStatus status) {
+    return allItems.where((i) => i.itemStatus == status).toList();
   }
 
   // removeItem(int id) async {
