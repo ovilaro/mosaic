@@ -25,6 +25,7 @@ const ItemSchema = CollectionSchema(
       target: r'IgdbGame',
     ),
     r'name': PropertySchema(id: 1, name: r'name', type: IsarType.string),
+    r'thumb': PropertySchema(id: 2, name: r'thumb', type: IsarType.string),
   },
 
   estimateSize: _itemEstimateSize,
@@ -62,6 +63,7 @@ int _itemEstimateSize(
     }
   }
   bytesCount += 3 + object.name.length * 3;
+  bytesCount += 3 + object.thumb.length * 3;
   return bytesCount;
 }
 
@@ -78,6 +80,7 @@ void _itemSerialize(
     object.igdbGame,
   );
   writer.writeString(offsets[1], object.name);
+  writer.writeString(offsets[2], object.thumb);
 }
 
 Item _itemDeserialize(
@@ -111,6 +114,8 @@ P _itemDeserializeProp<P>(
           ))
           as P;
     case 1:
+      return (reader.readString(offset)) as P;
+    case 2:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -426,6 +431,152 @@ extension ItemQueryFilter on QueryBuilder<Item, Item, QFilterCondition> {
       );
     });
   }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> thumbEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'thumb',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> thumbGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'thumb',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> thumbLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'thumb',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> thumbBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'thumb',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> thumbStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'thumb',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> thumbEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'thumb',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> thumbContains(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'thumb',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> thumbMatches(
+    String pattern, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'thumb',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> thumbIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'thumb', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> thumbIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'thumb', value: ''),
+      );
+    });
+  }
 }
 
 extension ItemQueryObject on QueryBuilder<Item, Item, QFilterCondition> {
@@ -450,6 +601,18 @@ extension ItemQuerySortBy on QueryBuilder<Item, Item, QSortBy> {
   QueryBuilder<Item, Item, QAfterSortBy> sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> sortByThumb() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'thumb', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> sortByThumbDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'thumb', Sort.desc);
     });
   }
 }
@@ -478,6 +641,18 @@ extension ItemQuerySortThenBy on QueryBuilder<Item, Item, QSortThenBy> {
       return query.addSortBy(r'name', Sort.desc);
     });
   }
+
+  QueryBuilder<Item, Item, QAfterSortBy> thenByThumb() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'thumb', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> thenByThumbDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'thumb', Sort.desc);
+    });
+  }
 }
 
 extension ItemQueryWhereDistinct on QueryBuilder<Item, Item, QDistinct> {
@@ -486,6 +661,14 @@ extension ItemQueryWhereDistinct on QueryBuilder<Item, Item, QDistinct> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Item, Item, QDistinct> distinctByThumb({
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'thumb', caseSensitive: caseSensitive);
     });
   }
 }
@@ -506,6 +689,12 @@ extension ItemQueryProperty on QueryBuilder<Item, Item, QQueryProperty> {
   QueryBuilder<Item, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<Item, String, QQueryOperations> thumbProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'thumb');
     });
   }
 }

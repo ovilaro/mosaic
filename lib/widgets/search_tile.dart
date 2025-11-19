@@ -16,7 +16,7 @@ class _SearchTileState extends State<SearchTile> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(Icons.image),
+      leading: Image.network(widget.item.thumb),
       title: Text(widget.item.name),
       subtitle: Text("category"),
       trailing: IconButton(

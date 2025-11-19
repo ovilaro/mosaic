@@ -15,4 +15,12 @@ class Item {
     }
     return "no name";
   }
+
+  String get thumb {
+    if (igdbGame != null) {
+      return igdbGame!.thumb ??
+          "https://icons.iconarchive.com/icons/pixelkit/gentle-edges/128/Game-Controller-icon.png";
+    }
+    return "";
+  }
 }
