@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:mosaic/api_keys.dart';
 import 'package:mosaic/models/igdb_auth_result.dart';
 import 'package:mosaic/models/igdb_game.dart';
+import 'package:mosaic/models/item.dart';
 
 class IgdbService {
   static const Duration _intervalBetweenRequestsInMs = Duration(
@@ -36,7 +37,7 @@ class IgdbService {
     }
   }
 
-  Future<List<IgdbGame>?> search(String str) async {
+  Future<List<Item>?> search(String str) async {
     if (_latestRequest != null) {
       if (DateTime.timestamp()
               .difference(_latestRequest!)
@@ -70,7 +71,8 @@ class IgdbService {
     http.Response response = await http.post(url, body: body, headers: headers);
 
     if (response.statusCode == 200) {
-      return igdbGameFromJson(response.body);
+      var igdbGames = igdbGameFromJson(response.body);
+      return _convertToItems(igdbGames);
     } else {
       debugPrint(
         "[IGDB]Error games status code: ${response.statusCode},"
@@ -78,5 +80,15 @@ class IgdbService {
       );
       return null;
     }
+  }
+
+  List<Item> _convertToItems(List<IgdbGame> igdbGames) {
+    List<Item> items = [];
+    for (var game in igdbGames) {
+      var item = Item();
+      item.igdbGame = game;
+      items.add(item);
+    }
+    return items;
   }
 }

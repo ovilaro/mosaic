@@ -10,7 +10,10 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^1.6.0
+  isar_community: 3.3.0
+  isar_community_flutter_libs: 3.3.0
   material_symbols_icons: ^4.2874.0
+  path_provider: ^2.1.5
   provider: ^6.1.5+1
   waterfall_flow: ^3.1.1
 
@@ -18,6 +21,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  isar_community_generator: 3.3.0
 
 flutter:
   uses-material-design: true

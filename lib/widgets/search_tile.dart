@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mosaic/models/igdb_game.dart';
+import 'package:mosaic/models/item.dart';
 
 class SearchTile extends StatefulWidget {
   const SearchTile({super.key, required this.item});
 
-  //TODO: change for a generic item
-  final IgdbGame item;
+  final Item item;
 
   @override
   State<SearchTile> createState() => _SearchTileState();
@@ -18,7 +17,7 @@ class _SearchTileState extends State<SearchTile> {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(Icons.image),
-      title: Text(widget.item.name ?? "Unnamed Item"),
+      title: Text(widget.item.name),
       subtitle: Text("category"),
       trailing: IconButton(
         onPressed: () {

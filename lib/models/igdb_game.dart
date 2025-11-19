@@ -4,22 +4,27 @@
 
 import 'dart:convert';
 
+import 'package:isar_community/isar.dart';
+
+part 'igdb_game.g.dart';
+
 List<IgdbGame> igdbGameFromJson(String str) =>
     List<IgdbGame>.from(json.decode(str).map((x) => IgdbGame.fromJson(x)));
 
 String igdbGameToJson(List<IgdbGame> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
+@embedded
 class IgdbGame {
   final int? id;
-  final Cover? cover;
+  final IgdbCover? cover;
   final int? firstReleaseDate;
-  final List<GameInfo>? gameModes;
-  final List<GameInfo>? genres;
+  final List<IgdbGameInfo>? gameModes;
+  final List<IgdbGameInfo>? genres;
   final String? name;
-  final List<GameInfo>? platforms;
+  final List<IgdbGameInfo>? platforms;
   final String? summary;
-  final List<GameInfo>? themes;
+  final List<IgdbGameInfo>? themes;
   final GameType? gameType;
   final String? storyline;
 
@@ -46,26 +51,30 @@ class IgdbGame {
 
   factory IgdbGame.fromJson(Map<String, dynamic> json) => IgdbGame(
     id: json["id"],
-    cover: json["cover"] == null ? null : Cover.fromJson(json["cover"]),
+    cover: json["cover"] == null ? null : IgdbCover.fromJson(json["cover"]),
     firstReleaseDate: json["first_release_date"],
     gameModes: json["game_modes"] == null
         ? []
-        : List<GameInfo>.from(
-            json["game_modes"]!.map((x) => GameInfo.fromJson(x)),
+        : List<IgdbGameInfo>.from(
+            json["game_modes"]!.map((x) => IgdbGameInfo.fromJson(x)),
           ),
     genres: json["genres"] == null
         ? []
-        : List<GameInfo>.from(json["genres"]!.map((x) => GameInfo.fromJson(x))),
+        : List<IgdbGameInfo>.from(
+            json["genres"]!.map((x) => IgdbGameInfo.fromJson(x)),
+          ),
     name: json["name"],
     platforms: json["platforms"] == null
         ? []
-        : List<GameInfo>.from(
-            json["platforms"]!.map((x) => GameInfo.fromJson(x)),
+        : List<IgdbGameInfo>.from(
+            json["platforms"]!.map((x) => IgdbGameInfo.fromJson(x)),
           ),
     summary: json["summary"],
     themes: json["themes"] == null
         ? []
-        : List<GameInfo>.from(json["themes"]!.map((x) => GameInfo.fromJson(x))),
+        : List<IgdbGameInfo>.from(
+            json["themes"]!.map((x) => IgdbGameInfo.fromJson(x)),
+          ),
     gameType: json["game_type"] == null
         ? null
         : GameType.fromJson(json["game_type"]),
@@ -95,7 +104,8 @@ class IgdbGame {
   };
 }
 
-class Cover {
+@embedded
+class IgdbCover {
   final int? id;
   final String? url;
 
@@ -111,26 +121,28 @@ class Cover {
     return url?.replaceFirst("thumb", "cover_big_2x");
   }
 
-  Cover({this.id, this.url});
+  IgdbCover({this.id, this.url});
 
-  factory Cover.fromJson(Map<String, dynamic> json) =>
-      Cover(id: json["id"], url: json["url"]);
+  factory IgdbCover.fromJson(Map<String, dynamic> json) =>
+      IgdbCover(id: json["id"], url: json["url"]);
 
   Map<String, dynamic> toJson() => {"id": id, "url": url};
 }
 
-class GameInfo {
+@embedded
+class IgdbGameInfo {
   final int? id;
   final String? name;
 
-  GameInfo({this.id, this.name});
+  IgdbGameInfo({this.id, this.name});
 
-  factory GameInfo.fromJson(Map<String, dynamic> json) =>
-      GameInfo(id: json["id"], name: json["name"]);
+  factory IgdbGameInfo.fromJson(Map<String, dynamic> json) =>
+      IgdbGameInfo(id: json["id"], name: json["name"]);
 
   Map<String, dynamic> toJson() => {"id": id, "name": name};
 }
 
+@embedded
 class GameType {
   final int? id;
   final String? type;

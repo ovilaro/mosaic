@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosaic/provider/mosaic_data.dart';
-import 'package:mosaic/screens/main_navigation_bar.dart';
+import 'package:mosaic/screens/splash.dart';
 import 'package:mosaic/styles/app_styles.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +15,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => MosaicData(),
-      child: MaterialApp(theme: AppStyles.themeData, home: MainNavigationBar()),
+      child: MaterialApp(theme: AppStyles.themeData, home: const Splash()),
     );
   }
 }
