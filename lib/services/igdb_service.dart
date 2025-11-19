@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosaic/api_keys.dart';
-import 'package:mosaic/services/igdb/models/igdb_auth_result.dart';
-import 'package:mosaic/services/igdb/models/igdb_game.dart';
+import 'package:mosaic/models/igdb_auth_result.dart';
+import 'package:mosaic/models/igdb_game.dart';
 
 class IgdbService {
   static const Duration _intervalBetweenRequestsInMs = Duration(

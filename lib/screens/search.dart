@@ -20,6 +20,7 @@ class _SearchState extends State<Search> {
   @override
   void initState() {
     super.initState();
+    context.read<MosaicData>().clearSearchResults();
     controller.addListener(textChanged);
   }
 
@@ -50,34 +51,36 @@ class _SearchState extends State<Search> {
           ),
         ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Expanded(
-            child: Consumer<MosaicData>(
-              builder: (context, mosaicData, child) {
-                return ListView(
-                  children: [
-                    for (int i = 0; i < mosaicData.searchResults.length; i++)
-                      SearchTile(item: mosaicData.searchResults[i]),
-                  ],
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: controller,
-              decoration: InputDecoration(
-                hint: Text("write something to search for"),
-                suffixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Expanded(
+              child: Consumer<MosaicData>(
+                builder: (context, mosaicData, child) {
+                  return ListView(
+                    children: [
+                      for (int i = 0; i < mosaicData.searchResults.length; i++)
+                        SearchTile(item: mosaicData.searchResults[i]),
+                    ],
+                  );
+                },
               ),
-              // onChanged: textChanged,
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                autofocus: true,
+                controller: controller,
+                decoration: InputDecoration(
+                  hint: Text("write something to search for"),
+                  suffixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

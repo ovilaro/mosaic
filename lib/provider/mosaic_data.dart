@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mosaic/services/igdb/igdb_service.dart';
-import 'package:mosaic/services/igdb/models/igdb_game.dart';
+import 'package:mosaic/models/igdb_game.dart';
+import 'package:mosaic/services/igdb_service.dart';
 
 class MosaicData extends ChangeNotifier {
   final IgdbService _igdbService = IgdbService();
@@ -22,5 +22,9 @@ class MosaicData extends ChangeNotifier {
 
     searchResults = results;
     notifyListeners();
+  }
+
+  void clearSearchResults() {
+    searchResults.clear();
   }
 }
