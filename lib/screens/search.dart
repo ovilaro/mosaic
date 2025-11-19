@@ -61,7 +61,7 @@ class _SearchState extends State<Search> {
                   return ListView(
                     children: [
                       for (int i = 0; i < mosaicData.searchResults.length; i++)
-                        SearchTile(item: mosaicData.searchResults[i]),
+                        SearchTile(index: i),
                     ],
                   );
                 },

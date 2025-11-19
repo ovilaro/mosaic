@@ -1,31 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:mosaic/models/item.dart';
+import 'package:mosaic/provider/mosaic_data.dart';
+import 'package:provider/provider.dart';
 
 class SearchTile extends StatefulWidget {
-  const SearchTile({super.key, required this.item});
+  const SearchTile({super.key, required this.index});
 
-  final Item item;
+  final int index;
 
   @override
   State<SearchTile> createState() => _SearchTileState();
 }
 
 class _SearchTileState extends State<SearchTile> {
-  bool fakeAdded = false;
+  bool working = false;
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Image.network(widget.item.thumb),
-      title: Text(widget.item.name),
-      subtitle: Text("category"),
-      trailing: IconButton(
-        onPressed: () {
-          fakeAdded = !fakeAdded;
-          setState(() {});
-        },
-        icon: Icon(fakeAdded ? Icons.delete : Icons.add),
-      ),
+    return Consumer<MosaicData>(
+      builder: (context, mosaicData, child) {
+        working = false;
+        var item = mosaicData.searchResults[widget.index];
+        return ListTile(
+          leading: Image.network(item.thumb),
+          title: Text(item.name),
+          subtitle: Text(item.shortDesc),
+          trailing: IconButton(
+            onPressed: () async {
+              if (working) return;
+              working = true;
+              if (item.isAdded) {
+                await context.read<MosaicData>().deleteItemApiId(item);
+              } else {
+                await context.read<MosaicData>().addItem(item);
+              }
+            },
+            icon: Icon(item.isAdded ? Icons.delete : Icons.add),
+          ),
+        );
+      },
     );
   }
 }

@@ -15,6 +15,51 @@ class Database {
     isar = await Isar.open([ItemSchema], directory: dir.path);
   }
 
+  Future<void> write(Item item) async {
+    await isar.writeTxn(() async {
+      await isar.items.put(item); // insert & update
+    });
+  }
+
+  Future<bool> isApiIdAdded(Item item) async {
+    List<Item> results = await isar.items
+        .filter()
+        .apiIdEqualTo(item.apiId)
+        .findAll();
+    // check item type due diferents apis can have same id maybe?
+    for (var result in results) {
+      if (result.itemType == item.itemType) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Future<void> deleteItemApiId(Item item) async {
+    List<Item> results = await isar.items
+        .filter()
+        .apiIdEqualTo(item.apiId)
+        .findAll();
+    // check item type due diferents apis can have same id maybe?
+    for (var result in results) {
+      if (result.itemType == item.itemType) {
+        await isar.writeTxn(() async {
+          await isar.items.delete(result.id);
+        });
+      }
+    }
+  }
+
+  // Future<void> delete(int id) async {
+  //   await isar.writeTxn(() async {
+  //     await isar.items.delete(id);
+  //   });
+  // }
+
+  // Future<Item?> get(int id) async {
+  //   return await isar.items.get(id);
+  // }
+
   //   Future<List<Item>> getAllItems() async {
   //     return isar.items.where().findAll();
   //   }
