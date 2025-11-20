@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppStyles {
   static const Color blue = Color(0xFF3B82F6);
@@ -15,16 +16,109 @@ class AppStyles {
   static const SizedBox sizedBox20 = SizedBox(width: 20, height: 20);
   static const SizedBox sizedBox40 = SizedBox(width: 40, height: 40);
 
-  static TextStyle appBarTitle = TextStyle(
+  static TextStyle h1 = TextStyle(
+    fontSize: 32,
+    fontWeight: FontWeight.w700,
+    color: veryDarkGrey,
+  );
+
+  static TextStyle h2 = TextStyle(
     fontSize: 24,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.w600,
     color: darkGrey,
+  );
+
+  static TextStyle h3 = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+    color: mediumGrey,
+  );
+
+  static TextStyle normalPrimary = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: lightGrey,
+  );
+
+  static TextStyle normalSecundary = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: veryLightGrey,
+  );
+
+  static TextStyle buttonsActions = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: darkGrey,
+  );
+
+  static ButtonStyle segmentedStyle = ButtonStyle(
+    textStyle: WidgetStateProperty.resolveWith((state) {
+      if (state.contains(WidgetState.selected)) {
+        return buttonsActions.copyWith(color: white);
+      }
+      return buttonsActions.copyWith(color: darkGrey);
+    }),
+    backgroundColor: WidgetStateProperty.resolveWith((state) {
+      if (state.contains(WidgetState.selected)) {
+        return blue;
+      }
+      return white;
+    }),
+    foregroundColor: WidgetStateProperty.resolveWith((state) {
+      if (state.contains(WidgetState.selected)) {
+        return white;
+      }
+      return darkGrey;
+    }),
+  );
+
+  static ButtonStyle buttonStyle = ButtonStyle(
+    textStyle: WidgetStateProperty.resolveWith((state) {
+      if (state.contains(WidgetState.selected)) {
+        return buttonsActions.copyWith(color: white);
+      }
+      return buttonsActions.copyWith(color: white);
+    }),
+    backgroundColor: WidgetStateProperty.resolveWith((state) {
+      if (state.contains(WidgetState.selected)) {
+        return blue;
+      }
+      return blue;
+    }),
+    foregroundColor: WidgetStateProperty.resolveWith((state) {
+      if (state.contains(WidgetState.selected)) {
+        return white;
+      }
+      return white;
+    }),
+  );
+
+  static ButtonStyle buttonStyleWarning = ButtonStyle(
+    textStyle: WidgetStateProperty.resolveWith((state) {
+      if (state.contains(WidgetState.selected)) {
+        return buttonsActions.copyWith(color: white);
+      }
+      return buttonsActions.copyWith(color: white);
+    }),
+    backgroundColor: WidgetStateProperty.resolveWith((state) {
+      if (state.contains(WidgetState.selected)) {
+        return Colors.red;
+      }
+      return Colors.red;
+    }),
+    foregroundColor: WidgetStateProperty.resolveWith((state) {
+      if (state.contains(WidgetState.selected)) {
+        return white;
+      }
+      return white;
+    }),
   );
 
   static AppBarTheme appBarTheme = AppBarTheme(
     backgroundColor: darkWhite,
     foregroundColor: darkGrey,
-    titleTextStyle: appBarTitle,
+    titleTextStyle: h2,
     centerTitle: true,
   );
 
@@ -33,9 +127,9 @@ class AppStyles {
     indicatorColor: blue,
     labelTextStyle: WidgetStateProperty.resolveWith((state) {
       if (state.contains(WidgetState.selected)) {
-        return const TextStyle(color: darkGrey);
+        return buttonsActions.copyWith(color: darkGrey);
       }
-      return const TextStyle(color: darkGrey);
+      return normalPrimary.copyWith(color: darkGrey);
     }),
     iconTheme: WidgetStateProperty.resolveWith((state) {
       if (state.contains(WidgetState.selected)) {
@@ -48,10 +142,12 @@ class AppStyles {
   static ThemeData themeData = ThemeData(
     appBarTheme: appBarTheme,
     navigationBarTheme: navigationBarThemeData,
+    fontFamily: GoogleFonts.inter().fontFamily,
   );
 
   static const String noCoverImgUrl =
-      "https://vglist.co/packs/media/images/no-cover-369ad8f0ea82dde5923c942ba1a26482.png";
+      "https://nhasachminhthang.vn/Content/Home/imgs/image-placeholder.jpg";
+  // "https://vglist.co/packs/media/images/no-cover-369ad8f0ea82dde5923c942ba1a26482.png";
   static const String noThumbImgUrl =
       "https://icons.iconarchive.com/icons/pixelkit/gentle-edges/128/Game-Controller-icon.png";
 }

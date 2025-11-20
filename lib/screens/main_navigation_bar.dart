@@ -5,7 +5,7 @@ import 'package:mosaic/screens/settings.dart';
 import 'package:mosaic/screens/waterfall_items.dart';
 import 'package:mosaic/styles/app_styles.dart';
 
-enum MainAppBarType { inProgress, notStarted, finished, settings }
+enum MainAppBarType { notStarted, inProgress, finished, settings }
 
 class MainNavigationBar extends StatefulWidget {
   const MainNavigationBar({super.key});
@@ -45,12 +45,12 @@ class _MainNavigationBarState extends State<MainNavigationBar> {
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
-            icon: Icon(Symbols.table_eye),
-            label: "In Progress",
-          ),
-          NavigationDestination(
             icon: Icon(Symbols.newsstand),
             label: "Not Started",
+          ),
+          NavigationDestination(
+            icon: Icon(Symbols.table_eye),
+            label: "In Progress",
           ),
           NavigationDestination(
             icon: Icon(Symbols.inventory_2),

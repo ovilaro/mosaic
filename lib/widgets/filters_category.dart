@@ -29,9 +29,7 @@ class _FiltersCategoryState extends State<FiltersCategory> {
           padding: const EdgeInsets.all(8.0),
           child: Row(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              Text("categoria ${widget.i}", style: AppStyles.appBarTitle),
-            ],
+            children: [Text("categoria ${widget.i}", style: AppStyles.h2)],
           ),
         ),
       ),

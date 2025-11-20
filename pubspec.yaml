@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  google_fonts: ^6.3.2
   http: ^1.6.0
   isar_community: 3.3.0
   isar_community_flutter_libs: 3.3.0

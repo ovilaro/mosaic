@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mosaic/provider/mosaic_data.dart';
 import 'package:mosaic/screens/main_navigation_bar.dart';
+import 'package:mosaic/styles/app_styles.dart';
 import 'package:provider/provider.dart';
 
 class Splash extends StatefulWidget {
@@ -28,7 +29,7 @@ class _SplashState extends State<Splash> {
           children: [
             CircularProgressIndicator(),
             SizedBox(width: 20, height: 20),
-            Text(status),
+            Text(status, style: AppStyles.h3),
           ],
         ),
       ),

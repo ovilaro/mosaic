@@ -15,7 +15,11 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => MosaicData(),
-      child: MaterialApp(theme: AppStyles.themeData, home: const Splash()),
+      child: MaterialApp(
+        theme: AppStyles.themeData,
+        home: const Splash(),
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }

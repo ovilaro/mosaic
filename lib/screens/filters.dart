@@ -9,24 +9,26 @@ class Filters extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.all(12),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AppStyles.sizedBox40,
-              Text("Filters", style: AppStyles.appBarTitle),
-              IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: Icon(Icons.close),
-              ),
-            ],
-          ),
-          AppStyles.sizedBox10,
-          for (var i = 0; i < 5; i++) FiltersCategory(i: i),
-        ],
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: EdgeInsets.all(12),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AppStyles.sizedBox40,
+                Text("Filters", style: AppStyles.h1),
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: Icon(Icons.close),
+                ),
+              ],
+            ),
+            AppStyles.sizedBox10,
+            for (var i = 0; i < 5; i++) FiltersCategory(i: i),
+          ],
+        ),
       ),
     );
   }

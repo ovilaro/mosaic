@@ -12,31 +12,30 @@ class WaterfallItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       child: Card(
-        // clipBehavior: Clip.hardEdge,
+        clipBehavior: Clip.hardEdge,
         color: AppStyles.veryLightGrey,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Stack(
-            alignment: AlignmentGeometry.bottomCenter,
-            children: [
-              Image.network(item.coverSmall ?? AppStyles.noCoverImgUrl),
-              Visibility(
-                visible: item.coverSmall == null,
-                child: Container(
-                  color: Colors.black,
-                  padding: EdgeInsets.all(4),
-                  child: Text(item.name, style: TextStyle(color: Colors.white)),
-                ),
+        child: Stack(
+          alignment: AlignmentGeometry.bottomCenter,
+          children: [
+            Hero(
+              tag: item.id,
+              child: Image.network(item.coverBig ?? AppStyles.noCoverImgUrl),
+            ),
+            Visibility(
+              visible: item.coverSmall == null,
+              child: Container(
+                color: Colors.black,
+                padding: EdgeInsets.all(4),
+                child: Text(item.name, style: TextStyle(color: Colors.white)),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       onTap: () {
-        debugPrint("floating button pressed!");
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ItemDetail()),
+          MaterialPageRoute(builder: (context) => ItemDetail(item: item)),
         );
       },
     );

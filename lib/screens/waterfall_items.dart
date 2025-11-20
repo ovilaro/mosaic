@@ -82,14 +82,13 @@ class WaterfallItems extends StatelessWidget {
   }
 
   String getAppBarTitle(MainAppBarType mainAppBarType) {
-    //TODO: should get strings from another place
     String title;
     switch (mainAppBarType) {
-      case MainAppBarType.inProgress:
-        title = "In Progress";
-        break;
       case MainAppBarType.notStarted:
         title = "Not Started";
+        break;
+      case MainAppBarType.inProgress:
+        title = "In Progress";
         break;
       case MainAppBarType.finished:
         title = "Finished";

@@ -53,7 +53,7 @@ class MosaicData extends ChangeNotifier {
     return await Database.instance.isApiIdAdded(item);
   }
 
-  addItem(Item item) async {
+  addOrUpdateItem(Item item) async {
     await Database.instance.write(item);
     item.isAdded = true;
     notifyListeners();

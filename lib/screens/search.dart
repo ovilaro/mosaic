@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mosaic/provider/mosaic_data.dart';
 import 'package:mosaic/screens/filters.dart';
+import 'package:mosaic/styles/app_styles.dart';
 import 'package:mosaic/widgets/search_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -70,12 +71,31 @@ class _SearchState extends State<Search> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
+                style: AppStyles.normalPrimary,
                 autofocus: true,
                 controller: controller,
                 decoration: InputDecoration(
-                  hint: Text("write something to search for"),
+                  suffixIconColor: AppStyles.darkGrey,
+                  hint: Text(
+                    "write something to search for",
+                    style: AppStyles.normalSecundary,
+                  ),
                   suffixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
+                  enabledBorder: const OutlineInputBorder(
+                    // width: 0.0 produces a thin "hairline" border
+                    borderSide: BorderSide(color: AppStyles.blue, width: 2.0),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    // width: 0.0 produces a thin "hairline" border
+                    borderSide: BorderSide(color: AppStyles.blue, width: 2.0),
+                  ),
+                  border: const OutlineInputBorder(
+                    // width: 0.0 produces a thin "hairline" border
+                    borderSide: BorderSide(
+                      color: AppStyles.darkGrey,
+                      width: 0.0,
+                    ),
+                  ),
                 ),
               ),
             ),

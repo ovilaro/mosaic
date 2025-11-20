@@ -53,7 +53,9 @@ const ItemSchema = CollectionSchema(
       name: r'shortDesc',
       type: IsarType.string,
     ),
-    r'thumb': PropertySchema(id: 8, name: r'thumb', type: IsarType.string),
+    r'story': PropertySchema(id: 8, name: r'story', type: IsarType.string),
+    r'summary': PropertySchema(id: 9, name: r'summary', type: IsarType.string),
+    r'thumb': PropertySchema(id: 10, name: r'thumb', type: IsarType.string),
   },
 
   estimateSize: _itemEstimateSize,
@@ -105,6 +107,18 @@ int _itemEstimateSize(
   bytesCount += 3 + object.name.length * 3;
   bytesCount += 3 + object.shortDesc.length * 3;
   {
+    final value = object.story;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.summary;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.thumb;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -132,7 +146,9 @@ void _itemSerialize(
   writer.writeByte(offsets[5], object.itemType.index);
   writer.writeString(offsets[6], object.name);
   writer.writeString(offsets[7], object.shortDesc);
-  writer.writeString(offsets[8], object.thumb);
+  writer.writeString(offsets[8], object.story);
+  writer.writeString(offsets[9], object.summary);
+  writer.writeString(offsets[10], object.thumb);
 }
 
 Item _itemDeserialize(
@@ -151,7 +167,7 @@ Item _itemDeserialize(
   );
   object.itemStatus =
       _ItemitemStatusValueEnumMap[reader.readByteOrNull(offsets[4])] ??
-      ItemStatus.inProgress;
+      ItemStatus.notStarted;
   object.itemType =
       _ItemitemTypeValueEnumMap[reader.readByteOrNull(offsets[5])] ??
       ItemType.igdbGame;
@@ -180,7 +196,7 @@ P _itemDeserializeProp<P>(
           as P;
     case 4:
       return (_ItemitemStatusValueEnumMap[reader.readByteOrNull(offset)] ??
-              ItemStatus.inProgress)
+              ItemStatus.notStarted)
           as P;
     case 5:
       return (_ItemitemTypeValueEnumMap[reader.readByteOrNull(offset)] ??
@@ -192,19 +208,23 @@ P _itemDeserializeProp<P>(
       return (reader.readString(offset)) as P;
     case 8:
       return (reader.readStringOrNull(offset)) as P;
+    case 9:
+      return (reader.readStringOrNull(offset)) as P;
+    case 10:
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
 
 const _ItemitemStatusEnumValueMap = {
-  'inProgress': 0,
-  'notStarted': 1,
+  'notStarted': 0,
+  'inProgress': 1,
   'finished': 2,
 };
 const _ItemitemStatusValueEnumMap = {
-  0: ItemStatus.inProgress,
-  1: ItemStatus.notStarted,
+  0: ItemStatus.notStarted,
+  1: ItemStatus.inProgress,
   2: ItemStatus.finished,
 };
 const _ItemitemTypeEnumValueMap = {'igdbGame': 0};
@@ -1165,6 +1185,330 @@ extension ItemQueryFilter on QueryBuilder<Item, Item, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Item, Item, QAfterFilterCondition> storyIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'story'),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> storyIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'story'),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> storyEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'story',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> storyGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'story',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> storyLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'story',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> storyBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'story',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> storyStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'story',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> storyEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'story',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> storyContains(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'story',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> storyMatches(
+    String pattern, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'story',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> storyIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'story', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> storyIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'story', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> summaryIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'summary'),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> summaryIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'summary'),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> summaryEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'summary',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> summaryGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'summary',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> summaryLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'summary',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> summaryBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'summary',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> summaryStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'summary',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> summaryEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'summary',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> summaryContains(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'summary',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> summaryMatches(
+    String pattern, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'summary',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> summaryIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'summary', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> summaryIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'summary', value: ''),
+      );
+    });
+  }
+
   QueryBuilder<Item, Item, QAfterFilterCondition> thumbIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -1425,6 +1769,30 @@ extension ItemQuerySortBy on QueryBuilder<Item, Item, QSortBy> {
     });
   }
 
+  QueryBuilder<Item, Item, QAfterSortBy> sortByStory() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'story', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> sortByStoryDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'story', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> sortBySummary() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'summary', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> sortBySummaryDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'summary', Sort.desc);
+    });
+  }
+
   QueryBuilder<Item, Item, QAfterSortBy> sortByThumb() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'thumb', Sort.asc);
@@ -1535,6 +1903,30 @@ extension ItemQuerySortThenBy on QueryBuilder<Item, Item, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Item, Item, QAfterSortBy> thenByStory() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'story', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> thenByStoryDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'story', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> thenBySummary() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'summary', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> thenBySummaryDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'summary', Sort.desc);
+    });
+  }
+
   QueryBuilder<Item, Item, QAfterSortBy> thenByThumb() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'thumb', Sort.asc);
@@ -1599,6 +1991,22 @@ extension ItemQueryWhereDistinct on QueryBuilder<Item, Item, QDistinct> {
     });
   }
 
+  QueryBuilder<Item, Item, QDistinct> distinctByStory({
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'story', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Item, Item, QDistinct> distinctBySummary({
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'summary', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Item, Item, QDistinct> distinctByThumb({
     bool caseSensitive = true,
   }) {
@@ -1660,6 +2068,18 @@ extension ItemQueryProperty on QueryBuilder<Item, Item, QQueryProperty> {
   QueryBuilder<Item, String, QQueryOperations> shortDescProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'shortDesc');
+    });
+  }
+
+  QueryBuilder<Item, String?, QQueryOperations> storyProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'story');
+    });
+  }
+
+  QueryBuilder<Item, String?, QQueryOperations> summaryProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'summary');
     });
   }
 

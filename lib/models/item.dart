@@ -5,7 +5,7 @@ part 'item.g.dart';
 
 enum ItemType { igdbGame }
 
-enum ItemStatus { inProgress, notStarted, finished }
+enum ItemStatus { notStarted, inProgress, finished }
 
 @collection
 class Item {
@@ -48,6 +48,76 @@ class Item {
       return str;
     }
     return "";
+  }
+
+  String? get summary {
+    if (igdbGame != null) {
+      if (igdbGame!.summary != null) {
+        return igdbGame!.summary;
+      }
+    }
+    return null;
+  }
+
+  String? get story {
+    if (igdbGame != null) {
+      if (igdbGame!.storyline != null) {
+        return igdbGame!.storyline;
+      }
+    }
+    return null;
+  }
+
+  Map<String, String> get itemInfo {
+    Map<String, String> map = {};
+    if (igdbGame != null) {
+      if (igdbGame!.platforms != null) {
+        String str = "";
+        for (var i = 0; i < igdbGame!.platforms!.length; i++) {
+          var info = igdbGame!.platforms![i];
+          if (i > 0) {
+            str += "\n";
+          }
+          str += info.name!;
+        }
+        map["Platforms"] = str;
+      }
+      if (igdbGame!.gameModes != null) {
+        String str = "";
+        for (var i = 0; i < igdbGame!.gameModes!.length; i++) {
+          var info = igdbGame!.gameModes![i];
+          if (i > 0) {
+            str += "\n";
+          }
+          str += info.name!;
+        }
+        map["Game modes"] = str;
+      }
+      if (igdbGame!.genres != null) {
+        String str = "";
+        for (var i = 0; i < igdbGame!.genres!.length; i++) {
+          var info = igdbGame!.genres![i];
+          if (i > 0) {
+            str += "\n";
+          }
+          str += info.name!;
+        }
+        map["Genres"] = str;
+      }
+      if (igdbGame!.themes != null) {
+        String str = "";
+        for (var i = 0; i < igdbGame!.themes!.length; i++) {
+          var info = igdbGame!.themes![i];
+          if (i > 0) {
+            str += "\n";
+          }
+          str += info.name!;
+        }
+        map["Themes"] = str;
+      }
+    }
+
+    return map;
   }
 
   String? get thumb {
