@@ -101,7 +101,7 @@ class _ItemDetailState extends State<ItemDetail> {
                   ),
                 ),
               ),
-              AppStyles.sizedBox10,
+              // AppStyles.sizedBox10,
               Visibility(
                 visible: widget.item.itemInfo.isNotEmpty,
                 child: Padding(

@@ -68,10 +68,11 @@ class Item {
     return null;
   }
 
+  @ignore
   Map<String, String> get itemInfo {
     Map<String, String> map = {};
     if (igdbGame != null) {
-      if (igdbGame!.platforms != null) {
+      if (igdbGame!.platforms != null && igdbGame!.platforms!.isNotEmpty) {
         String str = "";
         for (var i = 0; i < igdbGame!.platforms!.length; i++) {
           var info = igdbGame!.platforms![i];
@@ -82,7 +83,7 @@ class Item {
         }
         map["Platforms"] = str;
       }
-      if (igdbGame!.gameModes != null) {
+      if (igdbGame!.gameModes != null && igdbGame!.gameModes!.isNotEmpty) {
         String str = "";
         for (var i = 0; i < igdbGame!.gameModes!.length; i++) {
           var info = igdbGame!.gameModes![i];
@@ -93,7 +94,7 @@ class Item {
         }
         map["Game modes"] = str;
       }
-      if (igdbGame!.genres != null) {
+      if (igdbGame!.genres != null && igdbGame!.genres!.isNotEmpty) {
         String str = "";
         for (var i = 0; i < igdbGame!.genres!.length; i++) {
           var info = igdbGame!.genres![i];
@@ -104,7 +105,7 @@ class Item {
         }
         map["Genres"] = str;
       }
-      if (igdbGame!.themes != null) {
+      if (igdbGame!.themes != null && igdbGame!.themes!.isNotEmpty) {
         String str = "";
         for (var i = 0; i < igdbGame!.themes!.length; i++) {
           var info = igdbGame!.themes![i];
