@@ -1,9 +1,10 @@
 import 'package:isar_community/isar.dart';
 import 'package:mosaic/models/igdb_game.dart';
+import 'package:mosaic/models/open_library_search_result.dart';
 
 part 'item.g.dart';
 
-enum ItemType { igdbGame }
+enum ItemType { igdbGame, openlibraryBook }
 
 enum ItemStatus { notStarted, inProgress, finished }
 
@@ -12,8 +13,9 @@ class Item {
   Id id = Isar.autoIncrement;
 
   IgdbGame? igdbGame;
+  OpenLibrarySearchResultDoc? openLibraryBook;
 
-  int apiId = -1;
+  String apiId = "";
 
   @enumerated
   ItemType itemType = ItemType.igdbGame;
@@ -21,9 +23,12 @@ class Item {
   @enumerated
   ItemStatus itemStatus = ItemStatus.notStarted;
 
+  bool needsDetailRequest = false;
+
   @ignore
   bool isAdded = false;
 
+  @ignore
   String get name {
     if (igdbGame != null) {
       return igdbGame!.name ?? "no name";
@@ -31,6 +36,7 @@ class Item {
     return "no name";
   }
 
+  @ignore
   String get shortDesc {
     if (igdbGame != null) {
       var str = "🎮";
@@ -40,9 +46,12 @@ class Item {
         str += igdbGame!.gameType!.type!;
       }
 
-      if (igdbGame!.releaseDate != null) {
+      if (igdbGame!.firstReleaseDate != null) {
+        var releaseDate = DateTime.fromMillisecondsSinceEpoch(
+          igdbGame!.firstReleaseDate! * 1000,
+        );
         str += " ";
-        str += "(${igdbGame!.releaseDate!.year})";
+        str += "(${releaseDate.year})";
       }
 
       return str;
@@ -50,6 +59,29 @@ class Item {
     return "";
   }
 
+  @ignore
+  String? get thumb {
+    if (igdbGame != null) {
+      if (igdbGame!.cover != null) {
+        var fullUrl = "https:${igdbGame!.cover!.url}";
+        return fullUrl.replaceFirst("thumb", "thumb_2x");
+      }
+    }
+    return null;
+  }
+
+  @ignore
+  String? get coverBig {
+    if (igdbGame != null) {
+      if (igdbGame!.cover != null) {
+        var fullUrl = "https:${igdbGame!.cover!.url}";
+        return fullUrl.replaceFirst("thumb", "cover_big_2x");
+      }
+    }
+    return null;
+  }
+
+  @ignore
   String? get summary {
     if (igdbGame != null) {
       if (igdbGame!.summary != null) {
@@ -59,6 +91,7 @@ class Item {
     return null;
   }
 
+  @ignore
   String? get story {
     if (igdbGame != null) {
       if (igdbGame!.storyline != null) {
@@ -119,26 +152,5 @@ class Item {
     }
 
     return map;
-  }
-
-  String? get thumb {
-    if (igdbGame != null) {
-      return igdbGame!.thumb;
-    }
-    return null;
-  }
-
-  String? get coverSmall {
-    if (igdbGame != null) {
-      return igdbGame!.coverSmall;
-    }
-    return null;
-  }
-
-  String? get coverBig {
-    if (igdbGame != null) {
-      return igdbGame!.coverBig;
-    }
-    return null;
   }
 }

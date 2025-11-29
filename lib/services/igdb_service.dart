@@ -64,8 +64,8 @@ class IgdbService {
     String body =
         'search "$str";\n'
         'fields name, cover.url, first_release_date, game_modes.name, genres.name, '
-        'platforms.name, platforms.abbreviation, summary, storyline, themes.name, '
-        'game_type.type; limit 50;';
+        'platforms.name, summary, storyline, themes.name, '
+        'game_type.type; limit 20;';
 
     _latestRequest = DateTime.timestamp();
     http.Response response = await http.post(url, body: body, headers: headers);
@@ -86,9 +86,9 @@ class IgdbService {
     List<Item> items = [];
     for (var game in igdbGames) {
       var item = Item();
-      item.igdbGame = game;
-      item.apiId = game.id ?? -1;
       item.itemType = ItemType.igdbGame;
+      item.igdbGame = game;
+      item.apiId = game.id!.toString(); // game.id should not be null
       items.add(item);
     }
     return items;

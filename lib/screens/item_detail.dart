@@ -6,9 +6,9 @@ import 'package:mosaic/widgets/item_info_table.dart';
 import 'package:provider/provider.dart';
 
 class ItemDetail extends StatefulWidget {
-  const ItemDetail({super.key, required this.item});
+  const ItemDetail({super.key, required this.itemId});
 
-  final Item item;
+  final int itemId;
 
   @override
   State<ItemDetail> createState() => _ItemDetailState();
@@ -17,112 +17,127 @@ class ItemDetail extends StatefulWidget {
 class _ItemDetailState extends State<ItemDetail> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.item.name)),
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
-            children: [
-              Center(
-                child: Card(
-                  clipBehavior: Clip.hardEdge,
-                  child: Hero(
-                    tag: widget.item.id,
-                    child: Image.network(
-                      widget.item.coverBig ?? AppStyles.noCoverImgUrl,
-                    ),
-                  ),
-                ),
-              ),
-              Text(
-                widget.item.name,
-                style: AppStyles.h1,
-                textAlign: TextAlign.center,
-              ),
-              AppStyles.sizedBox10,
-              Text(widget.item.shortDesc, style: AppStyles.h3),
-              AppStyles.sizedBox10,
-              SegmentedButton<ItemStatus>(
-                showSelectedIcon: false,
-                style: AppStyles.segmentedStyle,
-                segments: <ButtonSegment<ItemStatus>>[
-                  ButtonSegment<ItemStatus>(
-                    value: ItemStatus.notStarted,
-                    label: Text('Not Started'),
-                  ),
-                  ButtonSegment<ItemStatus>(
-                    value: ItemStatus.inProgress,
-                    label: Text('In Progress'),
-                  ),
-                  ButtonSegment<ItemStatus>(
-                    value: ItemStatus.finished,
-                    label: Text('Finished'),
-                  ),
-                ],
-                selected: <ItemStatus>{widget.item.itemStatus},
-                onSelectionChanged: (Set<ItemStatus> newSelection) async {
-                  widget.item.itemStatus = newSelection.first;
-                  await context.read<MosaicData>().addOrUpdateItem(widget.item);
-                  setState(() {});
-                },
-              ),
-              Visibility(
-                visible: widget.item.summary != null,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    widget.item.summary ?? "",
-                    style: AppStyles.normalPrimary,
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: widget.item.story != null,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Card(
-                    clipBehavior: Clip.hardEdge,
-                    child: Container(
-                      decoration: BoxDecoration(color: AppStyles.darkWhite),
-                      padding: EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          Text("Storyline", style: AppStyles.h3),
-                          AppStyles.sizedBox10,
-                          Text(
-                            widget.item.story ?? "",
-                            style: AppStyles.normalSecundary.copyWith(
-                              color: AppStyles.darkGrey,
-                            ),
-                          ),
-                        ],
+    return Consumer<MosaicData>(
+      builder: (context, mosaicData, child) {
+        var item = mosaicData.getItem(widget.itemId);
+        if (item == null) {
+          return Center(child: Text("Error on reading item"));
+        }
+        if (item.needsDetailRequest) {
+          mosaicData.updateDetailInfoIfNeeded(item);
+          return Scaffold(
+            appBar: AppBar(title: Text(item.name)),
+            body: Center(child: RefreshProgressIndicator()),
+          );
+        }
+        return Scaffold(
+          appBar: AppBar(title: Text(item.name)),
+          body: SingleChildScrollView(
+            child: SafeArea(
+              child: Column(
+                children: [
+                  Center(
+                    child: Card(
+                      clipBehavior: Clip.hardEdge,
+                      child: Hero(
+                        tag: item.id,
+                        child: Image.network(
+                          item.coverBig ?? AppStyles.noCoverImgUrl,
+                        ),
                       ),
                     ),
                   ),
-                ),
+                  Text(
+                    item.name,
+                    style: AppStyles.h1,
+                    textAlign: TextAlign.center,
+                  ),
+                  AppStyles.sizedBox10,
+                  Text(item.shortDesc, style: AppStyles.h3),
+                  AppStyles.sizedBox10,
+                  SegmentedButton<ItemStatus>(
+                    showSelectedIcon: false,
+                    style: AppStyles.segmentedStyle,
+                    segments: <ButtonSegment<ItemStatus>>[
+                      ButtonSegment<ItemStatus>(
+                        value: ItemStatus.notStarted,
+                        label: Text('Not Started'),
+                      ),
+                      ButtonSegment<ItemStatus>(
+                        value: ItemStatus.inProgress,
+                        label: Text('In Progress'),
+                      ),
+                      ButtonSegment<ItemStatus>(
+                        value: ItemStatus.finished,
+                        label: Text('Finished'),
+                      ),
+                    ],
+                    selected: <ItemStatus>{item.itemStatus},
+                    onSelectionChanged: (Set<ItemStatus> newSelection) async {
+                      item.itemStatus = newSelection.first;
+                      await context.read<MosaicData>().addOrUpdateItem(item);
+                      setState(() {});
+                    },
+                  ),
+                  Visibility(
+                    visible: item.summary != null,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        item.summary ?? "",
+                        style: AppStyles.normalPrimary,
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: item.story != null,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Card(
+                        clipBehavior: Clip.hardEdge,
+                        child: Container(
+                          decoration: BoxDecoration(color: AppStyles.darkWhite),
+                          padding: EdgeInsets.all(16),
+                          child: Column(
+                            children: [
+                              Text("Storyline", style: AppStyles.h3),
+                              AppStyles.sizedBox10,
+                              Text(
+                                item.story ?? "",
+                                style: AppStyles.normalSecundary.copyWith(
+                                  color: AppStyles.darkGrey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // AppStyles.sizedBox10,
+                  Visibility(
+                    visible: item.itemInfo.isNotEmpty,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ItemInfoTable(item: item),
+                    ),
+                  ),
+                  AppStyles.sizedBox40,
+                  TextButton(
+                    style: AppStyles.buttonStyleWarning,
+                    onPressed: () => showDeletePopUp(item),
+                    child: Text("Delete item"),
+                  ),
+                ],
               ),
-              // AppStyles.sizedBox10,
-              Visibility(
-                visible: widget.item.itemInfo.isNotEmpty,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ItemInfoTable(item: widget.item),
-                ),
-              ),
-              AppStyles.sizedBox40,
-              TextButton(
-                style: AppStyles.buttonStyleWarning,
-                onPressed: showDeletePopUp,
-                child: Text("Delete item"),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
-  void showDeletePopUp() {
+  void showDeletePopUp(Item item) {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -141,7 +156,7 @@ class _ItemDetailState extends State<ItemDetail> {
           TextButton(
             style: AppStyles.buttonStyleWarning,
             onPressed: () async {
-              await context.read<MosaicData>().deleteItemApiId(widget.item);
+              await context.read<MosaicData>().deleteItemApiId(item);
               if (!context.mounted) return;
               Navigator.popUntil(context, (route) => route.isFirst);
             },

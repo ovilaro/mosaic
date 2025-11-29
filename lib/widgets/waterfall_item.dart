@@ -22,7 +22,7 @@ class WaterfallItem extends StatelessWidget {
               child: Image.network(item.coverBig ?? AppStyles.noCoverImgUrl),
             ),
             Visibility(
-              visible: item.coverSmall == null,
+              visible: item.coverBig == null,
               child: Container(
                 color: Colors.black,
                 padding: EdgeInsets.all(4),
@@ -35,7 +35,7 @@ class WaterfallItem extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ItemDetail(item: item)),
+          MaterialPageRoute(builder: (context) => ItemDetail(itemId: item.id)),
         );
       },
     );

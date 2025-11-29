@@ -73,7 +73,24 @@ class MosaicData extends ChangeNotifier {
   //   await Database.instance.delete(id);
   // }
 
-  // Future<Item?> getItem(int id) async {
-  //   return await Database.instance.get(id);
-  // }
+  Item? getItem(int id) {
+    return Database.instance.get(id);
+  }
+
+  Future<void> updateDetailInfoIfNeeded(Item item) async {
+    if (item.needsDetailRequest) {
+      switch (item.itemType) {
+        case ItemType.openlibraryBook:
+          // TODO: fake await
+          await Future.delayed(Duration(seconds: 1), () async {
+            item.needsDetailRequest = false;
+            await addOrUpdateItem(item);
+            notifyListeners();
+            return;
+          });
+          break;
+        default:
+      }
+    }
+  }
 }

@@ -20,70 +20,54 @@ const IgdbGameSchema = Schema(
 
       target: r'IgdbCover',
     ),
-    r'coverBig': PropertySchema(
-      id: 1,
-      name: r'coverBig',
-      type: IsarType.string,
-    ),
-    r'coverSmall': PropertySchema(
-      id: 2,
-      name: r'coverSmall',
-      type: IsarType.string,
-    ),
     r'firstReleaseDate': PropertySchema(
-      id: 3,
+      id: 1,
       name: r'firstReleaseDate',
       type: IsarType.long,
     ),
     r'gameModes': PropertySchema(
-      id: 4,
+      id: 2,
       name: r'gameModes',
       type: IsarType.objectList,
 
       target: r'IgdbGameInfo',
     ),
     r'gameType': PropertySchema(
-      id: 5,
+      id: 3,
       name: r'gameType',
       type: IsarType.object,
 
       target: r'GameType',
     ),
     r'genres': PropertySchema(
-      id: 6,
+      id: 4,
       name: r'genres',
       type: IsarType.objectList,
 
       target: r'IgdbGameInfo',
     ),
-    r'id': PropertySchema(id: 7, name: r'id', type: IsarType.long),
-    r'name': PropertySchema(id: 8, name: r'name', type: IsarType.string),
+    r'id': PropertySchema(id: 5, name: r'id', type: IsarType.long),
+    r'name': PropertySchema(id: 6, name: r'name', type: IsarType.string),
     r'platforms': PropertySchema(
-      id: 9,
+      id: 7,
       name: r'platforms',
       type: IsarType.objectList,
 
       target: r'IgdbGameInfo',
     ),
-    r'releaseDate': PropertySchema(
-      id: 10,
-      name: r'releaseDate',
-      type: IsarType.dateTime,
-    ),
     r'storyline': PropertySchema(
-      id: 11,
+      id: 8,
       name: r'storyline',
       type: IsarType.string,
     ),
-    r'summary': PropertySchema(id: 12, name: r'summary', type: IsarType.string),
+    r'summary': PropertySchema(id: 9, name: r'summary', type: IsarType.string),
     r'themes': PropertySchema(
-      id: 13,
+      id: 10,
       name: r'themes',
       type: IsarType.objectList,
 
       target: r'IgdbGameInfo',
     ),
-    r'thumb': PropertySchema(id: 14, name: r'thumb', type: IsarType.string),
   },
 
   estimateSize: _igdbGameEstimateSize,
@@ -108,18 +92,6 @@ int _igdbGameEstimateSize(
             allOffsets[IgdbCover]!,
             allOffsets,
           );
-    }
-  }
-  {
-    final value = object.coverBig;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.coverSmall;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
     }
   }
   {
@@ -216,12 +188,6 @@ int _igdbGameEstimateSize(
       }
     }
   }
-  {
-    final value = object.thumb;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
   return bytesCount;
 }
 
@@ -237,45 +203,41 @@ void _igdbGameSerialize(
     IgdbCoverSchema.serialize,
     object.cover,
   );
-  writer.writeString(offsets[1], object.coverBig);
-  writer.writeString(offsets[2], object.coverSmall);
-  writer.writeLong(offsets[3], object.firstReleaseDate);
+  writer.writeLong(offsets[1], object.firstReleaseDate);
   writer.writeObjectList<IgdbGameInfo>(
-    offsets[4],
+    offsets[2],
     allOffsets,
     IgdbGameInfoSchema.serialize,
     object.gameModes,
   );
   writer.writeObject<GameType>(
-    offsets[5],
+    offsets[3],
     allOffsets,
     GameTypeSchema.serialize,
     object.gameType,
   );
   writer.writeObjectList<IgdbGameInfo>(
-    offsets[6],
+    offsets[4],
     allOffsets,
     IgdbGameInfoSchema.serialize,
     object.genres,
   );
-  writer.writeLong(offsets[7], object.id);
-  writer.writeString(offsets[8], object.name);
+  writer.writeLong(offsets[5], object.id);
+  writer.writeString(offsets[6], object.name);
   writer.writeObjectList<IgdbGameInfo>(
-    offsets[9],
+    offsets[7],
     allOffsets,
     IgdbGameInfoSchema.serialize,
     object.platforms,
   );
-  writer.writeDateTime(offsets[10], object.releaseDate);
-  writer.writeString(offsets[11], object.storyline);
-  writer.writeString(offsets[12], object.summary);
+  writer.writeString(offsets[8], object.storyline);
+  writer.writeString(offsets[9], object.summary);
   writer.writeObjectList<IgdbGameInfo>(
-    offsets[13],
+    offsets[10],
     allOffsets,
     IgdbGameInfoSchema.serialize,
     object.themes,
   );
-  writer.writeString(offsets[14], object.thumb);
 }
 
 IgdbGame _igdbGameDeserialize(
@@ -290,36 +252,36 @@ IgdbGame _igdbGameDeserialize(
       IgdbCoverSchema.deserialize,
       allOffsets,
     ),
-    firstReleaseDate: reader.readLongOrNull(offsets[3]),
+    firstReleaseDate: reader.readLongOrNull(offsets[1]),
     gameModes: reader.readObjectList<IgdbGameInfo>(
-      offsets[4],
+      offsets[2],
       IgdbGameInfoSchema.deserialize,
       allOffsets,
       IgdbGameInfo(),
     ),
     gameType: reader.readObjectOrNull<GameType>(
-      offsets[5],
+      offsets[3],
       GameTypeSchema.deserialize,
       allOffsets,
     ),
     genres: reader.readObjectList<IgdbGameInfo>(
-      offsets[6],
+      offsets[4],
       IgdbGameInfoSchema.deserialize,
       allOffsets,
       IgdbGameInfo(),
     ),
-    id: reader.readLongOrNull(offsets[7]),
-    name: reader.readStringOrNull(offsets[8]),
+    id: reader.readLongOrNull(offsets[5]),
+    name: reader.readStringOrNull(offsets[6]),
     platforms: reader.readObjectList<IgdbGameInfo>(
-      offsets[9],
+      offsets[7],
       IgdbGameInfoSchema.deserialize,
       allOffsets,
       IgdbGameInfo(),
     ),
-    storyline: reader.readStringOrNull(offsets[11]),
-    summary: reader.readStringOrNull(offsets[12]),
+    storyline: reader.readStringOrNull(offsets[8]),
+    summary: reader.readStringOrNull(offsets[9]),
     themes: reader.readObjectList<IgdbGameInfo>(
-      offsets[13],
+      offsets[10],
       IgdbGameInfoSchema.deserialize,
       allOffsets,
       IgdbGameInfo(),
@@ -343,11 +305,22 @@ P _igdbGameDeserializeProp<P>(
           ))
           as P;
     case 1:
-      return (reader.readStringOrNull(offset)) as P;
-    case 2:
-      return (reader.readStringOrNull(offset)) as P;
-    case 3:
       return (reader.readLongOrNull(offset)) as P;
+    case 2:
+      return (reader.readObjectList<IgdbGameInfo>(
+            offset,
+            IgdbGameInfoSchema.deserialize,
+            allOffsets,
+            IgdbGameInfo(),
+          ))
+          as P;
+    case 3:
+      return (reader.readObjectOrNull<GameType>(
+            offset,
+            GameTypeSchema.deserialize,
+            allOffsets,
+          ))
+          as P;
     case 4:
       return (reader.readObjectList<IgdbGameInfo>(
             offset,
@@ -357,13 +330,10 @@ P _igdbGameDeserializeProp<P>(
           ))
           as P;
     case 5:
-      return (reader.readObjectOrNull<GameType>(
-            offset,
-            GameTypeSchema.deserialize,
-            allOffsets,
-          ))
-          as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 6:
+      return (reader.readStringOrNull(offset)) as P;
+    case 7:
       return (reader.readObjectList<IgdbGameInfo>(
             offset,
             IgdbGameInfoSchema.deserialize,
@@ -371,25 +341,11 @@ P _igdbGameDeserializeProp<P>(
             IgdbGameInfo(),
           ))
           as P;
-    case 7:
-      return (reader.readLongOrNull(offset)) as P;
     case 8:
       return (reader.readStringOrNull(offset)) as P;
     case 9:
-      return (reader.readObjectList<IgdbGameInfo>(
-            offset,
-            IgdbGameInfoSchema.deserialize,
-            allOffsets,
-            IgdbGameInfo(),
-          ))
-          as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 10:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 11:
-      return (reader.readStringOrNull(offset)) as P;
-    case 12:
-      return (reader.readStringOrNull(offset)) as P;
-    case 13:
       return (reader.readObjectList<IgdbGameInfo>(
             offset,
             IgdbGameInfoSchema.deserialize,
@@ -397,8 +353,6 @@ P _igdbGameDeserializeProp<P>(
             IgdbGameInfo(),
           ))
           as P;
-    case 14:
-      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -418,332 +372,6 @@ extension IgdbGameQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         const FilterCondition.isNotNull(property: r'cover'),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverBigIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNull(property: r'coverBig'),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverBigIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNotNull(property: r'coverBig'),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverBigEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.equalTo(
-          property: r'coverBig',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverBigGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.greaterThan(
-          include: include,
-          property: r'coverBig',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverBigLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.lessThan(
-          include: include,
-          property: r'coverBig',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverBigBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.between(
-          property: r'coverBig',
-          lower: lower,
-          includeLower: includeLower,
-          upper: upper,
-          includeUpper: includeUpper,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverBigStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.startsWith(
-          property: r'coverBig',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverBigEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.endsWith(
-          property: r'coverBig',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverBigContains(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.contains(
-          property: r'coverBig',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverBigMatches(
-    String pattern, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.matches(
-          property: r'coverBig',
-          wildcard: pattern,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverBigIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.equalTo(property: r'coverBig', value: ''),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverBigIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.greaterThan(property: r'coverBig', value: ''),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverSmallIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNull(property: r'coverSmall'),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition>
-  coverSmallIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNotNull(property: r'coverSmall'),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverSmallEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.equalTo(
-          property: r'coverSmall',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverSmallGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.greaterThan(
-          include: include,
-          property: r'coverSmall',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverSmallLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.lessThan(
-          include: include,
-          property: r'coverSmall',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverSmallBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.between(
-          property: r'coverSmall',
-          lower: lower,
-          includeLower: includeLower,
-          upper: upper,
-          includeUpper: includeUpper,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverSmallStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.startsWith(
-          property: r'coverSmall',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverSmallEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.endsWith(
-          property: r'coverSmall',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverSmallContains(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.contains(
-          property: r'coverSmall',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverSmallMatches(
-    String pattern, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.matches(
-          property: r'coverSmall',
-          wildcard: pattern,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> coverSmallIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.equalTo(property: r'coverSmall', value: ''),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition>
-  coverSmallIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.greaterThan(property: r'coverSmall', value: ''),
       );
     });
   }
@@ -1279,80 +907,6 @@ extension IgdbGameQueryFilter
     });
   }
 
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> releaseDateIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNull(property: r'releaseDate'),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition>
-  releaseDateIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNotNull(property: r'releaseDate'),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> releaseDateEqualTo(
-    DateTime? value,
-  ) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.equalTo(property: r'releaseDate', value: value),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition>
-  releaseDateGreaterThan(DateTime? value, {bool include = false}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.greaterThan(
-          include: include,
-          property: r'releaseDate',
-          value: value,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> releaseDateLessThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.lessThan(
-          include: include,
-          property: r'releaseDate',
-          value: value,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> releaseDateBetween(
-    DateTime? lower,
-    DateTime? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.between(
-          property: r'releaseDate',
-          lower: lower,
-          includeLower: includeLower,
-          upper: upper,
-          includeUpper: includeUpper,
-        ),
-      );
-    });
-  }
-
   QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> storylineIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -1746,168 +1300,6 @@ extension IgdbGameQueryFilter
       );
     });
   }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> thumbIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNull(property: r'thumb'),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> thumbIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNotNull(property: r'thumb'),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> thumbEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.equalTo(
-          property: r'thumb',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> thumbGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.greaterThan(
-          include: include,
-          property: r'thumb',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> thumbLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.lessThan(
-          include: include,
-          property: r'thumb',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> thumbBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.between(
-          property: r'thumb',
-          lower: lower,
-          includeLower: includeLower,
-          upper: upper,
-          includeUpper: includeUpper,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> thumbStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.startsWith(
-          property: r'thumb',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> thumbEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.endsWith(
-          property: r'thumb',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> thumbContains(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.contains(
-          property: r'thumb',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> thumbMatches(
-    String pattern, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.matches(
-          property: r'thumb',
-          wildcard: pattern,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> thumbIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.equalTo(property: r'thumb', value: ''),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbGame, IgdbGame, QAfterFilterCondition> thumbIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.greaterThan(property: r'thumb', value: ''),
-      );
-    });
-  }
 }
 
 extension IgdbGameQueryObject
@@ -1968,9 +1360,8 @@ const IgdbCoverSchema = Schema(
   name: r'IgdbCover',
   id: -1712265308840708785,
   properties: {
-    r'fullUrl': PropertySchema(id: 0, name: r'fullUrl', type: IsarType.string),
-    r'id': PropertySchema(id: 1, name: r'id', type: IsarType.long),
-    r'url': PropertySchema(id: 2, name: r'url', type: IsarType.string),
+    r'id': PropertySchema(id: 0, name: r'id', type: IsarType.long),
+    r'url': PropertySchema(id: 1, name: r'url', type: IsarType.string),
   },
 
   estimateSize: _igdbCoverEstimateSize,
@@ -1986,12 +1377,6 @@ int _igdbCoverEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
-    final value = object.fullUrl;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
     final value = object.url;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -2006,9 +1391,8 @@ void _igdbCoverSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.fullUrl);
-  writer.writeLong(offsets[1], object.id);
-  writer.writeString(offsets[2], object.url);
+  writer.writeLong(offsets[0], object.id);
+  writer.writeString(offsets[1], object.url);
 }
 
 IgdbCover _igdbCoverDeserialize(
@@ -2018,8 +1402,8 @@ IgdbCover _igdbCoverDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = IgdbCover(
-    id: reader.readLongOrNull(offsets[1]),
-    url: reader.readStringOrNull(offsets[2]),
+    id: reader.readLongOrNull(offsets[0]),
+    url: reader.readStringOrNull(offsets[1]),
   );
   return object;
 }
@@ -2032,10 +1416,8 @@ P _igdbCoverDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readStringOrNull(offset)) as P;
-    case 1:
       return (reader.readLongOrNull(offset)) as P;
-    case 2:
+    case 1:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -2044,169 +1426,6 @@ P _igdbCoverDeserializeProp<P>(
 
 extension IgdbCoverQueryFilter
     on QueryBuilder<IgdbCover, IgdbCover, QFilterCondition> {
-  QueryBuilder<IgdbCover, IgdbCover, QAfterFilterCondition> fullUrlIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNull(property: r'fullUrl'),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbCover, IgdbCover, QAfterFilterCondition> fullUrlIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNotNull(property: r'fullUrl'),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbCover, IgdbCover, QAfterFilterCondition> fullUrlEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.equalTo(
-          property: r'fullUrl',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbCover, IgdbCover, QAfterFilterCondition> fullUrlGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.greaterThan(
-          include: include,
-          property: r'fullUrl',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbCover, IgdbCover, QAfterFilterCondition> fullUrlLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.lessThan(
-          include: include,
-          property: r'fullUrl',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbCover, IgdbCover, QAfterFilterCondition> fullUrlBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.between(
-          property: r'fullUrl',
-          lower: lower,
-          includeLower: includeLower,
-          upper: upper,
-          includeUpper: includeUpper,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbCover, IgdbCover, QAfterFilterCondition> fullUrlStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.startsWith(
-          property: r'fullUrl',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbCover, IgdbCover, QAfterFilterCondition> fullUrlEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.endsWith(
-          property: r'fullUrl',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbCover, IgdbCover, QAfterFilterCondition> fullUrlContains(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.contains(
-          property: r'fullUrl',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbCover, IgdbCover, QAfterFilterCondition> fullUrlMatches(
-    String pattern, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.matches(
-          property: r'fullUrl',
-          wildcard: pattern,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbCover, IgdbCover, QAfterFilterCondition> fullUrlIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.equalTo(property: r'fullUrl', value: ''),
-      );
-    });
-  }
-
-  QueryBuilder<IgdbCover, IgdbCover, QAfterFilterCondition>
-  fullUrlIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.greaterThan(property: r'fullUrl', value: ''),
-      );
-    });
-  }
-
   QueryBuilder<IgdbCover, IgdbCover, QAfterFilterCondition> idIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(

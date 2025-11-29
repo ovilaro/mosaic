@@ -60,9 +60,9 @@ class Database {
   //   });
   // }
 
-  // Future<Item?> get(int id) async {
-  //   return await isar.items.get(id);
-  // }
+  Item? get(int id) {
+    return isar.items.getSync(id);
+  }
 
   Future<List<Item>> getAllItems() async {
     return isar.items.where().findAll();
