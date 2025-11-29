@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:mosaic/models/item.dart';
 import 'package:mosaic/services/database.dart';
 import 'package:mosaic/services/igdb_service.dart';
+import 'package:mosaic/services/open_library_service.dart';
 
 class MosaicData extends ChangeNotifier {
   final IgdbService _igdbService = IgdbService();
+  final OpenLibraryService _openLibraryService = OpenLibraryService();
 
   List<Item> searchResults = [];
   List<Item> allItems = [];
+
+  bool searching = false;
 
   init() async {
     await Database.instance.init(onData);
@@ -30,27 +34,40 @@ class MosaicData extends ChangeNotifier {
       return;
     }
 
-    var results = await _igdbService.search(str);
+    List<Item> totalResults = [];
 
-    if (results == null) {
-      return;
+    searching = true;
+    notifyListeners();
+
+    var gameResults = await _igdbService.search(str);
+    var bookResults = await _openLibraryService.search(str);
+
+    int maxIndex = gameResults.length;
+    if (maxIndex < bookResults.length) {
+      maxIndex = bookResults.length;
     }
 
-    searchResults = results;
-
-    for (var result in searchResults) {
-      result.isAdded = await isApiIdAdded(result);
+    for (int i = 0; i < maxIndex; i++) {
+      if (i < gameResults.length) {
+        totalResults.add(gameResults[i]);
+      }
+      if (i < bookResults.length) {
+        totalResults.add(bookResults[i]);
+      }
     }
 
+    for (var result in totalResults) {
+      result.isAdded = await Database.instance.isApiIdAdded(result);
+    }
+
+    searchResults = totalResults;
+
+    searching = false;
     notifyListeners();
   }
 
   void clearSearchResults() {
     searchResults.clear();
-  }
-
-  Future<bool> isApiIdAdded(Item item) async {
-    return await Database.instance.isApiIdAdded(item);
   }
 
   addOrUpdateItem(Item item) async {
@@ -80,7 +97,7 @@ class MosaicData extends ChangeNotifier {
   Future<void> updateDetailInfoIfNeeded(Item item) async {
     if (item.needsDetailRequest) {
       switch (item.itemType) {
-        case ItemType.openlibraryBook:
+        case ItemType.book:
           // TODO: fake await
           await Future.delayed(Duration(seconds: 1), () async {
             item.needsDetailRequest = false;

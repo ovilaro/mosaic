@@ -147,7 +147,7 @@ Item _itemDeserialize(
       ItemStatus.notStarted;
   object.itemType =
       _ItemitemTypeValueEnumMap[reader.readByteOrNull(offsets[3])] ??
-      ItemType.igdbGame;
+      ItemType.game;
   object.needsDetailRequest = reader.readBool(offsets[4]);
   object.openLibraryBook = reader.readObjectOrNull<OpenLibrarySearchResultDoc>(
     offsets[5],
@@ -179,7 +179,7 @@ P _itemDeserializeProp<P>(
           as P;
     case 3:
       return (_ItemitemTypeValueEnumMap[reader.readByteOrNull(offset)] ??
-              ItemType.igdbGame)
+              ItemType.game)
           as P;
     case 4:
       return (reader.readBool(offset)) as P;
@@ -205,11 +205,8 @@ const _ItemitemStatusValueEnumMap = {
   1: ItemStatus.inProgress,
   2: ItemStatus.finished,
 };
-const _ItemitemTypeEnumValueMap = {'igdbGame': 0, 'openlibraryBook': 1};
-const _ItemitemTypeValueEnumMap = {
-  0: ItemType.igdbGame,
-  1: ItemType.openlibraryBook,
-};
+const _ItemitemTypeEnumValueMap = {'game': 0, 'book': 1};
+const _ItemitemTypeValueEnumMap = {0: ItemType.game, 1: ItemType.book};
 
 Id _itemGetId(Item object) {
   return object.id;

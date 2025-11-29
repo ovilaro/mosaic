@@ -16,7 +16,7 @@ class _SearchState extends State<Search> {
   TextEditingController controller = TextEditingController();
   String _lastTextSearched = "";
   DateTime _lastDateTimeType = DateTime.timestamp();
-  static const Duration _intervalToWaitAfterType = Duration(milliseconds: 500);
+  static const Duration _intervalToWaitAfterType = Duration(milliseconds: 750);
 
   @override
   void initState() {
@@ -59,6 +59,9 @@ class _SearchState extends State<Search> {
             Expanded(
               child: Consumer<MosaicData>(
                 builder: (context, mosaicData, child) {
+                  if (mosaicData.searching) {
+                    return Center(child: RefreshProgressIndicator());
+                  }
                   return ListView(
                     children: [
                       for (int i = 0; i < mosaicData.searchResults.length; i++)

@@ -4,7 +4,7 @@ import 'package:mosaic/models/open_library_search_result.dart';
 
 part 'item.g.dart';
 
-enum ItemType { igdbGame, openlibraryBook }
+enum ItemType { game, book }
 
 enum ItemStatus { notStarted, inProgress, finished }
 
@@ -18,7 +18,7 @@ class Item {
   String apiId = "";
 
   @enumerated
-  ItemType itemType = ItemType.igdbGame;
+  ItemType itemType = ItemType.game;
 
   @enumerated
   ItemStatus itemStatus = ItemStatus.notStarted;
@@ -30,10 +30,29 @@ class Item {
 
   @ignore
   String get name {
+    var nullStr = "no title";
+
     if (igdbGame != null) {
-      return igdbGame!.name ?? "no name";
+      return igdbGame!.name ?? nullStr;
     }
-    return "no name";
+
+    if (openLibraryBook != null) {
+      var edition = openLibraryBook!.editions?.docs?.firstOrNull;
+      if (edition != null) {
+        var str = "";
+        if (edition.title != null) {
+          str += edition.title!;
+        }
+        if (edition.subtitle != null) {
+          str += ": ${edition.subtitle!}";
+        }
+        return str.isEmpty ? nullStr : str;
+      }
+
+      return openLibraryBook!.title ?? nullStr;
+    }
+
+    return nullStr;
   }
 
   @ignore
@@ -42,21 +61,47 @@ class Item {
       var str = "🎮";
 
       if (igdbGame!.gameType != null) {
-        str += " ";
-        str += igdbGame!.gameType!.type!;
+        str += " ${igdbGame!.gameType!.type!}";
       }
 
       if (igdbGame!.firstReleaseDate != null) {
         var releaseDate = DateTime.fromMillisecondsSinceEpoch(
           igdbGame!.firstReleaseDate! * 1000,
         );
-        str += " ";
-        str += "(${releaseDate.year})";
+        str += " (${releaseDate.year})";
       }
 
       return str;
     }
-    return "";
+
+    if (openLibraryBook != null) {
+      var str = "📖";
+
+      var edition = openLibraryBook!.editions?.docs?.firstOrNull;
+      if (edition != null) {
+        if (edition.authorName != null) {
+          for (var author in edition.authorName!) {
+            str += " $author,";
+          }
+        }
+        if (edition.publishDate != null) {
+          str +=
+              " (${edition.publishDate!.firstOrNull ?? "no publication date"})";
+        }
+        return str;
+      }
+
+      if (openLibraryBook!.authorName != null) {
+        for (var author in openLibraryBook!.authorName!) {
+          str += " $author,";
+        }
+      }
+      str += " (${openLibraryBook!.firstPublishYear ?? "no publication date"})";
+
+      return str;
+    }
+
+    return "no short description";
   }
 
   @ignore
@@ -67,6 +112,21 @@ class Item {
         return fullUrl.replaceFirst("thumb", "thumb_2x");
       }
     }
+
+    if (openLibraryBook != null) {
+      var edition = openLibraryBook!.editions?.docs?.firstOrNull;
+      if (edition != null) {
+        if (edition.key != null) {
+          var olid = edition.key!.replaceAll("/books/", "");
+          return "https://covers.openlibrary.org/b/olid/$olid-S.jpg";
+        }
+      }
+      if (openLibraryBook!.key != null) {
+        var olid = openLibraryBook!.key!.replaceAll("/workds/", "");
+        return "https://covers.openlibrary.org/b/olid/$olid-S.jpg";
+      }
+    }
+
     return null;
   }
 
@@ -78,6 +138,21 @@ class Item {
         return fullUrl.replaceFirst("thumb", "cover_big_2x");
       }
     }
+
+    if (openLibraryBook != null) {
+      var edition = openLibraryBook!.editions?.docs?.firstOrNull;
+      if (edition != null) {
+        if (edition.key != null) {
+          var olid = edition.key!.replaceAll("/books/", "");
+          return "https://covers.openlibrary.org/b/olid/$olid-L.jpg";
+        }
+      }
+      if (openLibraryBook!.key != null) {
+        var olid = openLibraryBook!.key!.replaceAll("/workds/", "");
+        return "https://covers.openlibrary.org/b/olid/$olid-L.jpg";
+      }
+    }
+
     return null;
   }
 

@@ -11,14 +11,15 @@ class OpenLibraryService {
   );
   DateTime? _latestRequest;
 
-  search(String str) async {
+  Future<List<Item>> search(String str) async {
+    List<Item> emptyList = [];
     if (_latestRequest != null) {
       if (DateTime.timestamp()
               .difference(_latestRequest!)
               .compareTo(_intervalBetweenRequestsInMs) <
           0) {
         debugPrint("Ignoring request, interval too short");
-        return null;
+        return emptyList;
       }
     }
 
@@ -47,7 +48,7 @@ class OpenLibraryService {
         "[IGDB]Error games status code: ${response.statusCode},"
         " body: ${response.body}",
       );
-      return null;
+      return emptyList;
     }
   }
 
@@ -56,7 +57,7 @@ class OpenLibraryService {
     if (result.docs == null) return items;
     for (var book in result.docs!) {
       var item = Item();
-      item.itemType = ItemType.openlibraryBook;
+      item.itemType = ItemType.book;
       item.openLibraryBook = book;
       item.needsDetailRequest = true;
       item.apiId = book.key!; // book.key should not be null

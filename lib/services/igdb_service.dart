@@ -37,20 +37,21 @@ class IgdbService {
     }
   }
 
-  Future<List<Item>?> search(String str) async {
+  Future<List<Item>> search(String str) async {
+    List<Item> emptyList = [];
     if (_latestRequest != null) {
       if (DateTime.timestamp()
               .difference(_latestRequest!)
               .compareTo(_intervalBetweenRequestsInMs) <
           0) {
         debugPrint("Ignoring request, interval too short");
-        return null;
+        return emptyList;
       }
     }
 
     var authResult = await _auth();
     if (!authResult) {
-      return null;
+      return emptyList;
     }
 
     Uri url = Uri.https("api.igdb.com", "/v4/games");
@@ -65,7 +66,7 @@ class IgdbService {
         'search "$str";\n'
         'fields name, cover.url, first_release_date, game_modes.name, genres.name, '
         'platforms.name, summary, storyline, themes.name, '
-        'game_type.type; limit 20;';
+        'game_type.type; limit 100;';
 
     _latestRequest = DateTime.timestamp();
     http.Response response = await http.post(url, body: body, headers: headers);
@@ -78,7 +79,7 @@ class IgdbService {
         "[IGDB]Error games status code: ${response.statusCode},"
         " body: ${response.body}",
       );
-      return null;
+      return emptyList;
     }
   }
 
@@ -86,7 +87,7 @@ class IgdbService {
     List<Item> items = [];
     for (var game in igdbGames) {
       var item = Item();
-      item.itemType = ItemType.igdbGame;
+      item.itemType = ItemType.game;
       item.igdbGame = game;
       item.apiId = game.id!.toString(); // game.id should not be null
       items.add(item);
