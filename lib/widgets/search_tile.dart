@@ -22,14 +22,37 @@ class _SearchTileState extends State<SearchTile> {
       builder: (context, mosaicData, child) {
         item = mosaicData.searchResults[widget.index];
         return ListTile(
-          leading: Image.network(item.thumb ?? AppStyles.noThumbImgUrl),
+          leading: Image.network(
+            width: 60,
+            height: 60,
+            item.ignoreImages
+                ? AppStyles.noThumbImgUrl
+                : item.thumb ?? AppStyles.noThumbImgUrl,
+            errorBuilder: (context, error, stackTrace) {
+              item.ignoreImages = true;
+              return Image.network(AppStyles.noThumbImgUrl);
+            },
+          ),
           title: Text(item.name, style: AppStyles.normalPrimary),
-          subtitle: Text(item.shortDesc, style: AppStyles.normalSecundary),
+          subtitle: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(3),
+                decoration: BoxDecoration(
+                  color: AppStyles.blue,
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                ),
+                child: Icon(item.typeIcon, size: 18, color: AppStyles.white),
+              ),
+              Flexible(
+                child: Text(item.shortDesc, style: AppStyles.normalSecundary),
+              ),
+            ],
+          ),
           trailing: IconButton(
             onPressed: () async {
               if (item.isAdded) {
                 showDeletePopUp();
-                // await context.read<MosaicData>().deleteItemApiId(item);
               } else {
                 await context.read<MosaicData>().addOrUpdateItem(item);
               }

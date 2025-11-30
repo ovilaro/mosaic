@@ -1,0 +1,162 @@
+{
+    "description": "One Ring to rule them all, One Ring to find them, One Ring to bring them all and in the darkness bind them.\r\n\r\n“A unique, wholly realized other world, evoked from deep in the well of Time, massively detailed, absorbingly entertaining, profound in meaning.”—The New York Times\r\n\r\nIn ancient times the Rings of Power were crafted by the Elven-smiths, and Sauron, the Dark Lord, forged the One Ring, filling it with his own power so that he could rule all others. But the One Ring was taken from him, and though he sought it throughout Middle-earth, it remained lost to him. After many ages it fell into the hands of Bilbo Baggins, as told in The Hobbit. In a sleepy village in the Shire, young Frodo Baggins finds himself faced with an immense task, as his elderly cousin Bilbo entrusts the Ring to his care. Frodo must leave his home and make a perilous journey across Middle-earth to the Cracks of Doom, there to destroy the Ring and foil the Dark Lord in his evil purpose.",
+    "title": "The Fellowship of the Ring",
+    "key": "/works/OL27513W",
+    "authors": [
+        {
+            "author": {
+                "key": "/authors/OL26320A"
+            },
+            "type": {
+                "key": "/type/author_role"
+            }
+        }
+    ],
+    "type": {
+        "key": "/type/work"
+    },
+    "covers": [
+        14627060,
+        13915448
+    ],
+    "first_sentence": {
+        "type": "/type/text",
+        "value": "THIS BOOK is largely concerned with Hobbits, and from its pages a reader may discover much of their character and a little of their history."
+    },
+    "first_publish_date": "November 12, 1972",
+    "excerpts": [
+        {
+            "pages": "1",
+            "excerpt": "When Mr. Bilbo Baggins of Bag End announced that he would shortly be celebrating his eleventy-first birthday with a party of special magnificence, there was much talk and excitement in Hobbiton.",
+            "comment": "Chapter I: A Long-expected Party",
+            "author": {
+                "key": "/people/huginn4126"
+            }
+        }
+    ],
+    "dewey_number": [
+        "823"
+    ],
+    "links": [
+        {
+            "title": "Tolkien Estate | The Lord of the Rings",
+            "url": "http://www.tolkienestate.com/en/writing/tales-of-middle-earth/the-lord-of-the-rings.html",
+            "type": {
+                "key": "/type/link"
+            }
+        },
+        {
+            "title": "The Fellowship of the Ring - Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/The_Fellowship_of_the_Ring",
+            "type": {
+                "key": "/type/link"
+            }
+        },
+        {
+            "title": "The Hero is a Hobbit (New York Times Books)",
+            "url": "https://archive.nytimes.com/www.nytimes.com/books/01/02/11/specials/tolkien-fellowship.html",
+            "type": {
+                "key": "/type/link"
+            }
+        },
+        {
+            "title": "The Fellowship of the Ring - Tolkien Gateway",
+            "url": "https://tolkiengateway.net/wiki/The_Fellowship_of_the_Ring",
+            "type": {
+                "key": "/type/link"
+            }
+        }
+    ],
+    "subject_places": [
+        "Middle Earth",
+        "Mordor",
+        "Tierra Media",
+        "Bree",
+        "Gondor"
+    ],
+    "subjects": [
+        "Elves",
+        "Dwarves",
+        "evil",
+        "fear",
+        "hope",
+        "young adult fiction",
+        "Ficción",
+        "Ficción fantástica inglesa",
+        "Fantastic fiction",
+        "The Lord of the Rings",
+        "English Fantasy fiction",
+        "Open Library Staff Picks",
+        "Fiction",
+        "Fantasy",
+        "Fairy tales",
+        "Adventure stories",
+        "Fantasy fiction",
+        "Middle Earth (Imaginary place)",
+        "History and criticism",
+        "FICTION / Fantasy / Epic",
+        "Adventure fiction",
+        "English fiction",
+        "Translations in Chinese",
+        "Fiction, fantasy, epic",
+        "Middle earth (imaginary place), fiction",
+        "Baggins, frodo (fictitious character), fiction",
+        "Gandalf (fictitious character), fiction",
+        "British and irish fiction (fictional works by one author)",
+        "Baggins, bilbo (fictitious character), fiction",
+        "Fiction, media tie-in",
+        "Children's fiction",
+        "English literature",
+        "Roman",
+        "Français (langue)",
+        "Lectures et morceaux choisis",
+        "Vol. 1.",
+        "Lord of the rings (Tolkien, J.R.R.)",
+        "Gandolf (Fictitious character)",
+        "Terre du Milieu (Lieu imaginaire)",
+        "Romans, nouvelles",
+        "Frodo Baggins (Fictitious character)",
+        "Fiction, fantasy, general",
+        "Translations into Yiddish"
+    ],
+    "subject_people": [
+        "Bilbo Baggins",
+        "Gandalf the Wizard",
+        "Frodo Baggins",
+        "Samwise Gamgee",
+        "Aragorn (Strider)",
+        "Legolas",
+        "Gimli",
+        "Elrond",
+        "Sauron",
+        "Black Riders",
+        "Tom Bombadil",
+        "Boromir",
+        "Merry Brandybuck",
+        "Celeborn",
+        "Galadriel",
+        "Elendil",
+        "Gandalf"
+    ],
+    "identifiers": {
+        "wikidata": [
+            "Q208002"
+        ],
+        "bookbrainz": [
+            "057822f7-d7a9-400e-a90c-767ecab4e588"
+        ],
+        "musicbrainz": [
+            "30922499-9825-4ffa-a102-fb711f553c04"
+        ]
+    },
+    "latest_revision": 18,
+    "revision": 18,
+    "created": {
+        "type": "/type/datetime",
+        "value": "2009-10-13T02:46:28.838662"
+    },
+    "last_modified": {
+        "type": "/type/datetime",
+        "value": "2025-07-14T03:59:30.403741"
+    }
+}

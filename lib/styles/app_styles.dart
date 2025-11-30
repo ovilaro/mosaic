@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 class AppStyles {
   static const Color blue = Color(0xFF3B82F6);
   static const Color veryDarkGrey = Color(0xFF212529);
+  static const Color veryDarkGreyAlpha = Color(0x99212529);
   static const Color darkGrey = Color(0xFF2E2E2E);
   static const Color mediumGrey = Color(0xFF3A3A3A);
   static const Color lightGrey = Color(0xFF4A4A4A);
@@ -44,6 +45,12 @@ class AppStyles {
     fontSize: 14,
     fontWeight: FontWeight.w400,
     color: veryLightGrey,
+  );
+
+  static TextStyle normalTertiary = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: darkWhite,
   );
 
   static TextStyle buttonsActions = TextStyle(
@@ -147,7 +154,7 @@ class AppStyles {
 
   static const String noCoverImgUrl =
       "https://nhasachminhthang.vn/Content/Home/imgs/image-placeholder.jpg";
-  // "https://vglist.co/packs/media/images/no-cover-369ad8f0ea82dde5923c942ba1a26482.png";
+
   static const String noThumbImgUrl =
-      "https://icons.iconarchive.com/icons/pixelkit/gentle-edges/128/Game-Controller-icon.png";
+      "https://www.kerbalspaceprogram.de/gallery/images/galleryTinyPlaceholder.png";
 }

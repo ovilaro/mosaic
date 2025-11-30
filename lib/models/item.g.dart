@@ -25,29 +25,34 @@ const ItemSchema = CollectionSchema(
 
       target: r'IgdbGame',
     ),
-    r'itemStatus': PropertySchema(
+    r'ignoreImages': PropertySchema(
       id: 2,
+      name: r'ignoreImages',
+      type: IsarType.bool,
+    ),
+    r'itemStatus': PropertySchema(
+      id: 3,
       name: r'itemStatus',
       type: IsarType.byte,
       enumMap: _ItemitemStatusEnumValueMap,
     ),
     r'itemType': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'itemType',
       type: IsarType.byte,
       enumMap: _ItemitemTypeEnumValueMap,
     ),
     r'needsDetailRequest': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'needsDetailRequest',
       type: IsarType.bool,
     ),
     r'openLibraryBook': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'openLibraryBook',
       type: IsarType.object,
 
-      target: r'OpenLibrarySearchResultDoc',
+      target: r'OpenLibrarySearchDoc',
     ),
   },
 
@@ -63,7 +68,7 @@ const ItemSchema = CollectionSchema(
     r'IgdbCover': IgdbCoverSchema,
     r'IgdbGameInfo': IgdbGameInfoSchema,
     r'GameType': GameTypeSchema,
-    r'OpenLibrarySearchResultDoc': OpenLibrarySearchResultDocSchema,
+    r'OpenLibrarySearchDoc': OpenLibrarySearchDocSchema,
     r'OpenLibraryEditions': OpenLibraryEditionsSchema,
     r'OpenLibraryEditionsDoc': OpenLibraryEditionsDocSchema,
   },
@@ -94,9 +99,9 @@ int _itemEstimateSize(
     if (value != null) {
       bytesCount +=
           3 +
-          OpenLibrarySearchResultDocSchema.estimateSize(
+          OpenLibrarySearchDocSchema.estimateSize(
             value,
-            allOffsets[OpenLibrarySearchResultDoc]!,
+            allOffsets[OpenLibrarySearchDoc]!,
             allOffsets,
           );
     }
@@ -117,13 +122,14 @@ void _itemSerialize(
     IgdbGameSchema.serialize,
     object.igdbGame,
   );
-  writer.writeByte(offsets[2], object.itemStatus.index);
-  writer.writeByte(offsets[3], object.itemType.index);
-  writer.writeBool(offsets[4], object.needsDetailRequest);
-  writer.writeObject<OpenLibrarySearchResultDoc>(
-    offsets[5],
+  writer.writeBool(offsets[2], object.ignoreImages);
+  writer.writeByte(offsets[3], object.itemStatus.index);
+  writer.writeByte(offsets[4], object.itemType.index);
+  writer.writeBool(offsets[5], object.needsDetailRequest);
+  writer.writeObject<OpenLibrarySearchDoc>(
+    offsets[6],
     allOffsets,
-    OpenLibrarySearchResultDocSchema.serialize,
+    OpenLibrarySearchDocSchema.serialize,
     object.openLibraryBook,
   );
 }
@@ -142,16 +148,17 @@ Item _itemDeserialize(
     IgdbGameSchema.deserialize,
     allOffsets,
   );
+  object.ignoreImages = reader.readBool(offsets[2]);
   object.itemStatus =
-      _ItemitemStatusValueEnumMap[reader.readByteOrNull(offsets[2])] ??
+      _ItemitemStatusValueEnumMap[reader.readByteOrNull(offsets[3])] ??
       ItemStatus.notStarted;
   object.itemType =
-      _ItemitemTypeValueEnumMap[reader.readByteOrNull(offsets[3])] ??
+      _ItemitemTypeValueEnumMap[reader.readByteOrNull(offsets[4])] ??
       ItemType.game;
-  object.needsDetailRequest = reader.readBool(offsets[4]);
-  object.openLibraryBook = reader.readObjectOrNull<OpenLibrarySearchResultDoc>(
-    offsets[5],
-    OpenLibrarySearchResultDocSchema.deserialize,
+  object.needsDetailRequest = reader.readBool(offsets[5]);
+  object.openLibraryBook = reader.readObjectOrNull<OpenLibrarySearchDoc>(
+    offsets[6],
+    OpenLibrarySearchDocSchema.deserialize,
     allOffsets,
   );
   return object;
@@ -174,19 +181,21 @@ P _itemDeserializeProp<P>(
           ))
           as P;
     case 2:
+      return (reader.readBool(offset)) as P;
+    case 3:
       return (_ItemitemStatusValueEnumMap[reader.readByteOrNull(offset)] ??
               ItemStatus.notStarted)
           as P;
-    case 3:
+    case 4:
       return (_ItemitemTypeValueEnumMap[reader.readByteOrNull(offset)] ??
               ItemType.game)
           as P;
-    case 4:
-      return (reader.readBool(offset)) as P;
     case 5:
-      return (reader.readObjectOrNull<OpenLibrarySearchResultDoc>(
+      return (reader.readBool(offset)) as P;
+    case 6:
+      return (reader.readObjectOrNull<OpenLibrarySearchDoc>(
             offset,
-            OpenLibrarySearchResultDocSchema.deserialize,
+            OpenLibrarySearchDocSchema.deserialize,
             allOffsets,
           ))
           as P;
@@ -518,6 +527,16 @@ extension ItemQueryFilter on QueryBuilder<Item, Item, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Item, Item, QAfterFilterCondition> ignoreImagesEqualTo(
+    bool value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'ignoreImages', value: value),
+      );
+    });
+  }
+
   QueryBuilder<Item, Item, QAfterFilterCondition> itemStatusEqualTo(
     ItemStatus value,
   ) {
@@ -673,7 +692,7 @@ extension ItemQueryObject on QueryBuilder<Item, Item, QFilterCondition> {
   }
 
   QueryBuilder<Item, Item, QAfterFilterCondition> openLibraryBook(
-    FilterQuery<OpenLibrarySearchResultDoc> q,
+    FilterQuery<OpenLibrarySearchDoc> q,
   ) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'openLibraryBook');
@@ -693,6 +712,18 @@ extension ItemQuerySortBy on QueryBuilder<Item, Item, QSortBy> {
   QueryBuilder<Item, Item, QAfterSortBy> sortByApiIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'apiId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> sortByIgnoreImages() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'ignoreImages', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> sortByIgnoreImagesDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'ignoreImages', Sort.desc);
     });
   }
 
@@ -758,6 +789,18 @@ extension ItemQuerySortThenBy on QueryBuilder<Item, Item, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Item, Item, QAfterSortBy> thenByIgnoreImages() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'ignoreImages', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> thenByIgnoreImagesDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'ignoreImages', Sort.desc);
+    });
+  }
+
   QueryBuilder<Item, Item, QAfterSortBy> thenByItemStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'itemStatus', Sort.asc);
@@ -804,6 +847,12 @@ extension ItemQueryWhereDistinct on QueryBuilder<Item, Item, QDistinct> {
     });
   }
 
+  QueryBuilder<Item, Item, QDistinct> distinctByIgnoreImages() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'ignoreImages');
+    });
+  }
+
   QueryBuilder<Item, Item, QDistinct> distinctByItemStatus() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'itemStatus');
@@ -842,6 +891,12 @@ extension ItemQueryProperty on QueryBuilder<Item, Item, QQueryProperty> {
     });
   }
 
+  QueryBuilder<Item, bool, QQueryOperations> ignoreImagesProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'ignoreImages');
+    });
+  }
+
   QueryBuilder<Item, ItemStatus, QQueryOperations> itemStatusProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'itemStatus');
@@ -860,7 +915,7 @@ extension ItemQueryProperty on QueryBuilder<Item, Item, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Item, OpenLibrarySearchResultDoc?, QQueryOperations>
+  QueryBuilder<Item, OpenLibrarySearchDoc?, QQueryOperations>
   openLibraryBookProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'openLibraryBook');

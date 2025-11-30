@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'open_library_search_result.dart';
+part of 'open_library_search.dart';
 
 // **************************************************************************
 // IsarEmbeddedGenerator
@@ -9,9 +9,9 @@ part of 'open_library_search_result.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-const OpenLibrarySearchResultDocSchema = Schema(
-  name: r'OpenLibrarySearchResultDoc',
-  id: 1146950428613288525,
+const OpenLibrarySearchDocSchema = Schema(
+  name: r'OpenLibrarySearchDoc',
+  id: -2103282295836432126,
   properties: {
     r'authorName': PropertySchema(
       id: 0,
@@ -50,14 +50,14 @@ const OpenLibrarySearchResultDocSchema = Schema(
     r'title': PropertySchema(id: 8, name: r'title', type: IsarType.string),
   },
 
-  estimateSize: _openLibrarySearchResultDocEstimateSize,
-  serialize: _openLibrarySearchResultDocSerialize,
-  deserialize: _openLibrarySearchResultDocDeserialize,
-  deserializeProp: _openLibrarySearchResultDocDeserializeProp,
+  estimateSize: _openLibrarySearchDocEstimateSize,
+  serialize: _openLibrarySearchDocSerialize,
+  deserialize: _openLibrarySearchDocDeserialize,
+  deserializeProp: _openLibrarySearchDocDeserializeProp,
 );
 
-int _openLibrarySearchResultDocEstimateSize(
-  OpenLibrarySearchResultDoc object,
+int _openLibrarySearchDocEstimateSize(
+  OpenLibrarySearchDoc object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -137,8 +137,8 @@ int _openLibrarySearchResultDocEstimateSize(
   return bytesCount;
 }
 
-void _openLibrarySearchResultDocSerialize(
-  OpenLibrarySearchResultDoc object,
+void _openLibrarySearchDocSerialize(
+  OpenLibrarySearchDoc object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -159,13 +159,13 @@ void _openLibrarySearchResultDocSerialize(
   writer.writeString(offsets[8], object.title);
 }
 
-OpenLibrarySearchResultDoc _openLibrarySearchResultDocDeserialize(
+OpenLibrarySearchDoc _openLibrarySearchDocDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = OpenLibrarySearchResultDoc(
+  final object = OpenLibrarySearchDoc(
     authorName: reader.readStringList(offsets[0]),
     editions: reader.readObjectOrNull<OpenLibraryEditions>(
       offsets[1],
@@ -183,7 +183,7 @@ OpenLibrarySearchResultDoc _openLibrarySearchResultDocDeserialize(
   return object;
 }
 
-P _openLibrarySearchResultDocDeserializeProp<P>(
+P _openLibrarySearchDocDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -218,16 +218,16 @@ P _openLibrarySearchResultDocDeserializeProp<P>(
   }
 }
 
-extension OpenLibrarySearchResultDocQueryFilter
+extension OpenLibrarySearchDocQueryFilter
     on
         QueryBuilder<
-          OpenLibrarySearchResultDoc,
-          OpenLibrarySearchResultDoc,
+          OpenLibrarySearchDoc,
+          OpenLibrarySearchDoc,
           QFilterCondition
         > {
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   authorNameIsNull() {
@@ -239,8 +239,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   authorNameIsNotNull() {
@@ -252,8 +252,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   authorNameElementEqualTo(String value, {bool caseSensitive = true}) {
@@ -269,8 +269,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   authorNameElementGreaterThan(
@@ -291,8 +291,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   authorNameElementLessThan(
@@ -313,8 +313,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   authorNameElementBetween(
@@ -339,8 +339,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   authorNameElementStartsWith(String value, {bool caseSensitive = true}) {
@@ -356,8 +356,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   authorNameElementEndsWith(String value, {bool caseSensitive = true}) {
@@ -373,8 +373,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   authorNameElementContains(String value, {bool caseSensitive = true}) {
@@ -390,8 +390,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   authorNameElementMatches(String pattern, {bool caseSensitive = true}) {
@@ -407,8 +407,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   authorNameElementIsEmpty() {
@@ -420,8 +420,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   authorNameElementIsNotEmpty() {
@@ -433,8 +433,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   authorNameLengthEqualTo(int length) {
@@ -444,8 +444,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   authorNameIsEmpty() {
@@ -455,8 +455,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   authorNameIsNotEmpty() {
@@ -466,8 +466,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   authorNameLengthLessThan(int length, {bool include = false}) {
@@ -477,8 +477,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   authorNameLengthGreaterThan(int length, {bool include = false}) {
@@ -488,8 +488,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   authorNameLengthBetween(
@@ -510,8 +510,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   editionsIsNull() {
@@ -523,8 +523,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   editionsIsNotNull() {
@@ -536,8 +536,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   firstPublishYearIsNull() {
@@ -549,8 +549,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   firstPublishYearIsNotNull() {
@@ -562,8 +562,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   firstPublishYearEqualTo(int? value) {
@@ -575,8 +575,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   firstPublishYearGreaterThan(int? value, {bool include = false}) {
@@ -592,8 +592,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   firstPublishYearLessThan(int? value, {bool include = false}) {
@@ -609,8 +609,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   firstPublishYearBetween(
@@ -633,8 +633,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   keyIsNull() {
@@ -646,8 +646,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   keyIsNotNull() {
@@ -659,8 +659,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   keyEqualTo(String? value, {bool caseSensitive = true}) {
@@ -676,8 +676,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   keyGreaterThan(
@@ -698,8 +698,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   keyLessThan(
@@ -720,8 +720,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   keyBetween(
@@ -746,8 +746,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   keyStartsWith(String value, {bool caseSensitive = true}) {
@@ -763,8 +763,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   keyEndsWith(String value, {bool caseSensitive = true}) {
@@ -780,8 +780,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   keyContains(String value, {bool caseSensitive = true}) {
@@ -797,8 +797,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   keyMatches(String pattern, {bool caseSensitive = true}) {
@@ -814,8 +814,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   keyIsEmpty() {
@@ -827,8 +827,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   keyIsNotEmpty() {
@@ -840,8 +840,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   numberOfPagesMedianIsNull() {
@@ -853,8 +853,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   numberOfPagesMedianIsNotNull() {
@@ -866,8 +866,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   numberOfPagesMedianEqualTo(int? value) {
@@ -879,8 +879,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   numberOfPagesMedianGreaterThan(int? value, {bool include = false}) {
@@ -896,8 +896,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   numberOfPagesMedianLessThan(int? value, {bool include = false}) {
@@ -913,8 +913,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   numberOfPagesMedianBetween(
@@ -937,8 +937,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   personIsNull() {
@@ -950,8 +950,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   personIsNotNull() {
@@ -963,8 +963,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   personElementEqualTo(String value, {bool caseSensitive = true}) {
@@ -980,8 +980,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   personElementGreaterThan(
@@ -1002,8 +1002,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   personElementLessThan(
@@ -1024,8 +1024,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   personElementBetween(
@@ -1050,8 +1050,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   personElementStartsWith(String value, {bool caseSensitive = true}) {
@@ -1067,8 +1067,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   personElementEndsWith(String value, {bool caseSensitive = true}) {
@@ -1084,8 +1084,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   personElementContains(String value, {bool caseSensitive = true}) {
@@ -1101,8 +1101,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   personElementMatches(String pattern, {bool caseSensitive = true}) {
@@ -1118,8 +1118,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   personElementIsEmpty() {
@@ -1131,8 +1131,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   personElementIsNotEmpty() {
@@ -1144,8 +1144,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   personLengthEqualTo(int length) {
@@ -1155,8 +1155,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   personIsEmpty() {
@@ -1166,8 +1166,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   personIsNotEmpty() {
@@ -1177,8 +1177,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   personLengthLessThan(int length, {bool include = false}) {
@@ -1188,8 +1188,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   personLengthGreaterThan(int length, {bool include = false}) {
@@ -1199,8 +1199,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   personLengthBetween(
@@ -1221,8 +1221,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   placeIsNull() {
@@ -1234,8 +1234,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   placeIsNotNull() {
@@ -1247,8 +1247,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   placeElementEqualTo(String value, {bool caseSensitive = true}) {
@@ -1264,8 +1264,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   placeElementGreaterThan(
@@ -1286,8 +1286,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   placeElementLessThan(
@@ -1308,8 +1308,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   placeElementBetween(
@@ -1334,8 +1334,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   placeElementStartsWith(String value, {bool caseSensitive = true}) {
@@ -1351,8 +1351,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   placeElementEndsWith(String value, {bool caseSensitive = true}) {
@@ -1368,8 +1368,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   placeElementContains(String value, {bool caseSensitive = true}) {
@@ -1385,8 +1385,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   placeElementMatches(String pattern, {bool caseSensitive = true}) {
@@ -1402,8 +1402,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   placeElementIsEmpty() {
@@ -1415,8 +1415,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   placeElementIsNotEmpty() {
@@ -1428,8 +1428,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   placeLengthEqualTo(int length) {
@@ -1439,8 +1439,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   placeIsEmpty() {
@@ -1450,8 +1450,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   placeIsNotEmpty() {
@@ -1461,8 +1461,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   placeLengthLessThan(int length, {bool include = false}) {
@@ -1472,8 +1472,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   placeLengthGreaterThan(int length, {bool include = false}) {
@@ -1483,8 +1483,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   placeLengthBetween(
@@ -1505,8 +1505,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   subjectIsNull() {
@@ -1518,8 +1518,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   subjectIsNotNull() {
@@ -1531,8 +1531,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   subjectElementEqualTo(String value, {bool caseSensitive = true}) {
@@ -1548,8 +1548,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   subjectElementGreaterThan(
@@ -1570,8 +1570,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   subjectElementLessThan(
@@ -1592,8 +1592,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   subjectElementBetween(
@@ -1618,8 +1618,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   subjectElementStartsWith(String value, {bool caseSensitive = true}) {
@@ -1635,8 +1635,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   subjectElementEndsWith(String value, {bool caseSensitive = true}) {
@@ -1652,8 +1652,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   subjectElementContains(String value, {bool caseSensitive = true}) {
@@ -1669,8 +1669,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   subjectElementMatches(String pattern, {bool caseSensitive = true}) {
@@ -1686,8 +1686,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   subjectElementIsEmpty() {
@@ -1699,8 +1699,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   subjectElementIsNotEmpty() {
@@ -1712,8 +1712,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   subjectLengthEqualTo(int length) {
@@ -1723,8 +1723,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   subjectIsEmpty() {
@@ -1734,8 +1734,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   subjectIsNotEmpty() {
@@ -1745,8 +1745,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   subjectLengthLessThan(int length, {bool include = false}) {
@@ -1756,8 +1756,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   subjectLengthGreaterThan(int length, {bool include = false}) {
@@ -1767,8 +1767,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   subjectLengthBetween(
@@ -1789,8 +1789,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   titleIsNull() {
@@ -1802,8 +1802,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   titleIsNotNull() {
@@ -1815,8 +1815,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   titleEqualTo(String? value, {bool caseSensitive = true}) {
@@ -1832,8 +1832,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   titleGreaterThan(
@@ -1854,8 +1854,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   titleLessThan(
@@ -1876,8 +1876,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   titleBetween(
@@ -1902,8 +1902,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   titleStartsWith(String value, {bool caseSensitive = true}) {
@@ -1919,8 +1919,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   titleEndsWith(String value, {bool caseSensitive = true}) {
@@ -1936,8 +1936,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   titleContains(String value, {bool caseSensitive = true}) {
@@ -1953,8 +1953,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   titleMatches(String pattern, {bool caseSensitive = true}) {
@@ -1970,8 +1970,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   titleIsEmpty() {
@@ -1983,8 +1983,8 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   titleIsNotEmpty() {
@@ -1996,16 +1996,16 @@ extension OpenLibrarySearchResultDocQueryFilter
   }
 }
 
-extension OpenLibrarySearchResultDocQueryObject
+extension OpenLibrarySearchDocQueryObject
     on
         QueryBuilder<
-          OpenLibrarySearchResultDoc,
-          OpenLibrarySearchResultDoc,
+          OpenLibrarySearchDoc,
+          OpenLibrarySearchDoc,
           QFilterCondition
         > {
   QueryBuilder<
-    OpenLibrarySearchResultDoc,
-    OpenLibrarySearchResultDoc,
+    OpenLibrarySearchDoc,
+    OpenLibrarySearchDoc,
     QAfterFilterCondition
   >
   editions(FilterQuery<OpenLibraryEditions> q) {

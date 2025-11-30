@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:isar_community/isar.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:mosaic/models/igdb_game.dart';
-import 'package:mosaic/models/open_library_search_result.dart';
+import 'package:mosaic/models/open_library_search.dart';
 
 part 'item.g.dart';
 
@@ -13,7 +15,7 @@ class Item {
   Id id = Isar.autoIncrement;
 
   IgdbGame? igdbGame;
-  OpenLibrarySearchResultDoc? openLibraryBook;
+  OpenLibrarySearchDoc? openLibraryBook;
 
   String apiId = "";
 
@@ -24,9 +26,20 @@ class Item {
   ItemStatus itemStatus = ItemStatus.notStarted;
 
   bool needsDetailRequest = false;
+  bool ignoreImages = false;
 
   @ignore
   bool isAdded = false;
+
+  @ignore
+  IconData get typeIcon {
+    switch (itemType) {
+      case ItemType.game:
+        return Symbols.videogame_asset;
+      case ItemType.book:
+        return Symbols.book_2;
+    }
+  }
 
   @ignore
   String get name {
@@ -58,7 +71,7 @@ class Item {
   @ignore
   String get shortDesc {
     if (igdbGame != null) {
-      var str = "🎮";
+      var str = "";
 
       if (igdbGame!.gameType != null) {
         str += " ${igdbGame!.gameType!.type!}";
@@ -75,7 +88,7 @@ class Item {
     }
 
     if (openLibraryBook != null) {
-      var str = "📖";
+      var str = "";
 
       var edition = openLibraryBook!.editions?.docs?.firstOrNull;
       if (edition != null) {
@@ -118,12 +131,12 @@ class Item {
       if (edition != null) {
         if (edition.key != null) {
           var olid = edition.key!.replaceAll("/books/", "");
-          return "https://covers.openlibrary.org/b/olid/$olid-S.jpg";
+          return "https://covers.openlibrary.org/b/olid/$olid-S.jpg?default=false";
         }
       }
       if (openLibraryBook!.key != null) {
-        var olid = openLibraryBook!.key!.replaceAll("/workds/", "");
-        return "https://covers.openlibrary.org/b/olid/$olid-S.jpg";
+        var olid = openLibraryBook!.key!.replaceAll("/works/", "");
+        return "https://covers.openlibrary.org/b/olid/$olid-S.jpg?default=false";
       }
     }
 
@@ -144,12 +157,12 @@ class Item {
       if (edition != null) {
         if (edition.key != null) {
           var olid = edition.key!.replaceAll("/books/", "");
-          return "https://covers.openlibrary.org/b/olid/$olid-L.jpg";
+          return "https://covers.openlibrary.org/b/olid/$olid-L.jpg?default=false";
         }
       }
       if (openLibraryBook!.key != null) {
-        var olid = openLibraryBook!.key!.replaceAll("/workds/", "");
-        return "https://covers.openlibrary.org/b/olid/$olid-L.jpg";
+        var olid = openLibraryBook!.key!.replaceAll("/works/", "");
+        return "https://covers.openlibrary.org/b/olid/$olid-L.jpg?default=false";
       }
     }
 
@@ -163,6 +176,11 @@ class Item {
         return igdbGame!.summary;
       }
     }
+
+    if (openLibraryBook != null) {
+      // if (igdbGame.)
+    }
+
     return null;
   }
 

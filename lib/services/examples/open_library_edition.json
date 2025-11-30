@@ -1,0 +1,65 @@
+{
+    "type": {
+        "key": "/type/edition"
+    },
+    "title": "El Senyor Dels Anells I",
+    "authors": [
+        {
+            "key": "/authors/OL26320A"
+        },
+        {
+            "key": "/authors/OL12665210A"
+        }
+    ],
+    "publish_date": "Oct 30, 2002",
+    "source_records": [
+        "amazon:8431668296"
+    ],
+    "number_of_pages": 568,
+    "publishers": [
+        "Editorial Vicens Vives"
+    ],
+    "physical_format": "hardcover",
+    "full_title": "El Senyor Dels Anells I : La Germandat De L'anell",
+    "subtitle": "La Germandat De L'anell",
+    "notes": "Source title: El Senyor Dels Anells I: La Germandat De L'anell",
+    "covers": [
+        14031790
+    ],
+    "works": [
+        {
+            "key": "/works/OL27513W"
+        }
+    ],
+    "key": "/books/OL47431089M",
+    "identifiers": {},
+    "isbn_10": [
+        "8431668296"
+    ],
+    "isbn_13": [
+        "9788431668297"
+    ],
+    "classifications": {},
+    "contributors": [
+        {
+            "role": "Translator",
+            "name": "Francesc Parcerisas Vazquez"
+        }
+    ],
+    "languages": [
+        {
+            "key": "/languages/cat"
+        }
+    ],
+    "translation_of": "The Fellowship of the Ring",
+    "latest_revision": 4,
+    "revision": 4,
+    "created": {
+        "type": "/type/datetime",
+        "value": "2023-04-15T23:10:19.036921"
+    },
+    "last_modified": {
+        "type": "/type/datetime",
+        "value": "2024-05-20T14:26:00.554315"
+    }
+}

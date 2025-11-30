@@ -1,55 +1,53 @@
 // To parse this JSON data, do
 //
-//     final openLibrarySearchResult = openLibrarySearchResultFromJson(jsonString);
+//     final openLibrarySearch = openLibrarySearchFromJson(jsonString);
 
 import 'dart:convert';
 
 import 'package:isar_community/isar.dart';
 
-part 'open_library_search_result.g.dart';
+part 'open_library_search.g.dart';
 
-OpenLibrarySearchResult openLibrarySearchResultFromJson(String str) =>
-    OpenLibrarySearchResult.fromJson(json.decode(str));
+OpenLibrarySearch openLibrarySearchFromJson(String str) =>
+    OpenLibrarySearch.fromJson(json.decode(str));
 
-String openLibrarySearchResultToJson(OpenLibrarySearchResult data) =>
+String openLibrarySearchToJson(OpenLibrarySearch data) =>
     json.encode(data.toJson());
 
-class OpenLibrarySearchResult {
+class OpenLibrarySearch {
   final int? numFound;
   final int? start;
   final bool? numFoundExact;
-  final int? openLibrarySearchResultNumFound;
+  final int? openLibrarySearchNumFound;
   final String? documentationUrl;
   final String? q;
   final dynamic offset;
-  final List<OpenLibrarySearchResultDoc>? docs;
+  final List<OpenLibrarySearchDoc>? docs;
 
-  OpenLibrarySearchResult({
+  OpenLibrarySearch({
     this.numFound,
     this.start,
     this.numFoundExact,
-    this.openLibrarySearchResultNumFound,
+    this.openLibrarySearchNumFound,
     this.documentationUrl,
     this.q,
     this.offset,
     this.docs,
   });
 
-  factory OpenLibrarySearchResult.fromJson(Map<String, dynamic> json) =>
-      OpenLibrarySearchResult(
+  factory OpenLibrarySearch.fromJson(Map<String, dynamic> json) =>
+      OpenLibrarySearch(
         numFound: json["numFound"],
         start: json["start"],
         numFoundExact: json["numFoundExact"],
-        openLibrarySearchResultNumFound: json["num_found"],
+        openLibrarySearchNumFound: json["num_found"],
         documentationUrl: json["documentation_url"],
         q: json["q"],
         offset: json["offset"],
         docs: json["docs"] == null
             ? []
-            : List<OpenLibrarySearchResultDoc>.from(
-                json["docs"]!.map(
-                  (x) => OpenLibrarySearchResultDoc.fromJson(x),
-                ),
+            : List<OpenLibrarySearchDoc>.from(
+                json["docs"]!.map((x) => OpenLibrarySearchDoc.fromJson(x)),
               ),
       );
 
@@ -57,7 +55,7 @@ class OpenLibrarySearchResult {
     "numFound": numFound,
     "start": start,
     "numFoundExact": numFoundExact,
-    "num_found": openLibrarySearchResultNumFound,
+    "num_found": openLibrarySearchNumFound,
     "documentation_url": documentationUrl,
     "q": q,
     "offset": offset,
@@ -68,7 +66,7 @@ class OpenLibrarySearchResult {
 }
 
 @embedded
-class OpenLibrarySearchResultDoc {
+class OpenLibrarySearchDoc {
   final List<String>? authorName;
   final int? firstPublishYear;
   final String? key;
@@ -79,7 +77,7 @@ class OpenLibrarySearchResultDoc {
   final List<String>? person;
   final OpenLibraryEditions? editions;
 
-  OpenLibrarySearchResultDoc({
+  OpenLibrarySearchDoc({
     this.authorName,
     this.firstPublishYear,
     this.key,
@@ -91,8 +89,8 @@ class OpenLibrarySearchResultDoc {
     this.editions,
   });
 
-  factory OpenLibrarySearchResultDoc.fromJson(Map<String, dynamic> json) =>
-      OpenLibrarySearchResultDoc(
+  factory OpenLibrarySearchDoc.fromJson(Map<String, dynamic> json) =>
+      OpenLibrarySearchDoc(
         authorName: json["author_name"] == null
             ? []
             : List<String>.from(json["author_name"]!.map((x) => x)),

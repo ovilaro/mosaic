@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosaic/api_keys.dart';
-import 'package:mosaic/models/open_library_search_result.dart';
+import 'package:mosaic/models/open_library_search.dart';
 
 import '../models/item.dart';
 
@@ -41,7 +41,7 @@ class OpenLibraryService {
     http.Response response = await http.get(url, headers: headers);
 
     if (response.statusCode == 200) {
-      var result = openLibrarySearchResultFromJson(response.body);
+      var result = openLibrarySearchFromJson(response.body);
       return _convertToItems(result);
     } else {
       debugPrint(
@@ -52,7 +52,7 @@ class OpenLibraryService {
     }
   }
 
-  List<Item> _convertToItems(OpenLibrarySearchResult result) {
+  List<Item> _convertToItems(OpenLibrarySearch result) {
     List<Item> items = [];
     if (result.docs == null) return items;
     for (var book in result.docs!) {

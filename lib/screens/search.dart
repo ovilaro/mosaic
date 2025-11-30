@@ -109,7 +109,7 @@ class _SearchState extends State<Search> {
   }
 
   void textChanged() {
-    debugPrint("search term: ${controller.text}");
+    // debugPrint("search term: ${controller.text}");
 
     if (controller.text == _lastTextSearched) {
       return;
