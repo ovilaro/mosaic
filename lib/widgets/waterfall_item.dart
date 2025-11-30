@@ -37,13 +37,6 @@ class WaterfallItem extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.all(4),
                     color: AppStyles.veryDarkGreyAlpha,
-                    // decoration: BoxDecoration(
-                    //   color: AppStyles.veryDarkGreyAlpha,
-                    //   borderRadius: BorderRadius.only(
-                    //     topLeft: Radius.circular(12),
-                    //     topRight: Radius.circular(12),
-                    //   ),
-                    // ),
                     child: Text(
                       item.name,
                       style: AppStyles.normalTertiary,
@@ -57,9 +50,7 @@ class WaterfallItem extends StatelessWidget {
               padding: EdgeInsets.all(4),
               decoration: BoxDecoration(
                 color: AppStyles.blue,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(12),
-                ),
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8)),
               ),
               child: Icon(item.typeIcon, color: AppStyles.white),
             ),

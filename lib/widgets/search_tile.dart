@@ -30,7 +30,11 @@ class _SearchTileState extends State<SearchTile> {
                 : item.thumb ?? AppStyles.noThumbImgUrl,
             errorBuilder: (context, error, stackTrace) {
               item.ignoreImages = true;
-              return Image.network(AppStyles.noThumbImgUrl);
+              return Image.network(
+                width: 60,
+                height: 60,
+                AppStyles.noThumbImgUrl,
+              );
             },
           ),
           title: Text(item.name, style: AppStyles.normalPrimary),
@@ -40,12 +44,15 @@ class _SearchTileState extends State<SearchTile> {
                 padding: EdgeInsets.all(3),
                 decoration: BoxDecoration(
                   color: AppStyles.blue,
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
                 ),
                 child: Icon(item.typeIcon, size: 18, color: AppStyles.white),
               ),
               Flexible(
-                child: Text(item.shortDesc, style: AppStyles.normalSecundary),
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: Text(item.shortDesc, style: AppStyles.normalSecundary),
+                ),
               ),
             ],
           ),

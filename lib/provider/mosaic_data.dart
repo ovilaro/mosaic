@@ -98,14 +98,27 @@ class MosaicData extends ChangeNotifier {
     if (item.needsDetailRequest) {
       switch (item.itemType) {
         case ItemType.book:
-          // TODO: fake await
-          await Future.delayed(Duration(seconds: 1), () async {
-            item.needsDetailRequest = false;
-            await addOrUpdateItem(item);
-            notifyListeners();
-            return;
-          });
-          break;
+          if (item.openLibraryBook != null) {
+            var workOlid = item.openLibraryBook!.key!.replaceAll("/works/", "");
+            var workDetails = await _openLibraryService.getWorkDetails(
+              workOlid,
+            );
+            item.openLibraryWork = workDetails;
+
+            var edition = item.openLibraryBook!.editions?.docs?.firstOrNull;
+            if (edition != null) {
+              var editionOlid = edition.key!.replaceAll("/books/", "");
+              var editionDetails = await _openLibraryService.getEditionDetails(
+                editionOlid,
+              );
+              item.openLibraryEdition = editionDetails;
+            }
+          }
+
+          item.needsDetailRequest = false;
+          await addOrUpdateItem(item);
+          notifyListeners();
+          return;
         default:
       }
     }

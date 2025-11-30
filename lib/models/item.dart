@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:isar_community/isar.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:mosaic/models/igdb_game.dart';
+import 'package:mosaic/models/open_library_edition.dart';
 import 'package:mosaic/models/open_library_search.dart';
+import 'package:mosaic/models/open_library_work.dart';
 
 part 'item.g.dart';
 
@@ -15,7 +17,10 @@ class Item {
   Id id = Isar.autoIncrement;
 
   IgdbGame? igdbGame;
+
   OpenLibrarySearchDoc? openLibraryBook;
+  OpenLibraryWork? openLibraryWork;
+  OpenLibraryEdition? openLibraryEdition;
 
   String apiId = "";
 
@@ -130,13 +135,13 @@ class Item {
       var edition = openLibraryBook!.editions?.docs?.firstOrNull;
       if (edition != null) {
         if (edition.key != null) {
-          var olid = edition.key!.replaceAll("/books/", "");
-          return "https://covers.openlibrary.org/b/olid/$olid-S.jpg?default=false";
+          var editionOlid = edition.key!.replaceAll("/books/", "");
+          return "https://covers.openlibrary.org/b/olid/$editionOlid-S.jpg?default=false";
         }
       }
       if (openLibraryBook!.key != null) {
-        var olid = openLibraryBook!.key!.replaceAll("/works/", "");
-        return "https://covers.openlibrary.org/b/olid/$olid-S.jpg?default=false";
+        var workOlid = openLibraryBook!.key!.replaceAll("/works/", "");
+        return "https://covers.openlibrary.org/b/olid/$workOlid-S.jpg?default=false";
       }
     }
 
@@ -156,13 +161,13 @@ class Item {
       var edition = openLibraryBook!.editions?.docs?.firstOrNull;
       if (edition != null) {
         if (edition.key != null) {
-          var olid = edition.key!.replaceAll("/books/", "");
-          return "https://covers.openlibrary.org/b/olid/$olid-L.jpg?default=false";
+          var editionOlid = edition.key!.replaceAll("/books/", "");
+          return "https://covers.openlibrary.org/b/olid/$editionOlid-L.jpg?default=false";
         }
       }
       if (openLibraryBook!.key != null) {
-        var olid = openLibraryBook!.key!.replaceAll("/works/", "");
-        return "https://covers.openlibrary.org/b/olid/$olid-L.jpg?default=false";
+        var workOlid = openLibraryBook!.key!.replaceAll("/works/", "");
+        return "https://covers.openlibrary.org/b/olid/$workOlid-L.jpg?default=false";
       }
     }
 

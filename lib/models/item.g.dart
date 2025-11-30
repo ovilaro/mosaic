@@ -54,6 +54,20 @@ const ItemSchema = CollectionSchema(
 
       target: r'OpenLibrarySearchDoc',
     ),
+    r'openLibraryEdition': PropertySchema(
+      id: 7,
+      name: r'openLibraryEdition',
+      type: IsarType.object,
+
+      target: r'OpenLibraryEdition',
+    ),
+    r'openLibraryWork': PropertySchema(
+      id: 8,
+      name: r'openLibraryWork',
+      type: IsarType.object,
+
+      target: r'OpenLibraryWork',
+    ),
   },
 
   estimateSize: _itemEstimateSize,
@@ -71,6 +85,19 @@ const ItemSchema = CollectionSchema(
     r'OpenLibrarySearchDoc': OpenLibrarySearchDocSchema,
     r'OpenLibraryEditions': OpenLibraryEditionsSchema,
     r'OpenLibraryEditionsDoc': OpenLibraryEditionsDocSchema,
+    r'OpenLibraryWork': OpenLibraryWorkSchema,
+    r'OpenLibraryAuthor': OpenLibraryAuthorSchema,
+    r'OpenLibraryType': OpenLibraryTypeSchema,
+    r'OpenLibraryCreated': OpenLibraryCreatedSchema,
+    r'OpenLibraryExcerpt': OpenLibraryExcerptSchema,
+    r'OpenLibraryLink': OpenLibraryLinkSchema,
+    r'OpenLibraryIdentifiers': OpenLibraryIdentifiersSchema,
+    r'OpenLibraryEdition': OpenLibraryEditionSchema,
+    r'OpenLibraryEditionType': OpenLibraryEditionTypeSchema,
+    r'OpenLibraryEditionClassifications':
+        OpenLibraryEditionClassificationsSchema,
+    r'OpenLibraryEditionContributor': OpenLibraryEditionContributorSchema,
+    r'OpenLibraryEditionCreated': OpenLibraryEditionCreatedSchema,
   },
 
   getId: _itemGetId,
@@ -106,6 +133,30 @@ int _itemEstimateSize(
           );
     }
   }
+  {
+    final value = object.openLibraryEdition;
+    if (value != null) {
+      bytesCount +=
+          3 +
+          OpenLibraryEditionSchema.estimateSize(
+            value,
+            allOffsets[OpenLibraryEdition]!,
+            allOffsets,
+          );
+    }
+  }
+  {
+    final value = object.openLibraryWork;
+    if (value != null) {
+      bytesCount +=
+          3 +
+          OpenLibraryWorkSchema.estimateSize(
+            value,
+            allOffsets[OpenLibraryWork]!,
+            allOffsets,
+          );
+    }
+  }
   return bytesCount;
 }
 
@@ -131,6 +182,18 @@ void _itemSerialize(
     allOffsets,
     OpenLibrarySearchDocSchema.serialize,
     object.openLibraryBook,
+  );
+  writer.writeObject<OpenLibraryEdition>(
+    offsets[7],
+    allOffsets,
+    OpenLibraryEditionSchema.serialize,
+    object.openLibraryEdition,
+  );
+  writer.writeObject<OpenLibraryWork>(
+    offsets[8],
+    allOffsets,
+    OpenLibraryWorkSchema.serialize,
+    object.openLibraryWork,
   );
 }
 
@@ -159,6 +222,16 @@ Item _itemDeserialize(
   object.openLibraryBook = reader.readObjectOrNull<OpenLibrarySearchDoc>(
     offsets[6],
     OpenLibrarySearchDocSchema.deserialize,
+    allOffsets,
+  );
+  object.openLibraryEdition = reader.readObjectOrNull<OpenLibraryEdition>(
+    offsets[7],
+    OpenLibraryEditionSchema.deserialize,
+    allOffsets,
+  );
+  object.openLibraryWork = reader.readObjectOrNull<OpenLibraryWork>(
+    offsets[8],
+    OpenLibraryWorkSchema.deserialize,
     allOffsets,
   );
   return object;
@@ -196,6 +269,20 @@ P _itemDeserializeProp<P>(
       return (reader.readObjectOrNull<OpenLibrarySearchDoc>(
             offset,
             OpenLibrarySearchDocSchema.deserialize,
+            allOffsets,
+          ))
+          as P;
+    case 7:
+      return (reader.readObjectOrNull<OpenLibraryEdition>(
+            offset,
+            OpenLibraryEditionSchema.deserialize,
+            allOffsets,
+          ))
+          as P;
+    case 8:
+      return (reader.readObjectOrNull<OpenLibraryWork>(
+            offset,
+            OpenLibraryWorkSchema.deserialize,
             allOffsets,
           ))
           as P;
@@ -680,6 +767,39 @@ extension ItemQueryFilter on QueryBuilder<Item, Item, QFilterCondition> {
       );
     });
   }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> openLibraryEditionIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'openLibraryEdition'),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition>
+  openLibraryEditionIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'openLibraryEdition'),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> openLibraryWorkIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'openLibraryWork'),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> openLibraryWorkIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'openLibraryWork'),
+      );
+    });
+  }
 }
 
 extension ItemQueryObject on QueryBuilder<Item, Item, QFilterCondition> {
@@ -696,6 +816,22 @@ extension ItemQueryObject on QueryBuilder<Item, Item, QFilterCondition> {
   ) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'openLibraryBook');
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> openLibraryEdition(
+    FilterQuery<OpenLibraryEdition> q,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'openLibraryEdition');
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> openLibraryWork(
+    FilterQuery<OpenLibraryWork> q,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'openLibraryWork');
     });
   }
 }
@@ -919,6 +1055,20 @@ extension ItemQueryProperty on QueryBuilder<Item, Item, QQueryProperty> {
   openLibraryBookProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'openLibraryBook');
+    });
+  }
+
+  QueryBuilder<Item, OpenLibraryEdition?, QQueryOperations>
+  openLibraryEditionProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'openLibraryEdition');
+    });
+  }
+
+  QueryBuilder<Item, OpenLibraryWork?, QQueryOperations>
+  openLibraryWorkProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'openLibraryWork');
     });
   }
 }

@@ -4,32 +4,37 @@
 
 import 'dart:convert';
 
+import 'package:isar_community/isar.dart';
+
+part 'open_library_work.g.dart';
+
 OpenLibraryWork openLibraryWorkFromJson(String str) =>
     OpenLibraryWork.fromJson(json.decode(str));
 
 String openLibraryWorkToJson(OpenLibraryWork data) =>
     json.encode(data.toJson());
 
+@embedded
 class OpenLibraryWork {
   final String? description;
   final String? title;
   final String? key;
-  final List<Author>? authors;
-  final Type? type;
+  final List<OpenLibraryAuthor>? authors;
+  final OpenLibraryType? type;
   final List<int>? covers;
-  final Created? firstSentence;
+  final OpenLibraryCreated? firstSentence;
   final String? firstPublishDate;
-  final List<Excerpt>? excerpts;
+  final List<OpenLibraryExcerpt>? excerpts;
   final List<String>? deweyNumber;
-  final List<Link>? links;
+  final List<OpenLibraryLink>? links;
   final List<String>? subjectPlaces;
   final List<String>? subjects;
   final List<String>? subjectPeople;
-  final Identifiers? identifiers;
+  final OpenLibraryIdentifiers? identifiers;
   final int? latestRevision;
   final int? revision;
-  final Created? created;
-  final Created? lastModified;
+  final OpenLibraryCreated? created;
+  final OpenLibraryCreated? lastModified;
 
   OpenLibraryWork({
     this.description,
@@ -53,51 +58,60 @@ class OpenLibraryWork {
     this.lastModified,
   });
 
-  factory OpenLibraryWork.fromJson(
-    Map<String, dynamic> json,
-  ) => OpenLibraryWork(
-    description: json["description"],
-    title: json["title"],
-    key: json["key"],
-    authors: json["authors"] == null
-        ? []
-        : List<Author>.from(json["authors"]!.map((x) => Author.fromJson(x))),
-    type: json["type"] == null ? null : Type.fromJson(json["type"]),
-    covers: json["covers"] == null
-        ? []
-        : List<int>.from(json["covers"]!.map((x) => x)),
-    firstSentence: json["first_sentence"] == null
-        ? null
-        : Created.fromJson(json["first_sentence"]),
-    firstPublishDate: json["first_publish_date"],
-    excerpts: json["excerpts"] == null
-        ? []
-        : List<Excerpt>.from(json["excerpts"]!.map((x) => Excerpt.fromJson(x))),
-    deweyNumber: json["dewey_number"] == null
-        ? []
-        : List<String>.from(json["dewey_number"]!.map((x) => x)),
-    links: json["links"] == null
-        ? []
-        : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
-    subjectPlaces: json["subject_places"] == null
-        ? []
-        : List<String>.from(json["subject_places"]!.map((x) => x)),
-    subjects: json["subjects"] == null
-        ? []
-        : List<String>.from(json["subjects"]!.map((x) => x)),
-    subjectPeople: json["subject_people"] == null
-        ? []
-        : List<String>.from(json["subject_people"]!.map((x) => x)),
-    identifiers: json["identifiers"] == null
-        ? null
-        : Identifiers.fromJson(json["identifiers"]),
-    latestRevision: json["latest_revision"],
-    revision: json["revision"],
-    created: json["created"] == null ? null : Created.fromJson(json["created"]),
-    lastModified: json["last_modified"] == null
-        ? null
-        : Created.fromJson(json["last_modified"]),
-  );
+  factory OpenLibraryWork.fromJson(Map<String, dynamic> json) =>
+      OpenLibraryWork(
+        description: json["description"],
+        title: json["title"],
+        key: json["key"],
+        authors: json["authors"] == null
+            ? []
+            : List<OpenLibraryAuthor>.from(
+                json["authors"]!.map((x) => OpenLibraryAuthor.fromJson(x)),
+              ),
+        type: json["type"] == null
+            ? null
+            : OpenLibraryType.fromJson(json["type"]),
+        covers: json["covers"] == null
+            ? []
+            : List<int>.from(json["covers"]!.map((x) => x)),
+        firstSentence: json["first_sentence"] == null
+            ? null
+            : OpenLibraryCreated.fromJson(json["first_sentence"]),
+        firstPublishDate: json["first_publish_date"],
+        excerpts: json["excerpts"] == null
+            ? []
+            : List<OpenLibraryExcerpt>.from(
+                json["excerpts"]!.map((x) => OpenLibraryExcerpt.fromJson(x)),
+              ),
+        deweyNumber: json["dewey_number"] == null
+            ? []
+            : List<String>.from(json["dewey_number"]!.map((x) => x)),
+        links: json["links"] == null
+            ? []
+            : List<OpenLibraryLink>.from(
+                json["links"]!.map((x) => OpenLibraryLink.fromJson(x)),
+              ),
+        subjectPlaces: json["subject_places"] == null
+            ? []
+            : List<String>.from(json["subject_places"]!.map((x) => x)),
+        subjects: json["subjects"] == null
+            ? []
+            : List<String>.from(json["subjects"]!.map((x) => x)),
+        subjectPeople: json["subject_people"] == null
+            ? []
+            : List<String>.from(json["subject_people"]!.map((x) => x)),
+        identifiers: json["identifiers"] == null
+            ? null
+            : OpenLibraryIdentifiers.fromJson(json["identifiers"]),
+        latestRevision: json["latest_revision"],
+        revision: json["revision"],
+        created: json["created"] == null
+            ? null
+            : OpenLibraryCreated.fromJson(json["created"]),
+        lastModified: json["last_modified"] == null
+            ? null
+            : OpenLibraryCreated.fromJson(json["last_modified"]),
+      );
 
   Map<String, dynamic> toJson() => {
     "description": description,
@@ -136,16 +150,22 @@ class OpenLibraryWork {
   };
 }
 
-class Author {
-  final Type? author;
-  final Type? type;
+@embedded
+class OpenLibraryAuthor {
+  final OpenLibraryType? author;
+  final OpenLibraryType? type;
 
-  Author({this.author, this.type});
+  OpenLibraryAuthor({this.author, this.type});
 
-  factory Author.fromJson(Map<String, dynamic> json) => Author(
-    author: json["author"] == null ? null : Type.fromJson(json["author"]),
-    type: json["type"] == null ? null : Type.fromJson(json["type"]),
-  );
+  factory OpenLibraryAuthor.fromJson(Map<String, dynamic> json) =>
+      OpenLibraryAuthor(
+        author: json["author"] == null
+            ? null
+            : OpenLibraryType.fromJson(json["author"]),
+        type: json["type"] == null
+            ? null
+            : OpenLibraryType.fromJson(json["type"]),
+      );
 
   Map<String, dynamic> toJson() => {
     "author": author?.toJson(),
@@ -153,42 +173,49 @@ class Author {
   };
 }
 
-class Type {
+@embedded
+class OpenLibraryType {
   final String? key;
 
-  Type({this.key});
+  OpenLibraryType({this.key});
 
-  factory Type.fromJson(Map<String, dynamic> json) => Type(key: json["key"]);
+  factory OpenLibraryType.fromJson(Map<String, dynamic> json) =>
+      OpenLibraryType(key: json["key"]);
 
   Map<String, dynamic> toJson() => {"key": key};
 }
 
-class Created {
+@embedded
+class OpenLibraryCreated {
   final String? type;
   final String? value;
 
-  Created({this.type, this.value});
+  OpenLibraryCreated({this.type, this.value});
 
-  factory Created.fromJson(Map<String, dynamic> json) =>
-      Created(type: json["type"], value: json["value"]);
+  factory OpenLibraryCreated.fromJson(Map<String, dynamic> json) =>
+      OpenLibraryCreated(type: json["type"], value: json["value"]);
 
   Map<String, dynamic> toJson() => {"type": type, "value": value};
 }
 
-class Excerpt {
+@embedded
+class OpenLibraryExcerpt {
   final String? pages;
   final String? excerpt;
   final String? comment;
-  final Type? author;
+  final OpenLibraryType? author;
 
-  Excerpt({this.pages, this.excerpt, this.comment, this.author});
+  OpenLibraryExcerpt({this.pages, this.excerpt, this.comment, this.author});
 
-  factory Excerpt.fromJson(Map<String, dynamic> json) => Excerpt(
-    pages: json["pages"],
-    excerpt: json["excerpt"],
-    comment: json["comment"],
-    author: json["author"] == null ? null : Type.fromJson(json["author"]),
-  );
+  factory OpenLibraryExcerpt.fromJson(Map<String, dynamic> json) =>
+      OpenLibraryExcerpt(
+        pages: json["pages"],
+        excerpt: json["excerpt"],
+        comment: json["comment"],
+        author: json["author"] == null
+            ? null
+            : OpenLibraryType.fromJson(json["author"]),
+      );
 
   Map<String, dynamic> toJson() => {
     "pages": pages,
@@ -198,24 +225,26 @@ class Excerpt {
   };
 }
 
-class Identifiers {
+@embedded
+class OpenLibraryIdentifiers {
   final List<String>? wikidata;
   final List<String>? bookbrainz;
   final List<String>? musicbrainz;
 
-  Identifiers({this.wikidata, this.bookbrainz, this.musicbrainz});
+  OpenLibraryIdentifiers({this.wikidata, this.bookbrainz, this.musicbrainz});
 
-  factory Identifiers.fromJson(Map<String, dynamic> json) => Identifiers(
-    wikidata: json["wikidata"] == null
-        ? []
-        : List<String>.from(json["wikidata"]!.map((x) => x)),
-    bookbrainz: json["bookbrainz"] == null
-        ? []
-        : List<String>.from(json["bookbrainz"]!.map((x) => x)),
-    musicbrainz: json["musicbrainz"] == null
-        ? []
-        : List<String>.from(json["musicbrainz"]!.map((x) => x)),
-  );
+  factory OpenLibraryIdentifiers.fromJson(Map<String, dynamic> json) =>
+      OpenLibraryIdentifiers(
+        wikidata: json["wikidata"] == null
+            ? []
+            : List<String>.from(json["wikidata"]!.map((x) => x)),
+        bookbrainz: json["bookbrainz"] == null
+            ? []
+            : List<String>.from(json["bookbrainz"]!.map((x) => x)),
+        musicbrainz: json["musicbrainz"] == null
+            ? []
+            : List<String>.from(json["musicbrainz"]!.map((x) => x)),
+      );
 
   Map<String, dynamic> toJson() => {
     "wikidata": wikidata == null
@@ -230,18 +259,22 @@ class Identifiers {
   };
 }
 
-class Link {
+@embedded
+class OpenLibraryLink {
   final String? title;
   final String? url;
-  final Type? type;
+  final OpenLibraryType? type;
 
-  Link({this.title, this.url, this.type});
+  OpenLibraryLink({this.title, this.url, this.type});
 
-  factory Link.fromJson(Map<String, dynamic> json) => Link(
-    title: json["title"],
-    url: json["url"],
-    type: json["type"] == null ? null : Type.fromJson(json["type"]),
-  );
+  factory OpenLibraryLink.fromJson(Map<String, dynamic> json) =>
+      OpenLibraryLink(
+        title: json["title"],
+        url: json["url"],
+        type: json["type"] == null
+            ? null
+            : OpenLibraryType.fromJson(json["type"]),
+      );
 
   Map<String, dynamic> toJson() => {
     "title": title,

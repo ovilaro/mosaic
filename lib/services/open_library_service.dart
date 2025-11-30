@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosaic/api_keys.dart';
+import 'package:mosaic/models/open_library_edition.dart';
 import 'package:mosaic/models/open_library_search.dart';
+import 'package:mosaic/models/open_library_work.dart';
 
 import '../models/item.dart';
 
@@ -45,7 +47,7 @@ class OpenLibraryService {
       return _convertToItems(result);
     } else {
       debugPrint(
-        "[IGDB]Error games status code: ${response.statusCode},"
+        "[OpenLibrary]Error search status code: ${response.statusCode},"
         " body: ${response.body}",
       );
       return emptyList;
@@ -64,5 +66,67 @@ class OpenLibraryService {
       items.add(item);
     }
     return items;
+  }
+
+  Future<OpenLibraryWork?> getWorkDetails(String olid) async {
+    if (_latestRequest != null) {
+      if (DateTime.timestamp()
+              .difference(_latestRequest!)
+              .compareTo(_intervalBetweenRequestsInMs) <
+          0) {
+        debugPrint("Ignoring request, interval too short");
+        return null;
+      }
+    }
+
+    var params = {'fields': 'description,exerpts'};
+
+    Uri url = Uri.https("openlibrary.org", "/works/$olid.json", params);
+
+    var headers = {'User-Agent': ApiKeys.openLibraryUserAgent};
+
+    _latestRequest = DateTime.timestamp();
+    http.Response response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      return openLibraryWorkFromJson(response.body);
+    }
+
+    debugPrint(
+      "[OpenLibrary]Error work status code: ${response.statusCode},"
+      " body: ${response.body}",
+    );
+    return null;
+  }
+
+  Future<OpenLibraryEdition?> getEditionDetails(String olid) async {
+    if (_latestRequest != null) {
+      if (DateTime.timestamp()
+              .difference(_latestRequest!)
+              .compareTo(_intervalBetweenRequestsInMs) <
+          0) {
+        debugPrint("Ignoring request, interval too short");
+        return null;
+      }
+    }
+
+    var params = {'fields': 'contributions'};
+
+    Uri url = Uri.https("openlibrary.org", "/works/$olid.json", params);
+
+    var headers = {'User-Agent': ApiKeys.openLibraryUserAgent};
+
+    _latestRequest = DateTime.timestamp();
+    http.Response response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      return openLibraryEditionFromJson(response.body);
+    }
+
+    debugPrint(
+      "[OpenLibrary]Error edition status code: ${response.statusCode},"
+      " body: ${response.body}",
+    );
+    return null;
   }
 }
