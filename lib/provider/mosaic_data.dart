@@ -123,4 +123,10 @@ class MosaicData extends ChangeNotifier {
       }
     }
   }
+
+  Future<void> updateItemStatus(Item item, ItemStatus status) async {
+    item.itemStatus = status;
+    item.dateTimeModified = DateTime.timestamp();
+    await addOrUpdateItem(item);
+  }
 }

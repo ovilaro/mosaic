@@ -33,6 +33,9 @@ class Item {
   bool needsDetailRequest = false;
   bool ignoreImages = false;
 
+  DateTime dateTimeCreated = DateTime.timestamp();
+  DateTime dateTimeModified = DateTime.timestamp();
+
   @ignore
   bool isAdded = false;
 
@@ -182,8 +185,8 @@ class Item {
       }
     }
 
-    if (openLibraryBook != null) {
-      // if (igdbGame.)
+    if (openLibraryWork != null) {
+      return openLibraryWork!.description;
     }
 
     return null;

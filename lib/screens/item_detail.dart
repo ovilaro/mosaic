@@ -42,7 +42,12 @@ class _ItemDetailState extends State<ItemDetail> {
                       child: Hero(
                         tag: item.id,
                         child: Image.network(
-                          item.coverBig ?? AppStyles.noCoverImgUrl,
+                          item.ignoreImages
+                              ? AppStyles.noCoverImgUrl
+                              : item.coverBig ?? AppStyles.noCoverImgUrl,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.network(AppStyles.noCoverImgUrl);
+                          },
                         ),
                       ),
                     ),
@@ -74,15 +79,17 @@ class _ItemDetailState extends State<ItemDetail> {
                     ],
                     selected: <ItemStatus>{item.itemStatus},
                     onSelectionChanged: (Set<ItemStatus> newSelection) async {
-                      item.itemStatus = newSelection.first;
-                      await context.read<MosaicData>().addOrUpdateItem(item);
+                      await context.read<MosaicData>().updateItemStatus(
+                        item,
+                        newSelection.first,
+                      );
                       setState(() {});
                     },
                   ),
                   Visibility(
                     visible: item.summary != null,
                     child: Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(24.0),
                       child: Text(
                         item.summary ?? "",
                         style: AppStyles.normalPrimary,
@@ -128,6 +135,7 @@ class _ItemDetailState extends State<ItemDetail> {
                     onPressed: () => showDeletePopUp(item),
                     child: Text("Delete item"),
                   ),
+                  AppStyles.sizedBox20,
                 ],
               ),
             ),

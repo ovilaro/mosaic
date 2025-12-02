@@ -18,51 +18,61 @@ const ItemSchema = CollectionSchema(
   id: 7900997316587104717,
   properties: {
     r'apiId': PropertySchema(id: 0, name: r'apiId', type: IsarType.string),
-    r'igdbGame': PropertySchema(
+    r'dateTimeCreated': PropertySchema(
       id: 1,
+      name: r'dateTimeCreated',
+      type: IsarType.dateTime,
+    ),
+    r'dateTimeModified': PropertySchema(
+      id: 2,
+      name: r'dateTimeModified',
+      type: IsarType.dateTime,
+    ),
+    r'igdbGame': PropertySchema(
+      id: 3,
       name: r'igdbGame',
       type: IsarType.object,
 
       target: r'IgdbGame',
     ),
     r'ignoreImages': PropertySchema(
-      id: 2,
+      id: 4,
       name: r'ignoreImages',
       type: IsarType.bool,
     ),
     r'itemStatus': PropertySchema(
-      id: 3,
+      id: 5,
       name: r'itemStatus',
       type: IsarType.byte,
       enumMap: _ItemitemStatusEnumValueMap,
     ),
     r'itemType': PropertySchema(
-      id: 4,
+      id: 6,
       name: r'itemType',
       type: IsarType.byte,
       enumMap: _ItemitemTypeEnumValueMap,
     ),
     r'needsDetailRequest': PropertySchema(
-      id: 5,
+      id: 7,
       name: r'needsDetailRequest',
       type: IsarType.bool,
     ),
     r'openLibraryBook': PropertySchema(
-      id: 6,
+      id: 8,
       name: r'openLibraryBook',
       type: IsarType.object,
 
       target: r'OpenLibrarySearchDoc',
     ),
     r'openLibraryEdition': PropertySchema(
-      id: 7,
+      id: 9,
       name: r'openLibraryEdition',
       type: IsarType.object,
 
       target: r'OpenLibraryEdition',
     ),
     r'openLibraryWork': PropertySchema(
-      id: 8,
+      id: 10,
       name: r'openLibraryWork',
       type: IsarType.object,
 
@@ -167,30 +177,32 @@ void _itemSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.apiId);
+  writer.writeDateTime(offsets[1], object.dateTimeCreated);
+  writer.writeDateTime(offsets[2], object.dateTimeModified);
   writer.writeObject<IgdbGame>(
-    offsets[1],
+    offsets[3],
     allOffsets,
     IgdbGameSchema.serialize,
     object.igdbGame,
   );
-  writer.writeBool(offsets[2], object.ignoreImages);
-  writer.writeByte(offsets[3], object.itemStatus.index);
-  writer.writeByte(offsets[4], object.itemType.index);
-  writer.writeBool(offsets[5], object.needsDetailRequest);
+  writer.writeBool(offsets[4], object.ignoreImages);
+  writer.writeByte(offsets[5], object.itemStatus.index);
+  writer.writeByte(offsets[6], object.itemType.index);
+  writer.writeBool(offsets[7], object.needsDetailRequest);
   writer.writeObject<OpenLibrarySearchDoc>(
-    offsets[6],
+    offsets[8],
     allOffsets,
     OpenLibrarySearchDocSchema.serialize,
     object.openLibraryBook,
   );
   writer.writeObject<OpenLibraryEdition>(
-    offsets[7],
+    offsets[9],
     allOffsets,
     OpenLibraryEditionSchema.serialize,
     object.openLibraryEdition,
   );
   writer.writeObject<OpenLibraryWork>(
-    offsets[8],
+    offsets[10],
     allOffsets,
     OpenLibraryWorkSchema.serialize,
     object.openLibraryWork,
@@ -205,32 +217,34 @@ Item _itemDeserialize(
 ) {
   final object = Item();
   object.apiId = reader.readString(offsets[0]);
+  object.dateTimeCreated = reader.readDateTime(offsets[1]);
+  object.dateTimeModified = reader.readDateTime(offsets[2]);
   object.id = id;
   object.igdbGame = reader.readObjectOrNull<IgdbGame>(
-    offsets[1],
+    offsets[3],
     IgdbGameSchema.deserialize,
     allOffsets,
   );
-  object.ignoreImages = reader.readBool(offsets[2]);
+  object.ignoreImages = reader.readBool(offsets[4]);
   object.itemStatus =
-      _ItemitemStatusValueEnumMap[reader.readByteOrNull(offsets[3])] ??
+      _ItemitemStatusValueEnumMap[reader.readByteOrNull(offsets[5])] ??
       ItemStatus.notStarted;
   object.itemType =
-      _ItemitemTypeValueEnumMap[reader.readByteOrNull(offsets[4])] ??
+      _ItemitemTypeValueEnumMap[reader.readByteOrNull(offsets[6])] ??
       ItemType.game;
-  object.needsDetailRequest = reader.readBool(offsets[5]);
+  object.needsDetailRequest = reader.readBool(offsets[7]);
   object.openLibraryBook = reader.readObjectOrNull<OpenLibrarySearchDoc>(
-    offsets[6],
+    offsets[8],
     OpenLibrarySearchDocSchema.deserialize,
     allOffsets,
   );
   object.openLibraryEdition = reader.readObjectOrNull<OpenLibraryEdition>(
-    offsets[7],
+    offsets[9],
     OpenLibraryEditionSchema.deserialize,
     allOffsets,
   );
   object.openLibraryWork = reader.readObjectOrNull<OpenLibraryWork>(
-    offsets[8],
+    offsets[10],
     OpenLibraryWorkSchema.deserialize,
     allOffsets,
   );
@@ -247,39 +261,43 @@ P _itemDeserializeProp<P>(
     case 0:
       return (reader.readString(offset)) as P;
     case 1:
+      return (reader.readDateTime(offset)) as P;
+    case 2:
+      return (reader.readDateTime(offset)) as P;
+    case 3:
       return (reader.readObjectOrNull<IgdbGame>(
             offset,
             IgdbGameSchema.deserialize,
             allOffsets,
           ))
           as P;
-    case 2:
+    case 4:
       return (reader.readBool(offset)) as P;
-    case 3:
+    case 5:
       return (_ItemitemStatusValueEnumMap[reader.readByteOrNull(offset)] ??
               ItemStatus.notStarted)
           as P;
-    case 4:
+    case 6:
       return (_ItemitemTypeValueEnumMap[reader.readByteOrNull(offset)] ??
               ItemType.game)
           as P;
-    case 5:
+    case 7:
       return (reader.readBool(offset)) as P;
-    case 6:
+    case 8:
       return (reader.readObjectOrNull<OpenLibrarySearchDoc>(
             offset,
             OpenLibrarySearchDocSchema.deserialize,
             allOffsets,
           ))
           as P;
-    case 7:
+    case 9:
       return (reader.readObjectOrNull<OpenLibraryEdition>(
             offset,
             OpenLibraryEditionSchema.deserialize,
             allOffsets,
           ))
           as P;
-    case 8:
+    case 10:
       return (reader.readObjectOrNull<OpenLibraryWork>(
             offset,
             OpenLibraryWorkSchema.deserialize,
@@ -537,6 +555,124 @@ extension ItemQueryFilter on QueryBuilder<Item, Item, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.greaterThan(property: r'apiId', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> dateTimeCreatedEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'dateTimeCreated', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> dateTimeCreatedGreaterThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'dateTimeCreated',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> dateTimeCreatedLessThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'dateTimeCreated',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> dateTimeCreatedBetween(
+    DateTime lower,
+    DateTime upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'dateTimeCreated',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> dateTimeModifiedEqualTo(
+    DateTime value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'dateTimeModified', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> dateTimeModifiedGreaterThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'dateTimeModified',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> dateTimeModifiedLessThan(
+    DateTime value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'dateTimeModified',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterFilterCondition> dateTimeModifiedBetween(
+    DateTime lower,
+    DateTime upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'dateTimeModified',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
       );
     });
   }
@@ -851,6 +987,30 @@ extension ItemQuerySortBy on QueryBuilder<Item, Item, QSortBy> {
     });
   }
 
+  QueryBuilder<Item, Item, QAfterSortBy> sortByDateTimeCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dateTimeCreated', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> sortByDateTimeCreatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dateTimeCreated', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> sortByDateTimeModified() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dateTimeModified', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> sortByDateTimeModifiedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dateTimeModified', Sort.desc);
+    });
+  }
+
   QueryBuilder<Item, Item, QAfterSortBy> sortByIgnoreImages() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ignoreImages', Sort.asc);
@@ -910,6 +1070,30 @@ extension ItemQuerySortThenBy on QueryBuilder<Item, Item, QSortThenBy> {
   QueryBuilder<Item, Item, QAfterSortBy> thenByApiIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'apiId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> thenByDateTimeCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dateTimeCreated', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> thenByDateTimeCreatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dateTimeCreated', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> thenByDateTimeModified() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dateTimeModified', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Item, Item, QAfterSortBy> thenByDateTimeModifiedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dateTimeModified', Sort.desc);
     });
   }
 
@@ -983,6 +1167,18 @@ extension ItemQueryWhereDistinct on QueryBuilder<Item, Item, QDistinct> {
     });
   }
 
+  QueryBuilder<Item, Item, QDistinct> distinctByDateTimeCreated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'dateTimeCreated');
+    });
+  }
+
+  QueryBuilder<Item, Item, QDistinct> distinctByDateTimeModified() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'dateTimeModified');
+    });
+  }
+
   QueryBuilder<Item, Item, QDistinct> distinctByIgnoreImages() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'ignoreImages');
@@ -1018,6 +1214,18 @@ extension ItemQueryProperty on QueryBuilder<Item, Item, QQueryProperty> {
   QueryBuilder<Item, String, QQueryOperations> apiIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'apiId');
+    });
+  }
+
+  QueryBuilder<Item, DateTime, QQueryOperations> dateTimeCreatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'dateTimeCreated');
+    });
+  }
+
+  QueryBuilder<Item, DateTime, QQueryOperations> dateTimeModifiedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'dateTimeModified');
     });
   }
 
