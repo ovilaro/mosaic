@@ -33,78 +33,95 @@ class _SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Search"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return Filters(context: context);
-                },
-                isScrollControlled: true,
-                useSafeArea: true,
-              );
-            },
-            icon: Icon(Icons.filter_alt),
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Expanded(
-              child: Consumer<MosaicData>(
-                builder: (context, mosaicData, child) {
-                  if (mosaicData.searching) {
-                    return Center(child: RefreshProgressIndicator());
-                  }
-                  return ListView(
-                    children: [
-                      for (int i = 0; i < mosaicData.searchResults.length; i++)
-                        SearchTile(index: i),
-                    ],
+    return Consumer<MosaicData>(
+      builder: (context, mosaicData, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text("Search"),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Filters(
+                        context: context,
+                        filterRange: FilterRange.search,
+                      );
+                    },
+                    isScrollControlled: true,
+                    useSafeArea: true,
                   );
                 },
+                icon: Icon(
+                  Icons.filter_alt,
+                  color: mosaicData.isAnyFilterEnabled(FilterRange.search)
+                      ? AppStyles.blue
+                      : AppStyles.darkGrey,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                style: AppStyles.normalPrimary,
-                autofocus: true,
-                controller: controller,
-                decoration: InputDecoration(
-                  suffixIconColor: AppStyles.darkGrey,
-                  hint: Text(
-                    "write something to search for",
-                    style: AppStyles.normalSecundary,
-                  ),
-                  suffixIcon: Icon(Icons.search),
-                  enabledBorder: const OutlineInputBorder(
-                    // width: 0.0 produces a thin "hairline" border
-                    borderSide: BorderSide(color: AppStyles.blue, width: 2.0),
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    // width: 0.0 produces a thin "hairline" border
-                    borderSide: BorderSide(color: AppStyles.blue, width: 2.0),
-                  ),
-                  border: const OutlineInputBorder(
-                    // width: 0.0 produces a thin "hairline" border
-                    borderSide: BorderSide(
-                      color: AppStyles.darkGrey,
-                      width: 0.0,
+            ],
+          ),
+          body: SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: mosaicData.searching
+                      ? Center(child: RefreshProgressIndicator())
+                      : ListView(
+                          children: [
+                            for (
+                              int i = 0;
+                              i < mosaicData.searchResults.length;
+                              i++
+                            )
+                              SearchTile(index: i),
+                          ],
+                        ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    style: AppStyles.normalPrimary,
+                    autofocus: true,
+                    controller: controller,
+                    decoration: InputDecoration(
+                      suffixIconColor: AppStyles.darkGrey,
+                      hint: Text(
+                        "write something to search for",
+                        style: AppStyles.normalSecundary,
+                      ),
+                      suffixIcon: Icon(Icons.search),
+                      enabledBorder: const OutlineInputBorder(
+                        // width: 0.0 produces a thin "hairline" border
+                        borderSide: BorderSide(
+                          color: AppStyles.blue,
+                          width: 2.0,
+                        ),
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                        // width: 0.0 produces a thin "hairline" border
+                        borderSide: BorderSide(
+                          color: AppStyles.blue,
+                          width: 2.0,
+                        ),
+                      ),
+                      border: const OutlineInputBorder(
+                        // width: 0.0 produces a thin "hairline" border
+                        borderSide: BorderSide(
+                          color: AppStyles.darkGrey,
+                          width: 0.0,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 

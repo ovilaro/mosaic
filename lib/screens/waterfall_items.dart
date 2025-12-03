@@ -3,6 +3,7 @@ import 'package:mosaic/models/item.dart';
 import 'package:mosaic/provider/mosaic_data.dart';
 import 'package:mosaic/screens/filters.dart';
 import 'package:mosaic/screens/main_navigation_bar.dart';
+import 'package:mosaic/styles/app_styles.dart';
 import 'package:mosaic/widgets/waterfall_item.dart';
 import 'package:provider/provider.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
@@ -14,36 +15,44 @@ class WaterfallItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(getAppBarTitle(mainAppBarType)),
-        leading: IconButton(
-          onPressed: () {
-            debugPrint("sort button pressed!");
-          },
-          icon: Icon(Icons.sort),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              await showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return Filters(context: context);
+    return Consumer<MosaicData>(
+      builder: (context, mosaicData, child) {
+        ItemStatus status = ItemStatus.values[mainAppBarType.index];
+        var items = mosaicData.getItemsWithStatus(status);
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(getAppBarTitle(mainAppBarType)),
+            leading: IconButton(
+              onPressed: () {
+                debugPrint("sort button pressed!");
+              },
+              icon: Icon(Icons.sort),
+            ),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  await showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Filters(
+                        context: context,
+                        filterRange: FilterRange.list,
+                      );
+                    },
+                    isScrollControlled: true,
+                    useSafeArea: true,
+                  );
                 },
-                isScrollControlled: true,
-                useSafeArea: true,
-              );
-            },
-            icon: Icon(Icons.filter_alt),
+                icon: Icon(
+                  Icons.filter_alt,
+                  color: mosaicData.isAnyFilterEnabled(FilterRange.list)
+                      ? AppStyles.blue
+                      : AppStyles.darkGrey,
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-      body: Consumer<MosaicData>(
-        builder: (context, mosaicData, child) {
-          ItemStatus status = ItemStatus.values[mainAppBarType.index];
-          var items = mosaicData.getItemsWithStatus(status);
-          return WaterfallFlow.builder(
+          body: WaterfallFlow.builder(
             itemCount: items.length,
             gridDelegate: SliverWaterfallFlowDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 300.0,
@@ -77,9 +86,9 @@ class WaterfallItems extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               return WaterfallItem(item: items[index]);
             },
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 

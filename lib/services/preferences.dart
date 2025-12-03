@@ -1,4 +1,5 @@
 import 'package:mosaic/models/item.dart';
+import 'package:mosaic/screens/filters.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preferences {
@@ -14,26 +15,27 @@ class Preferences {
   }
 
   bool getCategoryEnabled(ItemCategory category) {
-    return prefs.getBool("${category.toString()}Enabled") ?? true;
+    String key = "${category.toString()}Enabled";
+    return prefs.getBool(key) ?? true;
   }
 
-  Future<void> setCategoryEnabled(ItemCategory category, bool value) async {
-    await prefs.setBool("${category.toString()}Enabled", value);
+  setCategoryEnabled(ItemCategory category, bool value) async {
+    String key = "${category.toString()}Enabled";
+    await prefs.setBool(key, value);
   }
 
-  bool getFilterEnabled(ItemCategory category) {
-    return prefs.getBool("${category.toString()}FilterEnabled") ?? true;
+  bool getFilterEnabled(ItemCategory category, FilterRange filterRange) {
+    String key = "${category.toString()}/${filterRange.toString()}Enabled";
+    return prefs.getBool(key) ?? true;
   }
 
-  Future<void> setFilterEnabled(ItemCategory category, bool value) async {
-    await prefs.setBool("${category.toString()}FilterEnabled", value);
-  }
-
-  bool getSearchFilterEnabled(ItemCategory category) {
-    return prefs.getBool("${category.toString()}SearchFilterEnabled") ?? true;
-  }
-
-  Future<void> setSearchFilterEnabled(ItemCategory category, bool value) async {
-    await prefs.setBool("${category.toString()}SearchFilterEnabled", value);
+  Future<bool> setFilterEnabled(
+    ItemCategory category,
+    FilterRange filterRange,
+    bool value,
+  ) async {
+    String key = "${category.toString()}/${filterRange.toString()}Enabled";
+    bool result = await prefs.setBool(key, value);
+    return result;
   }
 }

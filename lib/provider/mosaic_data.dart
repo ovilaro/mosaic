@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mosaic/models/item.dart';
+import 'package:mosaic/screens/filters.dart';
 import 'package:mosaic/services/database.dart';
 import 'package:mosaic/services/igdb_service.dart';
 import 'package:mosaic/services/open_library_service.dart';
+import 'package:mosaic/services/preferences.dart';
 
 class MosaicData extends ChangeNotifier {
   final IgdbService _igdbService = IgdbService();
@@ -39,8 +41,16 @@ class MosaicData extends ChangeNotifier {
     searching = true;
     notifyListeners();
 
-    var gameResults = await _igdbService.search(str);
-    var bookResults = await _openLibraryService.search(str);
+    List<Item> gameResults = [];
+    List<Item> bookResults = [];
+
+    if (getFilterEnabled(ItemCategory.game, FilterRange.search)) {
+      gameResults = await _igdbService.search(str);
+    }
+
+    if (getFilterEnabled(ItemCategory.book, FilterRange.search)) {
+      bookResults = await _openLibraryService.search(str);
+    }
 
     int maxIndex = gameResults.length;
     if (maxIndex < bookResults.length) {
@@ -83,7 +93,21 @@ class MosaicData extends ChangeNotifier {
   }
 
   List<Item> getItemsWithStatus(ItemStatus status) {
-    return allItems.where((i) => i.itemStatus == status).toList();
+    List<ItemCategory> categoriesToShow = [];
+    if (getFilterEnabled(ItemCategory.game, FilterRange.list)) {
+      categoriesToShow.add(ItemCategory.game);
+    }
+    if (getFilterEnabled(ItemCategory.book, FilterRange.list)) {
+      categoriesToShow.add(ItemCategory.book);
+    }
+
+    return allItems
+        .where(
+          (i) =>
+              i.itemStatus == status &&
+              categoriesToShow.contains(i.itemCategory),
+        )
+        .toList();
   }
 
   // removeItem(int id) async {
@@ -128,5 +152,41 @@ class MosaicData extends ChangeNotifier {
     item.itemStatus = status;
     item.dateTimeModified = DateTime.timestamp();
     await addOrUpdateItem(item);
+  }
+
+  bool getCategoryEnabled(ItemCategory category) {
+    return Preferences.instance.getCategoryEnabled(category);
+  }
+
+  setCategoryEnabled(ItemCategory category, bool value) async {
+    await Preferences.instance.setCategoryEnabled(category, value);
+    notifyListeners();
+  }
+
+  bool getFilterEnabled(ItemCategory category, FilterRange filterRange) {
+    return Preferences.instance.getFilterEnabled(category, filterRange);
+  }
+
+  Future<bool> setFilterEnabled(
+    ItemCategory category,
+    FilterRange filterRange,
+    bool value,
+  ) async {
+    bool result = await Preferences.instance.setFilterEnabled(
+      category,
+      filterRange,
+      value,
+    );
+    if (result) {
+      notifyListeners();
+    }
+    return result;
+  }
+
+  bool isAnyFilterEnabled(FilterRange filterRange) {
+    for (var category in ItemCategory.values) {
+      if (!getFilterEnabled(category, filterRange)) return true;
+    }
+    return false;
   }
 }
