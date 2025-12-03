@@ -30,9 +30,9 @@ class Database {
         .filter()
         .apiIdEqualTo(item.apiId)
         .findAll();
-    // check item type due diferents apis can have same id maybe?
+    // check item category due diferents apis can have same id maybe?
     for (var result in results) {
-      if (result.itemType == item.itemType) {
+      if (result.itemCategory == item.itemCategory) {
         return true;
       }
     }
@@ -44,9 +44,9 @@ class Database {
         .filter()
         .apiIdEqualTo(item.apiId)
         .findAll();
-    // check item type due diferents apis can have same id maybe?
+    // check item category due diferents apis can have same id maybe?
     for (var result in results) {
-      if (result.itemType == item.itemType) {
+      if (result.itemCategory == item.itemCategory) {
         await isar.writeTxn(() async {
           await isar.items.delete(result.id);
         });

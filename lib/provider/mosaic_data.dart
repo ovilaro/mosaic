@@ -96,8 +96,8 @@ class MosaicData extends ChangeNotifier {
 
   Future<void> updateDetailInfoIfNeeded(Item item) async {
     if (item.needsDetailRequest) {
-      switch (item.itemType) {
-        case ItemType.book:
+      switch (item.itemCategory) {
+        case ItemCategory.book:
           if (item.openLibraryBook != null) {
             var workOlid = item.openLibraryBook!.key!.replaceAll("/works/", "");
             var workDetails = await _openLibraryService.getWorkDetails(

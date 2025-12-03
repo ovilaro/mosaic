@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mosaic/models/item.dart';
 import 'package:mosaic/styles/app_styles.dart';
 
 class FiltersCategory extends StatefulWidget {
-  const FiltersCategory({super.key, required this.i});
+  const FiltersCategory({super.key, required this.itemCategory});
 
-  final int i;
+  final ItemCategory itemCategory;
 
   @override
   State<FiltersCategory> createState() => _FiltersCategoryState();
@@ -16,20 +17,35 @@ class _FiltersCategoryState extends State<FiltersCategory> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: selected ? 1.0 : 0.0,
       clipBehavior: Clip.hardEdge,
-      color: selected ? AppStyles.veryDarkWhite : AppStyles.white,
+      color: selected ? AppStyles.white : AppStyles.darkWhite,
       child: InkWell(
-        splashColor: AppStyles.veryLightGrey,
         onTap: () {
-          debugPrint('Card tapped.');
           selected = !selected;
           setState(() {});
         },
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
+        child: Container(
+          padding: const EdgeInsets.all(10.0),
           child: Row(
             mainAxisSize: MainAxisSize.min,
-            children: [Text("categoria ${widget.i}", style: AppStyles.h2)],
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(
+                Item.getCategoryIcon(widget.itemCategory),
+                color: selected ? AppStyles.darkGrey : AppStyles.veryDarkWhite,
+              ),
+              AppStyles.sizedBox10,
+              Text(
+                Item.getCategoryString(widget.itemCategory),
+                style: AppStyles.h2.copyWith(
+                  color: selected
+                      ? AppStyles.darkGrey
+                      : AppStyles.veryDarkWhite,
+                  fontSize: 22,
+                ),
+              ),
+            ],
           ),
         ),
       ),

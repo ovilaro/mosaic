@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:mosaic/models/item.dart';
 import 'package:mosaic/styles/app_styles.dart';
 
-class ItemTypeIcon extends StatelessWidget {
-  const ItemTypeIcon({super.key, required this.item});
+class ItemCategoryRibbon extends StatelessWidget {
+  const ItemCategoryRibbon({super.key, required this.itemCategory});
 
-  final Item item;
+  final ItemCategory itemCategory;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class ItemTypeIcon extends StatelessWidget {
         color: AppStyles.blue,
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8)),
       ),
-      child: Icon(item.typeIcon, color: AppStyles.white),
+      child: Icon(Item.getCategoryIcon(itemCategory), color: AppStyles.white),
     );
   }
 }

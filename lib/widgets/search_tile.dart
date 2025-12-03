@@ -36,8 +36,10 @@ class _SearchTileState extends State<SearchTile> {
           title: Text(item.name, style: AppStyles.normalPrimary),
           subtitle: Row(
             children: [
-              // ItemTypeIcon(item: item),
-              Icon(item.typeIcon, color: AppStyles.veryLightGrey),
+              Icon(
+                Item.getCategoryIcon(item.itemCategory),
+                color: AppStyles.veryLightGrey,
+              ),
               Flexible(
                 child: Padding(
                   padding: const EdgeInsets.all(6.0),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mosaic/provider/mosaic_data.dart';
 import 'package:mosaic/screens/main_navigation_bar.dart';
+import 'package:mosaic/services/preferences.dart';
 import 'package:mosaic/styles/app_styles.dart';
 import 'package:provider/provider.dart';
 
@@ -39,6 +40,11 @@ class _SplashState extends State<Splash> {
   Future<void> init() async {
     status = "Starting app";
     setState(() {});
+    await Future.delayed(Duration(milliseconds: 500));
+
+    status = "Reading preferences";
+    setState(() {});
+    await Preferences.instance.init();
     await Future.delayed(Duration(milliseconds: 500));
 
     status = "Opening database";

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mosaic/models/item.dart';
 import 'package:mosaic/provider/mosaic_data.dart';
 import 'package:mosaic/styles/app_styles.dart';
+import 'package:mosaic/widgets/item_category_ribbon.dart';
 import 'package:mosaic/widgets/item_info_table.dart';
-import 'package:mosaic/widgets/item_type_icon.dart';
 import 'package:provider/provider.dart';
 
 class ItemDetail extends StatefulWidget {
@@ -57,7 +57,7 @@ class _ItemDetailState extends State<ItemDetail> {
                                         (context, error, stackTrace) =>
                                             AppStyles.coverPlaceholderImage,
                                   ),
-                            ItemTypeIcon(item: item),
+                            ItemCategoryRibbon(itemCategory: item.itemCategory),
                           ],
                         ),
                       ),

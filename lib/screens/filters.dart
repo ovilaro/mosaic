@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mosaic/models/item.dart';
 import 'package:mosaic/styles/app_styles.dart';
 import 'package:mosaic/widgets/filters_category.dart';
 
@@ -18,7 +19,7 @@ class Filters extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 AppStyles.sizedBox40,
-                Text("Filters", style: AppStyles.h1),
+                Text("Categories to show", style: AppStyles.h2),
                 IconButton(
                   onPressed: () => Navigator.pop(context),
                   icon: Icon(Icons.close),
@@ -26,7 +27,8 @@ class Filters extends StatelessWidget {
               ],
             ),
             AppStyles.sizedBox10,
-            for (var i = 0; i < 5; i++) FiltersCategory(i: i),
+            for (int i = 0; i < ItemCategory.values.length; i++)
+              FiltersCategory(itemCategory: ItemCategory.values[i]),
           ],
         ),
       ),

@@ -8,7 +8,7 @@ import 'package:mosaic/models/open_library_work.dart';
 
 part 'item.g.dart';
 
-enum ItemType { game, book }
+enum ItemCategory { game, book }
 
 enum ItemStatus { notStarted, inProgress, finished }
 
@@ -25,7 +25,7 @@ class Item {
   String apiId = "";
 
   @enumerated
-  ItemType itemType = ItemType.game;
+  ItemCategory itemCategory = ItemCategory.game;
 
   @enumerated
   ItemStatus itemStatus = ItemStatus.notStarted;
@@ -38,13 +38,21 @@ class Item {
   @ignore
   bool isAdded = false;
 
-  @ignore
-  IconData get typeIcon {
-    switch (itemType) {
-      case ItemType.game:
+  static IconData getCategoryIcon(ItemCategory itemCategory) {
+    switch (itemCategory) {
+      case ItemCategory.game:
         return Symbols.videogame_asset;
-      case ItemType.book:
+      case ItemCategory.book:
         return Symbols.book_2;
+    }
+  }
+
+  static String getCategoryString(ItemCategory itemCategory) {
+    switch (itemCategory) {
+      case ItemCategory.game:
+        return "Games";
+      case ItemCategory.book:
+        return "Books";
     }
   }
 

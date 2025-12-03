@@ -59,7 +59,7 @@ class OpenLibraryService {
     if (result.docs == null) return items;
     for (var book in result.docs!) {
       var item = Item();
-      item.itemType = ItemType.book;
+      item.itemCategory = ItemCategory.book;
       item.openLibraryBook = book;
       item.needsDetailRequest = true;
       item.apiId = book.key!; // book.key should not be null

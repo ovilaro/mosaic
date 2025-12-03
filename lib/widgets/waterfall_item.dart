@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mosaic/models/item.dart';
 import 'package:mosaic/screens/item_detail.dart';
 import 'package:mosaic/styles/app_styles.dart';
-import 'package:mosaic/widgets/item_type_icon.dart';
+import 'package:mosaic/widgets/item_category_ribbon.dart';
 
 class WaterfallItem extends StatelessWidget {
   const WaterfallItem({super.key, required this.item});
@@ -32,7 +32,7 @@ class WaterfallItem extends StatelessWidget {
                             imageErrorBuilder: (context, error, stackTrace) =>
                                 AppStyles.coverPlaceholderImage,
                           ),
-                    ItemTypeIcon(item: item),
+                    ItemCategoryRibbon(itemCategory: item.itemCategory),
                   ],
                 ),
               ),

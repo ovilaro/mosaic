@@ -87,7 +87,7 @@ class IgdbService {
     List<Item> items = [];
     for (var game in igdbGames) {
       var item = Item();
-      item.itemType = ItemType.game;
+      item.itemCategory = ItemCategory.game;
       item.igdbGame = game;
       item.apiId = game.id!.toString(); // game.id should not be null
       items.add(item);
