@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosaic/api_keys.dart';
-import 'package:mosaic/models/open_library_edition.dart';
-import 'package:mosaic/models/open_library_search.dart';
-import 'package:mosaic/models/open_library_work.dart';
+import 'package:mosaic/models/open_library/open_library_edition.dart';
+import 'package:mosaic/models/open_library/open_library_search.dart';
+import 'package:mosaic/models/open_library/open_library_work.dart';
 
 import '../models/item.dart';
 

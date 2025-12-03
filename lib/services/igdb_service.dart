@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosaic/api_keys.dart';
-import 'package:mosaic/models/igdb_auth_result.dart';
-import 'package:mosaic/models/igdb_game.dart';
+import 'package:mosaic/models/igdb/igdb_auth_result.dart';
+import 'package:mosaic/models/igdb/igdb_game.dart';
 import 'package:mosaic/models/item.dart';
 
 class IgdbService {

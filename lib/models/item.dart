@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:isar_community/isar.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:mosaic/models/igdb_game.dart';
-import 'package:mosaic/models/open_library_edition.dart';
-import 'package:mosaic/models/open_library_search.dart';
-import 'package:mosaic/models/open_library_work.dart';
+import 'package:mosaic/models/igdb/igdb_game.dart';
+import 'package:mosaic/models/open_library/open_library_edition.dart';
+import 'package:mosaic/models/open_library/open_library_search.dart';
+import 'package:mosaic/models/open_library/open_library_work.dart';
 
 part 'item.g.dart';
 
