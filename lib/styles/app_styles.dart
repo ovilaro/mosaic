@@ -152,9 +152,20 @@ class AppStyles {
     fontFamily: GoogleFonts.inter().fontFamily,
   );
 
-  static const String noCoverImgUrl =
-      "https://nhasachminhthang.vn/Content/Home/imgs/image-placeholder.jpg";
+  static const String coverPlaceholderPath =
+      'assets/placeholders/cover_placeholder.jpg';
+  static const String thumbPlaceholderPath =
+      'assets/placeholders/thumb_placeholder.png';
 
-  static const String noThumbImgUrl =
-      "https://www.kerbalspaceprogram.de/gallery/images/galleryTinyPlaceholder.png";
+  static const Image coverPlaceholderImage = Image(
+    image: AssetImage(coverPlaceholderPath),
+  );
+  static Image thumbPlaceholderImage = Image(
+    width: thumbSizeWidth,
+    height: thumbSizeHeight,
+    image: AssetImage(thumbPlaceholderPath),
+  );
+
+  static const double thumbSizeWidth = 60;
+  static const double thumbSizeHeight = 60;
 }

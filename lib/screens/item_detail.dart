@@ -3,6 +3,7 @@ import 'package:mosaic/models/item.dart';
 import 'package:mosaic/provider/mosaic_data.dart';
 import 'package:mosaic/styles/app_styles.dart';
 import 'package:mosaic/widgets/item_info_table.dart';
+import 'package:mosaic/widgets/item_type_icon.dart';
 import 'package:provider/provider.dart';
 
 class ItemDetail extends StatefulWidget {
@@ -19,7 +20,7 @@ class _ItemDetailState extends State<ItemDetail> {
   Widget build(BuildContext context) {
     return Consumer<MosaicData>(
       builder: (context, mosaicData, child) {
-        var item = mosaicData.getItem(widget.itemId);
+        Item? item = mosaicData.getItem(widget.itemId);
         if (item == null) {
           return Center(child: Text("Error on reading item"));
         }
@@ -31,7 +32,10 @@ class _ItemDetailState extends State<ItemDetail> {
           );
         }
         return Scaffold(
-          appBar: AppBar(title: Text(item.name)),
+          appBar: AppBar(
+            title: Text(item.name),
+            actions: [IconButton(onPressed: () {}, icon: Icon(Icons.share))],
+          ),
           body: SingleChildScrollView(
             child: SafeArea(
               child: Column(
@@ -41,13 +45,20 @@ class _ItemDetailState extends State<ItemDetail> {
                       clipBehavior: Clip.hardEdge,
                       child: Hero(
                         tag: item.id,
-                        child: Image.network(
-                          item.ignoreImages
-                              ? AppStyles.noCoverImgUrl
-                              : item.coverBig ?? AppStyles.noCoverImgUrl,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Image.network(AppStyles.noCoverImgUrl);
-                          },
+                        child: Stack(
+                          alignment: AlignmentGeometry.topRight,
+                          children: [
+                            item.coverBig == null
+                                ? AppStyles.coverPlaceholderImage
+                                : FadeInImage.assetNetwork(
+                                    placeholder: AppStyles.coverPlaceholderPath,
+                                    image: item.coverBig!,
+                                    imageErrorBuilder:
+                                        (context, error, stackTrace) =>
+                                            AppStyles.coverPlaceholderImage,
+                                  ),
+                            ItemTypeIcon(item: item),
+                          ],
                         ),
                       ),
                     ),
@@ -57,8 +68,15 @@ class _ItemDetailState extends State<ItemDetail> {
                     style: AppStyles.h1,
                     textAlign: TextAlign.center,
                   ),
-                  AppStyles.sizedBox10,
-                  Text(item.shortDesc, style: AppStyles.h3),
+                  // AppStyles.sizedBox10,
+                  Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Text(
+                      item.shortDesc,
+                      style: AppStyles.h3,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                   AppStyles.sizedBox10,
                   SegmentedButton<ItemStatus>(
                     showSelectedIcon: false,
@@ -97,7 +115,7 @@ class _ItemDetailState extends State<ItemDetail> {
                     ),
                   ),
                   Visibility(
-                    visible: item.story != null,
+                    visible: item.storyInfo.isNotEmpty,
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Card(
@@ -107,21 +125,34 @@ class _ItemDetailState extends State<ItemDetail> {
                           padding: EdgeInsets.all(16),
                           child: Column(
                             children: [
-                              Text("Storyline", style: AppStyles.h3),
-                              AppStyles.sizedBox10,
-                              Text(
-                                item.story ?? "",
-                                style: AppStyles.normalSecundary.copyWith(
-                                  color: AppStyles.darkGrey,
+                              for (
+                                int i = 0;
+                                i < item.storyInfo.keys.length;
+                                i++
+                              )
+                                Column(
+                                  children: [
+                                    Text(
+                                      item.storyInfo.keys.elementAt(i),
+                                      style: AppStyles.h3,
+                                    ),
+                                    AppStyles.sizedBox10,
+                                    Text(
+                                      item.storyInfo[item.storyInfo.keys
+                                          .elementAt(i)]!,
+                                      style: AppStyles.normalSecundary.copyWith(
+                                        color: AppStyles.darkGrey,
+                                      ),
+                                    ),
+                                    AppStyles.sizedBox20,
+                                  ],
                                 ),
-                              ),
                             ],
                           ),
                         ),
                       ),
                     ),
                   ),
-                  // AppStyles.sizedBox10,
                   Visibility(
                     visible: item.itemInfo.isNotEmpty,
                     child: Padding(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mosaic/models/item.dart';
 import 'package:mosaic/screens/item_detail.dart';
 import 'package:mosaic/styles/app_styles.dart';
+import 'package:mosaic/widgets/item_type_icon.dart';
 
 class WaterfallItem extends StatelessWidget {
   const WaterfallItem({super.key, required this.item});
@@ -14,47 +15,44 @@ class WaterfallItem extends StatelessWidget {
       child: Card(
         clipBehavior: Clip.hardEdge,
         color: AppStyles.veryLightGrey,
-        child: Stack(
-          alignment: AlignmentGeometry.topRight,
-          children: [
-            Stack(
-              children: [
-                Hero(
-                  tag: item.id,
-                  child: Image.network(
-                    item.ignoreImages
-                        ? AppStyles.noCoverImgUrl
-                        : item.coverBig ?? AppStyles.noCoverImgUrl,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.network(AppStyles.noCoverImgUrl);
-                    },
-                  ),
+        child: SizedBox(
+          width: 300,
+          child: Stack(
+            children: [
+              Hero(
+                tag: item.id,
+                child: Stack(
+                  alignment: AlignmentGeometry.topRight,
+                  children: [
+                    item.coverBig == null
+                        ? AppStyles.coverPlaceholderImage
+                        : FadeInImage.assetNetwork(
+                            placeholder: AppStyles.coverPlaceholderPath,
+                            image: item.coverBig!,
+                            imageErrorBuilder: (context, error, stackTrace) =>
+                                AppStyles.coverPlaceholderImage,
+                          ),
+                    ItemTypeIcon(item: item),
+                  ],
                 ),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    padding: EdgeInsets.all(4),
-                    color: AppStyles.veryDarkGreyAlpha,
-                    child: Text(
-                      item.name,
-                      style: AppStyles.normalTertiary,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              padding: EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: AppStyles.blue,
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8)),
               ),
-              child: Icon(item.typeIcon, color: AppStyles.white),
-            ),
-          ],
+
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  padding: EdgeInsets.all(4),
+                  color: AppStyles.veryDarkGreyAlpha,
+                  child: Text(
+                    item.name,
+                    style: AppStyles.normalTertiary,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       onTap: () {

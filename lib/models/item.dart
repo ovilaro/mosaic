@@ -31,7 +31,6 @@ class Item {
   ItemStatus itemStatus = ItemStatus.notStarted;
 
   bool needsDetailRequest = false;
-  bool ignoreImages = false;
 
   DateTime dateTimeCreated = DateTime.timestamp();
   DateTime dateTimeModified = DateTime.timestamp();
@@ -193,18 +192,49 @@ class Item {
   }
 
   @ignore
-  String? get story {
+  Map<String, String> get storyInfo {
+    Map<String, String> map = {};
+
     if (igdbGame != null) {
       if (igdbGame!.storyline != null) {
-        return igdbGame!.storyline;
+        map["Storyline"] = igdbGame!.storyline!;
       }
     }
-    return null;
+
+    if (openLibraryWork != null) {
+      if (openLibraryWork!.excerpts != null) {
+        for (var e in openLibraryWork!.excerpts!) {
+          map[e.comment!] = e.excerpt!;
+        }
+      }
+      if (openLibraryWork!.firstSentence != null) {
+        OpenLibraryCreated fs = openLibraryWork!.firstSentence!;
+        map["First sentence"] = fs.value!;
+      }
+    }
+
+    if (openLibraryBook != null) {
+      if (openLibraryBook!.subject != null &&
+          openLibraryBook!.subject!.isNotEmpty) {
+        String str = "";
+        for (var i = 0; i < openLibraryBook!.subject!.length; i++) {
+          var s = openLibraryBook!.subject![i];
+          if (i > 0) {
+            str += ", ";
+          }
+          str += s;
+        }
+        map["Subjects"] = str;
+      }
+    }
+
+    return map;
   }
 
   @ignore
   Map<String, String> get itemInfo {
     Map<String, String> map = {};
+
     if (igdbGame != null) {
       if (igdbGame!.platforms != null && igdbGame!.platforms!.isNotEmpty) {
         String str = "";
@@ -251,6 +281,83 @@ class Item {
         map["Themes"] = str;
       }
     }
+
+    if (openLibraryEdition != null) {
+      if (openLibraryEdition!.publishers != null &&
+          openLibraryEdition!.publishers!.isNotEmpty) {
+        String str = "";
+        for (var i = 0; i < openLibraryEdition!.publishers!.length; i++) {
+          var p = openLibraryEdition!.publishers![i];
+          if (i > 0) {
+            str += ", ";
+          }
+          str += p;
+        }
+        map["Publishers"] = str;
+      }
+      if (openLibraryEdition!.contributors != null) {
+        for (var i = 0; i < openLibraryEdition!.contributors!.length; i++) {
+          OpenLibraryEditionContributor c =
+              openLibraryEdition!.contributors![i];
+          map[c.role!] = c.name!;
+        }
+      }
+      if (openLibraryEdition!.physicalFormat != null) {
+        map["Format"] = openLibraryEdition!.physicalFormat!;
+      }
+    }
+
+    if (openLibraryBook != null) {
+      var edition = openLibraryBook!.editions?.docs?.firstOrNull;
+      if (edition != null) {
+        if (edition.isbn != null && edition.isbn!.isNotEmpty) {
+          String str = "";
+          for (var i = 0; i < edition.isbn!.length; i++) {
+            var isbn = edition.isbn![i];
+            if (i > 0) {
+              str += ", ";
+            }
+            str += isbn;
+          }
+          map["ISBN"] = str;
+        }
+      }
+      if (openLibraryBook!.title != null) {
+        map["Original title"] = openLibraryBook!.title!;
+      }
+      if (openLibraryBook!.firstPublishYear != null) {
+        map["First publication"] = openLibraryBook!.firstPublishYear.toString();
+      }
+      if (openLibraryBook!.numberOfPagesMedian != null) {
+        map["Pages"] = openLibraryBook!.numberOfPagesMedian.toString();
+      }
+      if (openLibraryBook!.place != null &&
+          openLibraryBook!.place!.isNotEmpty) {
+        String str = "";
+        for (var i = 0; i < openLibraryBook!.place!.length; i++) {
+          var p = openLibraryBook!.place![i];
+          if (i > 0) {
+            str += ", ";
+          }
+          str += p;
+        }
+        map["Places"] = str;
+      }
+      if (openLibraryBook!.person != null &&
+          openLibraryBook!.person!.isNotEmpty) {
+        String str = "";
+        for (var i = 0; i < openLibraryBook!.person!.length; i++) {
+          var p = openLibraryBook!.person![i];
+          if (i > 0) {
+            str += ", ";
+          }
+          str += p;
+        }
+        map["Characters"] = str;
+      }
+    }
+
+    if (openLibraryWork != null) {}
 
     return map;
   }

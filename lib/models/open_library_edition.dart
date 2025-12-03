@@ -93,7 +93,9 @@ class OpenLibraryEdition {
     physicalFormat: json["physical_format"],
     fullTitle: json["full_title"],
     subtitle: json["subtitle"],
-    notes: json["notes"],
+    notes: json["notes"].runtimeType == String
+        ? json["notes"]
+        : json["notes"]["value"],
     covers: json["covers"] == null
         ? []
         : List<int>.from(json["covers"]!.map((x) => x)),

@@ -60,7 +60,9 @@ class OpenLibraryWork {
 
   factory OpenLibraryWork.fromJson(Map<String, dynamic> json) =>
       OpenLibraryWork(
-        description: json["description"],
+        description: json["description"].runtimeType == String
+            ? json["description"]
+            : json["description"]["value"],
         title: json["title"],
         key: json["key"],
         authors: json["authors"] == null

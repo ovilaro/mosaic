@@ -45,8 +45,10 @@ class WaterfallItems extends StatelessWidget {
           var items = mosaicData.getItemsWithStatus(status);
           return WaterfallFlow.builder(
             itemCount: items.length,
-            gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+            gridDelegate: SliverWaterfallFlowDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 300.0,
+              // gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
+              //   crossAxisCount: MediaQuery.of(context).size.width > 600 ? 4 : 2,
               // crossAxisSpacing: 5.0,
               // mainAxisSpacing: 5.0,
 

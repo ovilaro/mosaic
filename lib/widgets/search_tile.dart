@@ -22,32 +22,22 @@ class _SearchTileState extends State<SearchTile> {
       builder: (context, mosaicData, child) {
         item = mosaicData.searchResults[widget.index];
         return ListTile(
-          leading: Image.network(
-            width: 60,
-            height: 60,
-            item.ignoreImages
-                ? AppStyles.noThumbImgUrl
-                : item.thumb ?? AppStyles.noThumbImgUrl,
-            errorBuilder: (context, error, stackTrace) {
-              item.ignoreImages = true;
-              return Image.network(
-                width: 60,
-                height: 60,
-                AppStyles.noThumbImgUrl,
-              );
-            },
-          ),
+          minTileHeight: AppStyles.thumbSizeHeight,
+          leading: item.thumb == null
+              ? AppStyles.thumbPlaceholderImage
+              : FadeInImage.assetNetwork(
+                  width: AppStyles.thumbSizeWidth,
+                  height: AppStyles.thumbSizeHeight,
+                  placeholder: AppStyles.thumbPlaceholderPath,
+                  image: item.thumb!,
+                  imageErrorBuilder: (context, error, stackTrace) =>
+                      AppStyles.thumbPlaceholderImage,
+                ),
           title: Text(item.name, style: AppStyles.normalPrimary),
           subtitle: Row(
             children: [
-              Container(
-                padding: EdgeInsets.all(3),
-                decoration: BoxDecoration(
-                  color: AppStyles.blue,
-                  borderRadius: BorderRadius.all(Radius.circular(6)),
-                ),
-                child: Icon(item.typeIcon, size: 18, color: AppStyles.white),
-              ),
+              // ItemTypeIcon(item: item),
+              Icon(item.typeIcon, color: AppStyles.veryLightGrey),
               Flexible(
                 child: Padding(
                   padding: const EdgeInsets.all(6.0),
