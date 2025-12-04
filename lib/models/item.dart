@@ -245,7 +245,7 @@ class Item {
     if (openLibraryWork != null) {
       if (openLibraryWork!.excerpts != null) {
         for (var e in openLibraryWork!.excerpts!) {
-          map[e.comment!] = e.excerpt!;
+          map[e.comment ?? "Excerpt"] = e.excerpt!;
         }
       }
       if (openLibraryWork!.firstSentence != null) {
