@@ -26,9 +26,11 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^5.0.0
   isar_community_generator: 3.3.0
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
   assets:
     - assets/placeholders/
     - assets/icons/
+    - assets/app_icon/
