@@ -1,3 +1,3 @@
-# mosaic
+# Mosaic
 
-A new Flutter project.
+Leisure management application
