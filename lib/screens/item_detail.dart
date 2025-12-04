@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:mosaic/models/item.dart';
 import 'package:mosaic/provider/mosaic_data.dart';
 import 'package:mosaic/styles/app_styles.dart';
 import 'package:mosaic/widgets/item_category_ribbon.dart';
 import 'package:mosaic/widgets/item_info_table.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ItemDetail extends StatefulWidget {
   const ItemDetail({super.key, required this.itemId});
@@ -34,7 +36,30 @@ class _ItemDetailState extends State<ItemDetail> {
         return Scaffold(
           appBar: AppBar(
             title: Text(item.name),
-            actions: [IconButton(onPressed: () {}, icon: Icon(Icons.share))],
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  final url = Uri.parse(item.coverBig!);
+                  final response = await http.get(url);
+                  final contentType = response.headers['content-type'];
+                  final image = XFile.fromData(
+                    response.bodyBytes,
+                    mimeType: contentType,
+                  );
+                  SharePlus.instance.share(
+                    ShareParams(
+                      title: "I am enjoying ${item.name}!",
+                      subject: "I am enjoying ${item.name}!",
+                      files: [image],
+                      text:
+                          "${item.name}\n${item.shortDesc}\n\n${item.summary}",
+                      // previewThumbnail:
+                    ),
+                  );
+                },
+                icon: Icon(Icons.share),
+              ),
+            ],
           ),
           body: SingleChildScrollView(
             child: SafeArea(
@@ -68,7 +93,6 @@ class _ItemDetailState extends State<ItemDetail> {
                     style: AppStyles.h1,
                     textAlign: TextAlign.center,
                   ),
-                  // AppStyles.sizedBox10,
                   Padding(
                     padding: const EdgeInsets.all(24.0),
                     child: Text(
