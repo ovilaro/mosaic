@@ -51,7 +51,11 @@ class _SearchState extends State<Search> {
                     },
                     isScrollControlled: true,
                     useSafeArea: true,
-                  );
+                  ).then((value) {
+                    if (context.mounted) {
+                      context.read<MosaicData>().search(controller.text);
+                    }
+                  });
                 },
                 icon: Icon(
                   Icons.filter_alt,

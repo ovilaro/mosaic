@@ -23,10 +23,8 @@ class WaterfallItems extends StatelessWidget {
           appBar: AppBar(
             title: Text(getAppBarTitle(mainAppBarType)),
             leading: IconButton(
-              onPressed: () {
-                debugPrint("sort button pressed!");
-              },
-              icon: Icon(Icons.sort),
+              onPressed: () => sortAction(context, mosaicData),
+              icon: Item.getOrderIcon(mosaicData.getItemOrder()),
             ),
             actions: [
               IconButton(
@@ -109,5 +107,40 @@ class WaterfallItems extends StatelessWidget {
         break;
     }
     return title;
+  }
+
+  Future<void> sortAction(BuildContext context, MosaicData mosaicData) async {
+    ItemOrder order = mosaicData.getItemOrder();
+    ItemOrder newOrder = ItemOrder.addedAsc;
+    switch (order) {
+      case ItemOrder.addedAsc:
+        newOrder = ItemOrder.addedDesc;
+        break;
+      case ItemOrder.addedDesc:
+        newOrder = ItemOrder.modifiedAsc;
+        break;
+      case ItemOrder.modifiedAsc:
+        newOrder = ItemOrder.modifiedDesc;
+        break;
+      case ItemOrder.modifiedDesc:
+        newOrder = ItemOrder.addedAsc;
+        break;
+    }
+    var result = await mosaicData.setItemOrder(newOrder);
+    if (result) {
+      var snackBar = SnackBar(
+        backgroundColor: AppStyles.blue,
+        content: Center(
+          child: Text(
+            Item.getOrderString(newOrder),
+            style: AppStyles.buttonsActions.copyWith(color: AppStyles.white),
+          ),
+        ),
+      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    }
   }
 }

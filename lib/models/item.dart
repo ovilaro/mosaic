@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:isar_community/isar.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:mosaic/models/igdb/igdb_game.dart';
@@ -11,6 +12,8 @@ part 'item.g.dart';
 enum ItemCategory { game, book }
 
 enum ItemStatus { notStarted, inProgress, finished }
+
+enum ItemOrder { addedAsc, addedDesc, modifiedAsc, modifiedDesc }
 
 @collection
 class Item {
@@ -53,6 +56,36 @@ class Item {
         return "Games";
       case ItemCategory.book:
         return "Books";
+    }
+  }
+
+  static Widget getOrderIcon(ItemOrder itemOrder) {
+    switch (itemOrder) {
+      case ItemOrder.addedAsc:
+        return SvgPicture.asset("assets/icons/sort-calendar-ascending.svg");
+      case ItemOrder.addedDesc:
+        return SvgPicture.asset("assets/icons/sort-calendar-descending.svg");
+      case ItemOrder.modifiedAsc:
+        return SvgPicture.asset(
+          "assets/icons/sort-clock-ascending-outline.svg",
+        );
+      case ItemOrder.modifiedDesc:
+        return SvgPicture.asset(
+          "assets/icons/sort-clock-descending-outline.svg",
+        );
+    }
+  }
+
+  static String getOrderString(ItemOrder itemOrder) {
+    switch (itemOrder) {
+      case ItemOrder.addedAsc:
+        return "Sort by date added ascending";
+      case ItemOrder.addedDesc:
+        return "Sort by date added descending";
+      case ItemOrder.modifiedAsc:
+        return "Sort by date modified ascending";
+      case ItemOrder.modifiedDesc:
+        return "Sort by date modified descending";
     }
   }
 

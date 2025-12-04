@@ -101,13 +101,27 @@ class MosaicData extends ChangeNotifier {
       categoriesToShow.add(ItemCategory.book);
     }
 
-    return allItems
+    var items = allItems
         .where(
           (i) =>
               i.itemStatus == status &&
               categoriesToShow.contains(i.itemCategory),
         )
         .toList();
+    items.sort((a, b) {
+      ItemOrder order = getItemOrder();
+      switch (order) {
+        case ItemOrder.addedAsc:
+          return a.dateTimeCreated.compareTo(b.dateTimeCreated);
+        case ItemOrder.addedDesc:
+          return b.dateTimeCreated.compareTo(a.dateTimeCreated);
+        case ItemOrder.modifiedAsc:
+          return a.dateTimeModified.compareTo(b.dateTimeModified);
+        case ItemOrder.modifiedDesc:
+          return b.dateTimeModified.compareTo(a.dateTimeModified);
+      }
+    });
+    return items;
   }
 
   // removeItem(int id) async {
@@ -158,9 +172,15 @@ class MosaicData extends ChangeNotifier {
     return Preferences.instance.getCategoryEnabled(category);
   }
 
-  setCategoryEnabled(ItemCategory category, bool value) async {
-    await Preferences.instance.setCategoryEnabled(category, value);
-    notifyListeners();
+  Future<bool> setCategoryEnabled(ItemCategory category, bool value) async {
+    bool result = await Preferences.instance.setCategoryEnabled(
+      category,
+      value,
+    );
+    if (result) {
+      notifyListeners();
+    }
+    return result;
   }
 
   bool getFilterEnabled(ItemCategory category, FilterRange filterRange) {
@@ -188,5 +208,17 @@ class MosaicData extends ChangeNotifier {
       if (!getFilterEnabled(category, filterRange)) return true;
     }
     return false;
+  }
+
+  ItemOrder getItemOrder() {
+    return Preferences.instance.getItemOrder();
+  }
+
+  Future<bool> setItemOrder(ItemOrder itemOrder) async {
+    bool result = await Preferences.instance.setItemOrder(itemOrder);
+    if (result) {
+      notifyListeners();
+    }
+    return result;
   }
 }
