@@ -27,6 +27,7 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   isar_community_generator: 3.3.0
   flutter_launcher_icons: ^0.14.4
+  package_rename: ^1.10.1
 
 flutter:
   uses-material-design: true
@@ -34,3 +35,14 @@ flutter:
     - assets/placeholders/
     - assets/icons/
     - assets/app_icon/
+
+package_rename_config:
+  android:
+    app_name: Mosaic
+    package_name: com.vegetals.mosaic
+    override_old_package: com.example.mosaic
+
+  ios:
+    app_name: Mosaic
+    bundle_name: com.vegetals
+    package_name: com.vegetals.mosaic
