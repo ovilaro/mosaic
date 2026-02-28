@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mosaic/models/item.dart';
 import 'package:mosaic/screens/item_detail.dart';
@@ -32,10 +33,11 @@ class WaterfallItem extends StatelessWidget {
                   children: [
                     item.coverBig == null
                         ? AppStyles.coverPlaceholderImage
-                        : FadeInImage.assetNetwork(
-                            placeholder: AppStyles.coverPlaceholderPath,
-                            image: item.coverBig!,
-                            imageErrorBuilder: (context, error, stackTrace) =>
+                        : CachedNetworkImage(
+                            imageUrl: item.coverBig!,
+                            placeholder: (context, url) =>
+                                AppStyles.coverPlaceholderImage,
+                            errorWidget: (context, url, error) =>
                                 AppStyles.coverPlaceholderImage,
                           ),
                     ItemCategoryRibbon(itemCategory: item.itemCategory),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mosaic/models/item.dart';
 import 'package:mosaic/provider/mosaic_data.dart';
@@ -25,12 +26,13 @@ class _SearchTileState extends State<SearchTile> {
           minTileHeight: AppStyles.thumbSizeHeight,
           leading: item.thumb == null
               ? AppStyles.thumbPlaceholderImage
-              : FadeInImage.assetNetwork(
+              : CachedNetworkImage(
                   width: AppStyles.thumbSizeWidth,
                   height: AppStyles.thumbSizeHeight,
-                  placeholder: AppStyles.thumbPlaceholderPath,
-                  image: item.thumb!,
-                  imageErrorBuilder: (context, error, stackTrace) =>
+                  imageUrl: item.thumb!,
+                  placeholder: (context, url) =>
+                      AppStyles.thumbPlaceholderImage,
+                  errorWidget: (context, url, error) =>
                       AppStyles.thumbPlaceholderImage,
                 ),
           title: Text(item.name, style: AppStyles.normalPrimary),

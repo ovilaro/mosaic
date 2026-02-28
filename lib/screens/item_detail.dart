@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosaic/models/item.dart';
@@ -75,12 +76,12 @@ class _ItemDetailState extends State<ItemDetail> {
                           children: [
                             item.coverBig == null
                                 ? AppStyles.coverPlaceholderImage
-                                : FadeInImage.assetNetwork(
-                                    placeholder: AppStyles.coverPlaceholderPath,
-                                    image: item.coverBig!,
-                                    imageErrorBuilder:
-                                        (context, error, stackTrace) =>
-                                            AppStyles.coverPlaceholderImage,
+                                : CachedNetworkImage(
+                                    imageUrl: item.coverBig!,
+                                    placeholder: (context, url) =>
+                                        AppStyles.coverPlaceholderImage,
+                                    errorWidget: (context, url, error) =>
+                                        AppStyles.coverPlaceholderImage,
                                   ),
                             ItemCategoryRibbon(itemCategory: item.itemCategory),
                           ],
