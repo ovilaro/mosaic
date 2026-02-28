@@ -1,3 +1,4 @@
+import 'package:mosaic/models/app_theme_preference.dart';
 import 'package:mosaic/models/item.dart';
 import 'package:mosaic/screens/filters.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,5 +51,16 @@ class Preferences {
   Future<bool> setItemOrder(ItemOrder itemOrder) async {
     String key = "ItemOrder";
     return await prefs.setString(key, itemOrder.toString());
+  }
+
+  AppThemePreference getAppThemePreference() {
+    String key = "AppThemePreference";
+    String? value = prefs.getString(key);
+    return AppThemePreferenceX.fromStorageValue(value);
+  }
+
+  Future<bool> setAppThemePreference(AppThemePreference preference) async {
+    String key = "AppThemePreference";
+    return await prefs.setString(key, preference.storageValue);
   }
 }

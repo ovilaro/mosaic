@@ -40,24 +40,28 @@ class _SplashState extends State<Splash> {
   Future<void> init() async {
     status = "Starting app";
     setState(() {});
-    await Future.delayed(Duration(milliseconds: 500));
+    // await Future.delayed(Duration(milliseconds: 500));
 
     status = "Reading preferences";
     setState(() {});
     await Preferences.instance.init();
-    await Future.delayed(Duration(milliseconds: 500));
+    if (!mounted) return;
+    context.read<MosaicData>().initAppThemePreference(
+      WidgetsBinding.instance.platformDispatcher.platformBrightness,
+    );
+    // await Future.delayed(Duration(milliseconds: 500));
 
     status = "Opening database";
     setState(() {});
     if (!mounted) return;
     await context.read<MosaicData>().init();
-    await Future.delayed(Duration(milliseconds: 500));
+    // await Future.delayed(Duration(milliseconds: 500));
 
     status = "Reading database";
     setState(() {});
     if (!mounted) return;
     await context.read<MosaicData>().readItems();
-    await Future.delayed(Duration(milliseconds: 500));
+    // await Future.delayed(Duration(milliseconds: 500));
 
     if (!mounted) return;
     Navigator.pushReplacement(

@@ -111,7 +111,7 @@ class _SearchState extends State<Search> {
                           width: 2.0,
                         ),
                       ),
-                      border: const OutlineInputBorder(
+                      border: OutlineInputBorder(
                         // width: 0.0 produces a thin "hairline" border
                         borderSide: BorderSide(
                           color: AppStyles.darkGrey,

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mosaic/models/app_theme_preference.dart';
 import 'package:mosaic/models/item.dart';
 import 'package:mosaic/screens/filters.dart';
 import 'package:mosaic/services/database.dart';
 import 'package:mosaic/services/igdb_service.dart';
 import 'package:mosaic/services/open_library_service.dart';
 import 'package:mosaic/services/preferences.dart';
+import 'package:mosaic/styles/app_styles.dart';
 
 class MosaicData extends ChangeNotifier {
   final IgdbService _igdbService = IgdbService();
@@ -14,6 +16,8 @@ class MosaicData extends ChangeNotifier {
   List<Item> allItems = [];
 
   bool searching = false;
+  AppThemePreference appThemePreference = AppThemePreference.device;
+  Brightness? _appliedBrightness;
 
   init() async {
     await Database.instance.init(onData);
@@ -220,5 +224,54 @@ class MosaicData extends ChangeNotifier {
       notifyListeners();
     }
     return result;
+  }
+
+  ThemeMode getThemeMode() {
+    return appThemePreference.themeMode;
+  }
+
+  AppThemePreference getAppThemePreference() {
+    return appThemePreference;
+  }
+
+  void initAppThemePreference(Brightness deviceBrightness) {
+    appThemePreference = Preferences.instance.getAppThemePreference();
+    final resolvedBrightness = appThemePreference.resolveBrightness(
+      deviceBrightness,
+    );
+    AppStyles.applyBrightness(resolvedBrightness);
+    _appliedBrightness = resolvedBrightness;
+    notifyListeners();
+  }
+
+  void syncDeviceBrightness(Brightness deviceBrightness) {
+    if (appThemePreference != AppThemePreference.device) {
+      return;
+    }
+
+    if (_appliedBrightness == deviceBrightness) {
+      return;
+    }
+
+    AppStyles.applyBrightness(deviceBrightness);
+    _appliedBrightness = deviceBrightness;
+    notifyListeners();
+  }
+
+  Future<bool> setAppThemePreference(
+    AppThemePreference preference,
+    Brightness deviceBrightness,
+  ) async {
+    bool result = await Preferences.instance.setAppThemePreference(preference);
+    if (!result) {
+      return false;
+    }
+
+    appThemePreference = preference;
+    final resolvedBrightness = preference.resolveBrightness(deviceBrightness);
+    AppStyles.applyBrightness(resolvedBrightness);
+    _appliedBrightness = resolvedBrightness;
+    notifyListeners();
+    return true;
   }
 }

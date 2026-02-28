@@ -24,7 +24,10 @@ class WaterfallItems extends StatelessWidget {
             title: Text(getAppBarTitle(mainAppBarType)),
             leading: IconButton(
               onPressed: () => sortAction(context, mosaicData),
-              icon: Item.getOrderIcon(mosaicData.getItemOrder()),
+              icon: Item.getOrderIcon(
+                mosaicData.getItemOrder(),
+                color: AppStyles.darkGrey,
+              ),
             ),
             actions: [
               IconButton(

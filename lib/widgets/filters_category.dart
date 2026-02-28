@@ -29,7 +29,7 @@ class _FiltersCategoryState extends State<FiltersCategory> {
     return Card(
       elevation: selected ? 1.0 : 0.0,
       clipBehavior: Clip.hardEdge,
-      color: selected ? AppStyles.white : AppStyles.darkWhite,
+      color: selected ? AppStyles.scaffoldBackground : AppStyles.darkWhite,
       child: InkWell(
         onTap: () async {
           context.read<MosaicData>().setFilterEnabled(

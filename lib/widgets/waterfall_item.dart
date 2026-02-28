@@ -8,6 +8,12 @@ class WaterfallItem extends StatelessWidget {
   const WaterfallItem({super.key, required this.item});
 
   final Item item;
+  static const Color _nameOverlayColor = Color(0x99212529);
+  static const TextStyle _nameOverlayTextStyle = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: Color(0xFFDDDDDD),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +48,11 @@ class WaterfallItem extends StatelessWidget {
                 left: 0,
                 right: 0,
                 child: Container(
-                  padding: EdgeInsets.all(4),
-                  color: AppStyles.veryDarkGreyAlpha,
+                  padding: const EdgeInsets.all(4),
+                  color: _nameOverlayColor,
                   child: Text(
                     item.name,
-                    style: AppStyles.normalTertiary,
+                    style: _nameOverlayTextStyle,
                     textAlign: TextAlign.center,
                   ),
                 ),

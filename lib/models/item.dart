@@ -59,19 +59,32 @@ class Item {
     }
   }
 
-  static Widget getOrderIcon(ItemOrder itemOrder) {
+  static Widget getOrderIcon(ItemOrder itemOrder, {Color? color}) {
+    ColorFilter? colorFilter;
+    if (color != null) {
+      colorFilter = ColorFilter.mode(color, BlendMode.srcIn);
+    }
+
     switch (itemOrder) {
       case ItemOrder.addedAsc:
-        return SvgPicture.asset("assets/icons/sort-calendar-ascending.svg");
+        return SvgPicture.asset(
+          "assets/icons/sort-calendar-ascending.svg",
+          colorFilter: colorFilter,
+        );
       case ItemOrder.addedDesc:
-        return SvgPicture.asset("assets/icons/sort-calendar-descending.svg");
+        return SvgPicture.asset(
+          "assets/icons/sort-calendar-descending.svg",
+          colorFilter: colorFilter,
+        );
       case ItemOrder.modifiedAsc:
         return SvgPicture.asset(
           "assets/icons/sort-clock-ascending-outline.svg",
+          colorFilter: colorFilter,
         );
       case ItemOrder.modifiedDesc:
         return SvgPicture.asset(
           "assets/icons/sort-clock-descending-outline.svg",
+          colorFilter: colorFilter,
         );
     }
   }
