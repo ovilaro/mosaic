@@ -16,6 +16,14 @@ class MainNavigationBar extends StatefulWidget {
 
 class _MainNavigationBarState extends State<MainNavigationBar> {
   int currentPageIndex = 0;
+  late final List<Widget?> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = List<Widget?>.filled(MainAppBarType.values.length, null);
+    _pages[currentPageIndex] = _buildPage(currentPageIndex);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +48,7 @@ class _MainNavigationBarState extends State<MainNavigationBar> {
         onDestinationSelected: (index) {
           setState(() {
             currentPageIndex = index;
+            _pages[index] ??= _buildPage(index);
           });
         },
         selectedIndex: currentPageIndex,
@@ -62,15 +71,24 @@ class _MainNavigationBarState extends State<MainNavigationBar> {
           ),
         ],
       ),
-      body: getBody(MainAppBarType.values[currentPageIndex]),
+      body: IndexedStack(
+        index: currentPageIndex,
+        children: _pages
+            .map((page) => page ?? const SizedBox.shrink())
+            .toList(growable: false),
+      ),
     );
   }
 
-  Widget getBody(MainAppBarType mainAppBarType) {
-    if (mainAppBarType == MainAppBarType.settings) {
-      return Settings();
-    } else {
-      return WaterfallItems(mainAppBarType: mainAppBarType);
+  Widget _buildPage(int index) {
+    final type = MainAppBarType.values[index];
+    if (type == MainAppBarType.settings) {
+      return const Settings(key: PageStorageKey(MainAppBarType.settings));
     }
+
+    return WaterfallItems(
+      key: PageStorageKey(type),
+      mainAppBarType: type,
+    );
   }
 }
