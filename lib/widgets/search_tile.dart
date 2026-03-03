@@ -30,6 +30,8 @@ class _SearchTileState extends State<SearchTile> {
                   width: AppStyles.thumbSizeWidth,
                   height: AppStyles.thumbSizeHeight,
                   imageUrl: item.thumb!,
+                  fadeInDuration: const Duration(milliseconds: 120),
+                  fadeOutDuration: const Duration(milliseconds: 120),
                   placeholder: (context, url) =>
                       AppStyles.thumbPlaceholderImage,
                   errorWidget: (context, url, error) =>

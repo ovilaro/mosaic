@@ -35,6 +35,8 @@ class WaterfallItem extends StatelessWidget {
                         ? AppStyles.coverPlaceholderImage
                         : CachedNetworkImage(
                             imageUrl: item.coverBig!,
+                            fadeInDuration: const Duration(milliseconds: 120),
+                            fadeOutDuration: const Duration(milliseconds: 120),
                             placeholder: (context, url) =>
                                 AppStyles.coverPlaceholderImage,
                             errorWidget: (context, url, error) =>
