@@ -172,6 +172,11 @@ class MosaicData extends ChangeNotifier {
     await addOrUpdateItem(item);
   }
 
+  Future<void> updateItemModifiedDate(Item item) async {
+    item.dateTimeModified = DateTime.timestamp();
+    await addOrUpdateItem(item);
+  }
+
   bool getCategoryEnabled(ItemCategory category) {
     return Preferences.instance.getCategoryEnabled(category);
   }

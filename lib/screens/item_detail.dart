@@ -135,6 +135,40 @@ class _ItemDetailState extends State<ItemDetail> {
                       setState(() {});
                     },
                   ),
+                  AppStyles.sizedBox10,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        style: AppStyles.buttonStyle,
+                        onPressed: () async {
+                          await context
+                              .read<MosaicData>()
+                              .updateItemModifiedDate(item);
+                        },
+                        child: Text("Only update"),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.info_outline),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              content: Text(
+                                "This will update the modification date to now, so the order by modification date will change.",
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: Text("OK"),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                   Visibility(
                     visible: item.summary != null,
                     child: Padding(
