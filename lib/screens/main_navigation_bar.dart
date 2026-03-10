@@ -36,7 +36,7 @@ class _MainNavigationBarState extends State<MainNavigationBar> {
         curve: Curves.easeOutQuint,
         width: MediaQuery.of(context).size.width * 0.9,
         barColor: AppStyles.darkWhite,
-        offset: 16,
+        offset: 10,
         barAlignment: Alignment.bottomCenter,
         iconHeight: 26,
         iconWidth: 26,

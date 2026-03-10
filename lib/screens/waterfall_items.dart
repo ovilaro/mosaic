@@ -62,7 +62,9 @@ class WaterfallItems extends StatelessWidget {
             controller: scrollController,
             itemCount: items.length,
             gridDelegate: SliverWaterfallFlowDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 300.0,
+              maxCrossAxisExtent: MediaQuery.of(context).size.width > 600
+                  ? 250
+                  : 300,
               // gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
               //   crossAxisCount: MediaQuery.of(context).size.width > 600 ? 4 : 2,
               // crossAxisSpacing: 5.0,
