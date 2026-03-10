@@ -9,9 +9,14 @@ import 'package:provider/provider.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
 class WaterfallItems extends StatelessWidget {
-  const WaterfallItems({super.key, required this.mainAppBarType});
+  const WaterfallItems({
+    super.key,
+    required this.mainAppBarType,
+    this.scrollController,
+  });
 
   final MainAppBarType mainAppBarType;
+  final ScrollController? scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +59,7 @@ class WaterfallItems extends StatelessWidget {
             ],
           ),
           body: WaterfallFlow.builder(
+            controller: scrollController,
             itemCount: items.length,
             gridDelegate: SliverWaterfallFlowDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 300.0,
