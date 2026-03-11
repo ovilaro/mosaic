@@ -45,7 +45,6 @@ class _SearchState extends State<Search> {
                     context: context,
                     builder: (BuildContext context) {
                       return Filters(
-                        context: context,
                         filterRange: FilterRange.search,
                       );
                     },

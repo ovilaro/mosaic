@@ -22,7 +22,12 @@ class WaterfallItems extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<MosaicData>(
       builder: (context, mosaicData, child) {
-        ItemStatus status = ItemStatus.values[mainAppBarType.index];
+        ItemStatus status = switch (mainAppBarType) {
+          MainAppBarType.notStarted => ItemStatus.notStarted,
+          MainAppBarType.inProgress => ItemStatus.inProgress,
+          MainAppBarType.finished   => ItemStatus.finished,
+          MainAppBarType.settings   => ItemStatus.notStarted,
+        };
         var items = mosaicData.getItemsWithStatus(status);
         return Scaffold(
           appBar: AppBar(
@@ -41,7 +46,6 @@ class WaterfallItems extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return Filters(
-                        context: context,
                         filterRange: FilterRange.list,
                       );
                     },
@@ -101,24 +105,12 @@ class WaterfallItems extends StatelessWidget {
     );
   }
 
-  String getAppBarTitle(MainAppBarType mainAppBarType) {
-    String title;
-    switch (mainAppBarType) {
-      case MainAppBarType.notStarted:
-        title = "Not Started";
-        break;
-      case MainAppBarType.inProgress:
-        title = "In Progress";
-        break;
-      case MainAppBarType.finished:
-        title = "Finished";
-        break;
-      default:
-        title = "";
-        break;
-    }
-    return title;
-  }
+  String getAppBarTitle(MainAppBarType mainAppBarType) => switch (mainAppBarType) {
+    MainAppBarType.notStarted => "Not Started",
+    MainAppBarType.inProgress => "In Progress",
+    MainAppBarType.finished   => "Finished",
+    MainAppBarType.settings   => "",
+  };
 
   Future<void> sortAction(BuildContext context, MosaicData mosaicData) async {
     ItemOrder order = mosaicData.getItemOrder();

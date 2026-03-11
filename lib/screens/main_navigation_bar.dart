@@ -130,7 +130,7 @@ class _MainNavigationBarState extends State<MainNavigationBar> {
   }
 
   Widget _buildPage(int index, ScrollController controller) {
-    final type = MainAppBarType.values[index];
+    final type = _tabs[index];
     if (type == MainAppBarType.settings) {
       return const Settings(key: PageStorageKey(MainAppBarType.settings));
     }
@@ -206,7 +206,6 @@ class _MainNavigationBarState extends State<MainNavigationBar> {
   }
 
   void _openSearch() {
-    debugPrint("floating button pressed!");
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const Search()),

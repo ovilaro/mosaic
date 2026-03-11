@@ -8,9 +8,8 @@ import 'package:provider/provider.dart';
 enum FilterRange { list, search }
 
 class Filters extends StatelessWidget {
-  const Filters({super.key, required this.context, required this.filterRange});
+  const Filters({super.key, required this.filterRange});
 
-  final BuildContext context;
   final FilterRange filterRange;
 
   @override
