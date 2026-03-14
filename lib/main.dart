@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:mosaic/api_keys.dart';
 import 'package:mosaic/provider/mosaic_data.dart';
 import 'package:mosaic/screens/splash.dart';
 import 'package:mosaic/styles/app_styles.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load(fileName: '.env');
+  _validateApiKeys();
   runApp(
     ChangeNotifierProvider(create: (context) => MosaicData(), child: MainApp()),
   );
+}
+
+void _validateApiKeys() {
+  try {
+    ApiKeys.igdmClientId;
+    ApiKeys.igdmClientSecret;
+    ApiKeys.openLibraryUserAgent;
+  } catch (e) {
+    debugPrint('❌ FATAL: ${e.toString()}');
+    debugPrint('Create .env file with required API keys.');
+    debugPrint('See .env.example for template.');
+    rethrow;
+  }
 }
 
 class MainApp extends StatefulWidget {
@@ -38,7 +55,8 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
 
   @override
   void didChangePlatformBrightness() {
-    final brightness = WidgetsBinding.instance.platformDispatcher.platformBrightness;
+    final brightness =
+        WidgetsBinding.instance.platformDispatcher.platformBrightness;
     context.read<MosaicData>().syncDeviceBrightness(brightness);
   }
 
