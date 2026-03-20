@@ -16,13 +16,11 @@ class SearchTile extends StatefulWidget {
 }
 
 class _SearchTileState extends State<SearchTile> {
-  late Item item;
-
   @override
   Widget build(BuildContext context) {
     return Consumer<MosaicData>(
       builder: (context, mosaicData, child) {
-        item = mosaicData.searchResults[widget.index];
+        final Item item = mosaicData.searchResults[widget.index];
         return ListTile(
           minTileHeight: AppStyles.thumbSizeHeight,
           leading: item.thumb == null
@@ -56,7 +54,7 @@ class _SearchTileState extends State<SearchTile> {
           trailing: IconButton(
             onPressed: () async {
               if (item.isAdded) {
-                showDeletePopUp();
+                showDeletePopUp(item);
               } else {
                 await context.read<MosaicData>().addOrUpdateItem(
                   item,
@@ -74,7 +72,7 @@ class _SearchTileState extends State<SearchTile> {
     );
   }
 
-  void showDeletePopUp() {
+  void showDeletePopUp(Item item) {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(

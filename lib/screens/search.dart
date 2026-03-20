@@ -101,21 +101,18 @@ class _SearchState extends State<Search> {
                       ),
                       suffixIcon: Icon(Icons.search),
                       enabledBorder: const OutlineInputBorder(
-                        // width: 0.0 produces a thin "hairline" border
                         borderSide: BorderSide(
                           color: AppStyles.blue,
                           width: 2.0,
                         ),
                       ),
                       focusedBorder: const OutlineInputBorder(
-                        // width: 0.0 produces a thin "hairline" border
                         borderSide: BorderSide(
                           color: AppStyles.blue,
                           width: 2.0,
                         ),
                       ),
                       border: OutlineInputBorder(
-                        // width: 0.0 produces a thin "hairline" border
                         borderSide: BorderSide(
                           color: AppStyles.darkGrey,
                           width: 0.0,

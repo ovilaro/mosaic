@@ -5,6 +5,7 @@ import 'package:mosaic/screens/search.dart';
 import 'package:mosaic/screens/settings.dart';
 import 'package:mosaic/screens/waterfall_items.dart';
 import 'package:mosaic/styles/app_styles.dart';
+import 'package:mosaic/widgets/lazy_indexed_stack.dart';
 
 enum MainAppBarType { notStarted, inProgress, finished, settings }
 
@@ -21,7 +22,7 @@ class _MainNavigationBarState extends State<MainNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
+      body: LazyIndexedStack(
         index: currentPageIndex,
         children: const [
           WaterfallItems(mainAppBarType: MainAppBarType.notStarted),
@@ -31,7 +32,9 @@ class _MainNavigationBarState extends State<MainNavigationBar> {
         ],
       ),
       bottomNavigationBar: NavigationBar(
+        height: 56,
         selectedIndex: currentPageIndex,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
         onDestinationSelected: (index) {
           setState(() {
             currentPageIndex = index;
@@ -41,22 +44,26 @@ class _MainNavigationBarState extends State<MainNavigationBar> {
           NavigationDestination(
             icon: Icon(Symbols.newsstand),
             selectedIcon: Icon(Symbols.newsstand, weight: 700),
-            label: 'Not Started',
+            label: '',
+            tooltip: 'Not Started',
           ),
           NavigationDestination(
             icon: Icon(Symbols.table_eye),
             selectedIcon: Icon(Symbols.table_eye, weight: 700),
-            label: 'In Progress',
+            label: '',
+            tooltip: 'In Progress',
           ),
           NavigationDestination(
             icon: Icon(Symbols.inventory_2),
             selectedIcon: Icon(Symbols.inventory_2, weight: 700),
-            label: 'Finished',
+            label: '',
+            tooltip: 'Finished',
           ),
           NavigationDestination(
             icon: Icon(Symbols.settings),
             selectedIcon: Icon(Symbols.settings, weight: 700),
-            label: 'Settings',
+            label: '',
+            tooltip: 'Settings',
           ),
         ],
       ),
