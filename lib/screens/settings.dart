@@ -49,6 +49,16 @@ class Settings extends StatelessWidget {
                 );
               },
             ),
+            AppStyles.sizedBox20,
+            Text("Accessibility", style: AppStyles.h2),
+            AppStyles.sizedBox10,
+            SwitchListTile(
+              title: const Text("Show Navigation Labels"),
+              value: mosaicData.navBarLabelsEnabled,
+              onChanged: (value) async {
+                await mosaicData.setNavBarLabelsEnabled(value);
+              },
+            ),
           ],
         ),
       ),

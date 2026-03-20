@@ -18,9 +18,11 @@ class MosaicData extends ChangeNotifier {
   bool searching = false;
   AppThemePreference appThemePreference = AppThemePreference.device;
   Brightness? _appliedBrightness;
+  bool navBarLabelsEnabled = false;
 
   init() async {
     await Database.instance.init(onData);
+    navBarLabelsEnabled = Preferences.instance.getNavBarLabelsEnabled();
   }
 
   void onData(void event) {
@@ -281,5 +283,14 @@ class MosaicData extends ChangeNotifier {
     _appliedBrightness = resolvedBrightness;
     notifyListeners();
     return true;
+  }
+
+  Future<bool> setNavBarLabelsEnabled(bool value) async {
+    bool result = await Preferences.instance.setNavBarLabelsEnabled(value);
+    if (result) {
+      navBarLabelsEnabled = value;
+      notifyListeners();
+    }
+    return result;
   }
 }

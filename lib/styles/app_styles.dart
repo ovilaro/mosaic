@@ -73,29 +73,17 @@ class AppStyles {
   static const SizedBox sizedBox20 = SizedBox(width: 20, height: 20);
   static const SizedBox sizedBox40 = SizedBox(width: 40, height: 40);
 
-  static TextStyle get h1 => TextStyle(
-    fontSize: 32,
-    fontWeight: FontWeight.w700,
-    color: veryDarkGrey,
-  );
+  static TextStyle get h1 =>
+      TextStyle(fontSize: 32, fontWeight: FontWeight.w700, color: veryDarkGrey);
 
-  static TextStyle get h2 => TextStyle(
-    fontSize: 24,
-    fontWeight: FontWeight.w600,
-    color: darkGrey,
-  );
+  static TextStyle get h2 =>
+      TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: darkGrey);
 
-  static TextStyle get h3 => TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w500,
-    color: mediumGrey,
-  );
+  static TextStyle get h3 =>
+      TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: mediumGrey);
 
-  static TextStyle get normalPrimary => TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w400,
-    color: lightGrey,
-  );
+  static TextStyle get normalPrimary =>
+      TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: lightGrey);
 
   static TextStyle get normalSecundary => TextStyle(
     fontSize: 14,
@@ -103,17 +91,11 @@ class AppStyles {
     color: veryLightGrey,
   );
 
-  static TextStyle get normalTertiary => TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.w400,
-    color: darkWhite,
-  );
+  static TextStyle get normalTertiary =>
+      TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: darkWhite);
 
-  static TextStyle get buttonsActions => TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w600,
-    color: darkGrey,
-  );
+  static TextStyle get buttonsActions =>
+      TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: darkGrey);
 
   static ButtonStyle get segmentedStyle => ButtonStyle(
     textStyle: WidgetStateProperty.resolveWith((state) {
@@ -236,4 +218,6 @@ class AppStyles {
 
   static const double thumbSizeWidth = 60;
   static const double thumbSizeHeight = 60;
+
+  static const double navBarCompactHeight = 56;
 }

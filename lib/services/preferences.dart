@@ -63,4 +63,12 @@ class Preferences {
     String key = "AppThemePreference";
     return await prefs.setString(key, preference.storageValue);
   }
+
+  bool getNavBarLabelsEnabled() {
+    return prefs.getBool("NavBarLabelsEnabled") ?? false;
+  }
+
+  Future<bool> setNavBarLabelsEnabled(bool value) async {
+    return await prefs.setBool("NavBarLabelsEnabled", value);
+  }
 }
