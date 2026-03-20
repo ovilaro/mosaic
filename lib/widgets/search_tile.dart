@@ -6,9 +6,10 @@ import 'package:mosaic/styles/app_styles.dart';
 import 'package:provider/provider.dart';
 
 class SearchTile extends StatefulWidget {
-  const SearchTile({super.key, required this.index});
+  const SearchTile({super.key, required this.index, this.targetStatus});
 
   final int index;
+  final ItemStatus? targetStatus;
 
   @override
   State<SearchTile> createState() => _SearchTileState();
@@ -57,7 +58,10 @@ class _SearchTileState extends State<SearchTile> {
               if (item.isAdded) {
                 showDeletePopUp();
               } else {
-                await context.read<MosaicData>().addOrUpdateItem(item);
+                await context.read<MosaicData>().addOrUpdateItem(
+                  item,
+                  status: widget.targetStatus,
+                );
               }
             },
             icon: Icon(

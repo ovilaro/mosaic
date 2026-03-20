@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mosaic/models/item.dart';
 import 'package:mosaic/provider/mosaic_data.dart';
 import 'package:mosaic/screens/filters.dart';
 import 'package:mosaic/styles/app_styles.dart';
@@ -6,7 +7,9 @@ import 'package:mosaic/widgets/search_tile.dart';
 import 'package:provider/provider.dart';
 
 class Search extends StatefulWidget {
-  const Search({super.key});
+  const Search({super.key, this.targetStatus});
+
+  final ItemStatus? targetStatus;
 
   @override
   State<Search> createState() => _SearchState();
@@ -44,9 +47,7 @@ class _SearchState extends State<Search> {
                   showModalBottomSheet(
                     context: context,
                     builder: (BuildContext context) {
-                      return Filters(
-                        filterRange: FilterRange.search,
-                      );
+                      return Filters(filterRange: FilterRange.search);
                     },
                     isScrollControlled: true,
                     useSafeArea: true,
@@ -79,7 +80,10 @@ class _SearchState extends State<Search> {
                               i < mosaicData.searchResults.length;
                               i++
                             )
-                              SearchTile(index: i),
+                              SearchTile(
+                                index: i,
+                                targetStatus: widget.targetStatus,
+                              ),
                           ],
                         ),
                 ),

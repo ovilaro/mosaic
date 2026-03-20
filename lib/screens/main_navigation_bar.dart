@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:mosaic/models/item.dart';
 import 'package:mosaic/screens/search.dart';
 import 'package:mosaic/screens/settings.dart';
 import 'package:mosaic/screens/waterfall_items.dart';
@@ -17,198 +17,70 @@ class MainNavigationBar extends StatefulWidget {
 
 class _MainNavigationBarState extends State<MainNavigationBar> {
   int currentPageIndex = 0;
-  static const _tabs = <MainAppBarType>[
-    MainAppBarType.notStarted,
-    MainAppBarType.inProgress,
-    MainAppBarType.finished,
-    MainAppBarType.settings,
-  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BottomBar(
-        clip: Clip.none,
-        fit: StackFit.expand,
-        hideOnScroll: true,
-        borderRadius: BorderRadius.circular(16),
-        duration: const Duration(milliseconds: 450),
-        curve: Curves.easeOutQuint,
-        width: MediaQuery.of(context).size.width * 0.9,
-        barColor: AppStyles.darkWhite,
-        offset: 10,
-        barAlignment: Alignment.bottomCenter,
-        iconHeight: 26,
-        iconWidth: 26,
-        body: (context, controller) {
-          return _buildPage(currentPageIndex, controller);
-        },
-        child: SizedBox(
-          height: 58,
-          child: Stack(
-            clipBehavior: Clip.none,
-            alignment: Alignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    const indicatorWidth = 22.0;
-                    const indicatorHeight = 5.0;
-                    final slotWidth = constraints.maxWidth / 5;
-                    final left =
-                        (slotWidth * _slotForTab(currentPageIndex)) +
-                        ((slotWidth - indicatorWidth) / 2);
-
-                    return Stack(
-                      children: [
-                        Positioned.fill(
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: Row(
-                              children: [
-                                Expanded(child: _buildNavButton(0)),
-                                Expanded(child: _buildNavButton(1)),
-                                const Expanded(child: SizedBox.shrink()),
-                                Expanded(child: _buildNavButton(2)),
-                                Expanded(child: _buildNavButton(3)),
-                              ],
-                            ),
-                          ),
-                        ),
-                        AnimatedPositioned(
-                          duration: const Duration(milliseconds: 260),
-                          curve: Curves.easeOutCubic,
-                          left: left,
-                          bottom: 1,
-                          child: Container(
-                            width: indicatorWidth,
-                            height: indicatorHeight,
-                            decoration: BoxDecoration(
-                              color: AppStyles.blue,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-              Positioned(
-                top: -18,
-                child: GestureDetector(
-                  onTap: _openSearch,
-                  child: Container(
-                    width: 56,
-                    height: 56,
-                    decoration: BoxDecoration(
-                      color: AppStyles.blue,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppStyles.blue.withValues(alpha: 0.35),
-                          blurRadius: 14,
-                          offset: const Offset(0, 6),
-                        ),
-                      ],
-                    ),
-                    child: const Icon(
-                      Icons.add,
-                      color: AppStyles.white,
-                      size: 30,
-                      weight: 700,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+      body: IndexedStack(
+        index: currentPageIndex,
+        children: const [
+          WaterfallItems(mainAppBarType: MainAppBarType.notStarted),
+          WaterfallItems(mainAppBarType: MainAppBarType.inProgress),
+          WaterfallItems(mainAppBarType: MainAppBarType.finished),
+          Settings(),
+        ],
       ),
-    );
-  }
-
-  Widget _buildPage(int index, ScrollController controller) {
-    final type = _tabs[index];
-    if (type == MainAppBarType.settings) {
-      return const Settings(key: PageStorageKey(MainAppBarType.settings));
-    }
-
-    return WaterfallItems(
-      key: PageStorageKey(type),
-      mainAppBarType: type,
-      scrollController: controller,
-    );
-  }
-
-  IconData _iconForTab(int index) {
-    switch (_tabs[index]) {
-      case MainAppBarType.notStarted:
-        return Symbols.newsstand;
-      case MainAppBarType.inProgress:
-        return Symbols.table_eye;
-      case MainAppBarType.finished:
-        return Symbols.inventory_2;
-      case MainAppBarType.settings:
-        return Symbols.settings;
-    }
-  }
-
-  Widget _buildNavButton(int index) {
-    final isSelected = index == currentPageIndex;
-    return Material(
-      type: MaterialType.transparency,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        hoverColor: Colors.transparent,
-        focusColor: Colors.transparent,
-        overlayColor: const WidgetStatePropertyAll(Colors.transparent),
-        onTap: () {
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: currentPageIndex,
+        onDestinationSelected: (index) {
           setState(() {
             currentPageIndex = index;
           });
         },
-        child: SizedBox.expand(
-          child: Center(
-            child: AnimatedScale(
-              scale: isSelected ? 1.06 : 1,
-              duration: const Duration(milliseconds: 220),
-              curve: Curves.easeOut,
-              child: Icon(
-                _iconForTab(index),
-                color: isSelected ? AppStyles.blue : AppStyles.veryDarkGrey,
-                size: 25,
-                weight: 700,
-              ),
-            ),
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Symbols.newsstand),
+            selectedIcon: Icon(Symbols.newsstand, weight: 700),
+            label: 'Not Started',
           ),
-        ),
+          NavigationDestination(
+            icon: Icon(Symbols.table_eye),
+            selectedIcon: Icon(Symbols.table_eye, weight: 700),
+            label: 'In Progress',
+          ),
+          NavigationDestination(
+            icon: Icon(Symbols.inventory_2),
+            selectedIcon: Icon(Symbols.inventory_2, weight: 700),
+            label: 'Finished',
+          ),
+          NavigationDestination(
+            icon: Icon(Symbols.settings),
+            selectedIcon: Icon(Symbols.settings, weight: 700),
+            label: 'Settings',
+          ),
+        ],
       ),
+      floatingActionButton: currentPageIndex != 3
+          ? FloatingActionButton(
+              onPressed: _openSearch,
+              backgroundColor: AppStyles.blue,
+              child: const Icon(Icons.add, color: AppStyles.white, size: 30),
+            )
+          : null,
     );
   }
 
-  int _slotForTab(int tabIndex) {
-    switch (tabIndex) {
-      case 0:
-        return 0;
-      case 1:
-        return 1;
-      case 2:
-        return 3;
-      case 3:
-        return 4;
-      default:
-        return 0;
-    }
-  }
-
   void _openSearch() {
+    ItemStatus status = switch (currentPageIndex) {
+      0 => ItemStatus.notStarted,
+      1 => ItemStatus.inProgress,
+      2 => ItemStatus.finished,
+      _ => ItemStatus.notStarted,
+    };
+
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const Search()),
+      MaterialPageRoute(builder: (context) => Search(targetStatus: status)),
     );
   }
 }

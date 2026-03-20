@@ -84,7 +84,10 @@ class MosaicData extends ChangeNotifier {
     searchResults.clear();
   }
 
-  addOrUpdateItem(Item item) async {
+  addOrUpdateItem(Item item, {ItemStatus? status}) async {
+    if (status != null) {
+      item.itemStatus = status;
+    }
     await Database.instance.write(item);
     item.isAdded = true;
     notifyListeners();
