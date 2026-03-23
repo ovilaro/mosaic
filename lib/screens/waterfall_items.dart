@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mosaic/models/item.dart';
 import 'package:mosaic/provider/mosaic_data.dart';
@@ -25,8 +26,8 @@ class WaterfallItems extends StatelessWidget {
         ItemStatus status = switch (mainAppBarType) {
           MainAppBarType.notStarted => ItemStatus.notStarted,
           MainAppBarType.inProgress => ItemStatus.inProgress,
-          MainAppBarType.finished   => ItemStatus.finished,
-          MainAppBarType.settings   => ItemStatus.notStarted,
+          MainAppBarType.finished => ItemStatus.finished,
+          MainAppBarType.settings => ItemStatus.notStarted,
         };
         var items = mosaicData.getItemsWithStatus(status);
         return Scaffold(
@@ -45,9 +46,7 @@ class WaterfallItems extends StatelessWidget {
                   await showModalBottomSheet(
                     context: context,
                     builder: (BuildContext context) {
-                      return Filters(
-                        filterRange: FilterRange.list,
-                      );
+                      return Filters(filterRange: FilterRange.list);
                     },
                     isScrollControlled: true,
                     useSafeArea: true,
@@ -87,13 +86,17 @@ class WaterfallItems extends StatelessWidget {
                   ? LastChildLayoutType.foot
                   : LastChildLayoutType.none,
               collectGarbage: (List<int> garbages) {
-                ///collectGarbage
-                // for (var index in garbages) {
-                //   final provider = ExtendedNetworkImageProvider(
-                //     _list[index].imageUrl,
-                //   );
-                //   provider.evict();
-                // }
+                for (var index in garbages) {
+                  if (index < items.length) {
+                    final item = items[index];
+                    if (item.coverBig != null) {
+                      final provider = CachedNetworkImageProvider(
+                        item.coverBig!,
+                      );
+                      PaintingBinding.instance.imageCache.evict(provider);
+                    }
+                  }
+                }
               },
             ),
             itemBuilder: (BuildContext context, int index) {
@@ -105,12 +108,13 @@ class WaterfallItems extends StatelessWidget {
     );
   }
 
-  String getAppBarTitle(MainAppBarType mainAppBarType) => switch (mainAppBarType) {
-    MainAppBarType.notStarted => "Not Started",
-    MainAppBarType.inProgress => "In Progress",
-    MainAppBarType.finished   => "Finished",
-    MainAppBarType.settings   => "",
-  };
+  String getAppBarTitle(MainAppBarType mainAppBarType) =>
+      switch (mainAppBarType) {
+        MainAppBarType.notStarted => "Not Started",
+        MainAppBarType.inProgress => "In Progress",
+        MainAppBarType.finished => "Finished",
+        MainAppBarType.settings => "",
+      };
 
   Future<void> sortAction(BuildContext context, MosaicData mosaicData) async {
     ItemOrder order = mosaicData.getItemOrder();
