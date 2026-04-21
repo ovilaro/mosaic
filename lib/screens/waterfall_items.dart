@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mosaic/models/item.dart';
 import 'package:mosaic/provider/mosaic_data.dart';
@@ -82,22 +81,22 @@ class WaterfallItems extends StatelessWidget {
               /// show no more item at trailing when children are not full of viewport
               /// if children is full of viewport, it's the same as fullCrossAxisExtend
               //  LastChildLayoutType.foot,
-              lastChildLayoutTypeBuilder: (index) => index == items.length
-                  ? LastChildLayoutType.foot
-                  : LastChildLayoutType.none,
-              collectGarbage: (List<int> garbages) {
-                for (var index in garbages) {
-                  if (index < items.length) {
-                    final item = items[index];
-                    if (item.coverBig != null) {
-                      final provider = CachedNetworkImageProvider(
-                        item.coverBig!,
-                      );
-                      PaintingBinding.instance.imageCache.evict(provider);
-                    }
-                  }
-                }
-              },
+              // lastChildLayoutTypeBuilder: (index) => index == items.length
+              //     ? LastChildLayoutType.foot
+              //     : LastChildLayoutType.none,
+              // collectGarbage: (List<int> garbages) {
+              //   for (var index in garbages) {
+              //     if (index < items.length) {
+              //       final item = items[index];
+              //       if (item.coverBig != null) {
+              //         final provider = CachedNetworkImageProvider(
+              //           item.coverBig!,
+              //         );
+              //         PaintingBinding.instance.imageCache.evict(provider);
+              //       }
+              //     }
+              //   }
+              // },
             ),
             itemBuilder: (BuildContext context, int index) {
               return WaterfallItem(item: items[index]);

@@ -7,6 +7,7 @@ import 'package:mosaic/widgets/item_category_ribbon.dart';
 
 class WaterfallItem extends StatelessWidget {
   const WaterfallItem({super.key, required this.item});
+  static const witdh = 300.0;
 
   final Item item;
   static const Color _nameOverlayColor = Color(0x99212529);
@@ -23,7 +24,7 @@ class WaterfallItem extends StatelessWidget {
         clipBehavior: Clip.hardEdge,
         color: AppStyles.veryLightGrey,
         child: SizedBox(
-          width: 300,
+          width: witdh,
           child: Stack(
             children: [
               Hero(
@@ -34,6 +35,7 @@ class WaterfallItem extends StatelessWidget {
                     item.coverBig == null
                         ? AppStyles.coverPlaceholderImage
                         : CachedNetworkImage(
+                            memCacheWidth: witdh.toInt(),
                             imageUrl: item.coverBig!,
                             fadeInDuration: const Duration(milliseconds: 120),
                             fadeOutDuration: const Duration(milliseconds: 120),
