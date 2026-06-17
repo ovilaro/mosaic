@@ -9,11 +9,12 @@ This file provides guidance for AI agents working on the Mosaic codebase.
 Splash
 ├── Preferences.init()
 ├── MosaicData.initAppThemePreference(deviceBrightness)
-├── Database.init(onData callback)
+├── MosaicData.init()
+│   └── Database.init(onData callback)
 └── MosaicData.readItems()
     └── MainNavigationBar (pushReplacement)
 ```
-The `Splash` screen performs a sequential bootstrap: initializes SharedPreferences, resolves the theme, opens the Isar database, and finally reads all items into memory before navigating to the main UI.
+The `Splash` screen performs a sequential bootstrap: initializes SharedPreferences, resolves the theme, opens the Isar database (via `MosaicData.init()`), and finally reads all items into memory before navigating to the main UI.
 
 ### Navigation Structure
 - **4-tab `NavigationBar`** backed by `LazyIndexedStack` (preserves page state and enables lazy loading).
@@ -28,7 +29,7 @@ APIs (IGDB / Open Library)
     → MosaicData ChangeNotifier
       → UI via context.watch<MosaicData>() or Consumer<MosaicData>
 ```
-All service classes are singletons using the `_internal()` pattern. `MosaicData` is the single source of truth for UI state.
+`Database` and `Preferences` are singletons using the `_internal()` pattern. `IgdbService` and `OpenLibraryService` are regular classes instantiated directly in `MosaicData`. `MosaicData` is the single source of truth for UI state.
 
 ---
 
@@ -119,7 +120,7 @@ These re-traverse nested objects on **every access**:
 ## Search Implementation
 
 1. **Debounced Input:** `Search` stateful widget waits 750ms of idle typing before calling `MosaicData.search()`.
-2. **Parallel API Calls:** IGDB and Open Library are queried concurrently based on filter toggles.
+2. **Sequential API Calls:** IGDB and Open Library are queried sequentially (not concurrently) based on filter toggles. IGDB search completes before Open Library search begins.
 3. **Interleaving:** Results from both APIs are interleaved (game, book, game, book...) up to the max length of the two result sets.
 4. **Added Check (N+1):** After building the result list, each item individually calls `Database.instance.isApiIdAdded()`. **Known issue:** This is an N+1 query.
 5. **Filter Modal:** A `showModalBottomSheet` with `isScrollControlled: true` allows toggling which categories participate in search.
@@ -155,14 +156,14 @@ These re-traverse nested objects on **every access**:
 ## Critical Issues to Address
 
 ### Bugs (All Unfixed - Verified 2026-03-20)
-- **Inverted filter logic** in `MosaicData.isAnyFilterEnabled()` (`lib/provider/mosaic_data.dart:219`) - Returns `true` when a filter is disabled. Should be: `if (getFilterEnabled(category, filterRange)) return true;`
+- **Inverted filter logic** in `MosaicData.isAnyFilterEnabled()` (`lib/provider/mosaic_data.dart:220`) - Returns `true` when a filter is disabled. Should be: `if (getFilterEnabled(category, filterRange)) return true;`
 - **Open Library Edition URL** (`lib/services/open_library_service.dart:115`) - `getEditionDetails()` uses `/works/` but should use `/books/` for the editions API
 - **API field typo** (`lib/services/open_library_service.dart:82`) - `exerpts` should be `excerpts` - excerpts won't be returned from API
 - **Stream subscription leak** in `lib/services/database.dart:19` - `.listen()` result is not stored for disposal
 - **Missing error handling** - All async operations lack try-catch blocks, especially in `updateDetailInfoIfNeeded()`
 
 ### Code Quality (Unfixed)
-- **N+1 query problem** in search (`lib/provider/mosaic_data.dart:73-75`) - Loops through results calling `isApiIdAdded()` individually instead of batching
+- **N+1 query problem** in search (`lib/provider/mosaic_data.dart:75-77`) - Loops through results calling `isApiIdAdded()` individually instead of batching
 
 ---
 
@@ -286,8 +287,6 @@ assets:
 ## Code Review Recommendations
 
 ### Current Changes Review
-- **Empty navigation labels** - Using empty strings `''` for labels reduces accessibility. Use `NavigationDestinationLabelBehavior.onlyShowSelected` instead.
-- **Hardcoded height** - Magic number `56` in `main_navigation_bar.dart:35` should be extracted to `AppStyles` (partially addressed by `AppStyles.navBarCompactHeight` but verify all occurrences).
 - **LazyIndexedStack const requirement** - Children MUST be const widgets for proper caching (documented in class dartdoc).
 - **Untracked file** - `AGENTS.md` should be committed if it's part of project documentation.
 
@@ -296,3 +295,5 @@ assets:
 - ✅ **LazyIndexedStack optimization** - Removed child change detection logic (relies on const children as documented).
 - ✅ **LazyIndexedStack robustness** - Removed redundant bounds checks (guaranteed by assertions).
 - ✅ **Navigation accessibility** - Added `tooltip` properties for screen reader support.
+- ✅ **Navigation labels** - Labels use proper strings (`'Not Started'`, `'In Progress'`, etc.) with `tooltip`, not empty strings.
+- ✅ **Nav bar height** - Extracted to `AppStyles.navBarCompactHeight` (`app_styles.dart:222`) instead of magic number.
