@@ -34,6 +34,7 @@ Mosaic is a leisure management app that lets you catalog and track your games an
 ### Prerequisites
 
 - [Flutter SDK](https://docs.flutter.dev/get-started/install) (^3.12.0)
+- [JDK 17](https://adoptium.net/) (required by share_plus 13+ and AGP 8.12+)
 - IGDB API credentials — [Get them here](https://dev.igdb.com/)
 - Open Library User-Agent — [Policy here](https://openlibrary.org/developers)
 
