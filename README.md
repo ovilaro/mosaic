@@ -18,7 +18,7 @@ Mosaic is a leisure management app that lets you catalog and track your games an
 ## Tech Stack
 
 | Layer | Technology |
-|-------|-----------|
+|---|---|
 | Framework | Flutter (Dart) |
 | State Management | Provider |
 | Local Database | Isar Community |
@@ -28,6 +28,10 @@ Mosaic is a leisure management app that lets you catalog and track your games an
 | Image Caching | CachedNetworkImage |
 | Layout | waterfall_flow |
 | Env Config | flutter_dotenv |
+| Icons (sort) | flutter_svg |
+| Icons (UI) | material_symbols_icons |
+| HTTP client | http |
+| File system | path_provider |
 
 ## Getting Started
 
@@ -64,7 +68,8 @@ Mosaic is a leisure management app that lets you catalog and track your games an
 
 ```
 lib/
-├── models/          # Data models (Item, IgdbGame, OpenLibrary)
+├── main.dart        # App entry point; loads .env, validates keys, wires Provider + MaterialApp
+├── models/          # Data models (Item, IgdbGame, OpenLibrary, AppThemePreference, IgdbAuthResult)
 ├── provider/        # MosaicData — central state (ChangeNotifier)
 ├── screens/         # UI screens
 │   ├── splash.dart

@@ -62,6 +62,13 @@ These re-traverse nested objects on **every access**:
 - `summary` — IGDB summary or Open Library description
 - `storyInfo` / `itemInfo` — Maps of metadata for the detail screen
 
+### Static Helper Methods
+Static methods on `Item` used by widgets that render the collection and detail screens (located in `lib/models/item.dart`):
+- `Item.getCategoryIcon(ItemCategory)` — Returns a `material_symbols_icons` `IconData` for the category ribbon, search tile, and filter chips.
+- `Item.getCategoryString(ItemCategory)` — Returns the human-readable category name (`"Games"` / `"Books"`) used in the filter modal.
+- `Item.getOrderIcon(ItemOrder, {Color? color})` — Returns a tinted `flutter_svg` `SvgPicture` from `assets/icons/sort-*.svg`, rendered in the `WaterfallItems` app bar leading button.
+- `Item.getOrderString(ItemOrder)` — Returns the snackbar text for the current sort order (e.g. `"Sort by date modified descending"`).
+
 ### Embedded Models Requiring `build_runner`
 - `IgdbGame`, `IgdbCover`, `IgdbGameInfo`, `GameType`
 - `OpenLibrarySearch`, `OpenLibrarySearchDoc`, `OpenLibraryEditions`, `OpenLibraryEditionsDoc`
@@ -133,6 +140,7 @@ These re-traverse nested objects on **every access**:
 - **Lazy Detail Loading:** If `needsDetailRequest == true`, it triggers `updateDetailInfoIfNeeded()` and displays a `RefreshProgressIndicator`.
 - **Hero Animation:** `Hero(tag: item.id)` wraps the cover image for a seamless transition from grid to detail.
 - **Status Toggle:** `SegmentedButton<ItemStatus>` allows immediate state changes.
+- **Only Update Button:** A secondary action (`"Only update"`) calls `updateItemModifiedDate(item)`, which refreshes `dateTimeModified` to now without changing the status — useful for bumping an item to the top of a modified-date sort without altering its progress.
 - **Share:** Downloads cover image bytes via `http.get()`, constructs an `XFile`, and shares via `SharePlus.instance.share()` along with summary text.
 - **Delete:** Requires a confirmation `AlertDialog` via `deleteItemApiId()`.
 
@@ -155,7 +163,7 @@ These re-traverse nested objects on **every access**:
 
 ## Critical Issues to Address
 
-### Bugs (All Unfixed - Verified 2026-03-20)
+### Bugs (All Unfixed - Verified 2026-06-28)
 - **Inverted filter logic** in `MosaicData.isAnyFilterEnabled()` (`lib/provider/mosaic_data.dart:220`) - Returns `true` when a filter is disabled. Should be: `if (getFilterEnabled(category, filterRange)) return true;`
 - **Open Library Edition URL** (`lib/services/open_library_service.dart:115`) - `getEditionDetails()` uses `/works/` but should use `/books/` for the editions API
 - **API field typo** (`lib/services/open_library_service.dart:82`) - `exerpts` should be `excerpts` - excerpts won't be returned from API
@@ -228,12 +236,33 @@ dart run build_runner watch         # Auto-regenerate on changes
 ## File Locations
 
 - **State:** `lib/provider/mosaic_data.dart`
-- **Models:** `lib/models/` (Item, IgdbGame, OpenLibrary)
+- **Models:** `lib/models/` (Item, IgdbGame, OpenLibrary, AppThemePreference, IgdbAuthResult)
 - **Services:** `lib/services/` (Database, Preferences, IgdbService, OpenLibraryService)
-- **Screens:** `lib/screens/` (Splash, MainNavigationBar, WaterfallItems, Search, ItemDetail, Settings)
+- **Screens:** `lib/screens/` (Splash, MainNavigationBar, WaterfallItems, Search, Filters, ItemDetail, Settings)
 - **Styles:** `lib/styles/app_styles.dart`
-- **Widgets:** `lib/widgets/` (LazyIndexedStack, WaterfallItem, SearchTile, etc.)
+- **Widgets:** `lib/widgets/` (LazyIndexedStack, WaterfallItem, SearchTile, FiltersCategory, ItemCategoryRibbon, ItemInfoTable)
 - **API Keys:** `lib/api_keys.dart` (loads from `.env` file)
+
+### Enums
+
+| Enum | Location | Values | Purpose |
+|---|---|---|---|
+| `ItemCategory` | `lib/models/item.dart` | `game`, `book` | Polymorphic discriminator for `Item` (game vs book). |
+| `ItemStatus` | `lib/models/item.dart` | `notStarted`, `inProgress`, `finished` | Progress bucket shown on the 3 waterfall tabs and detail screen segmented button. |
+| `ItemOrder` | `lib/models/item.dart` | `addedAsc`, `addedDesc`, `modifiedAsc`, `modifiedDesc` | Sort order for waterfall grids, cycled by the app bar leading button. |
+| `AppThemePreference` | `lib/models/app_theme_preference.dart` | `white`, `black`, `device` | Persisted theme choice; resolves to `ThemeMode.light/dark/system` and to a `Brightness` for `AppStyles.applyBrightness`. |
+| `FilterRange` | `lib/screens/filters.dart` | `list`, `search` | Distinguishes "list view" filters from "search filters" — stored under separate SharedPreferences keys and rendered in different filter modals. |
+| `MainAppBarType` | `lib/screens/main_navigation_bar.dart` | `notStarted`, `inProgress`, `finished`, `settings` | Identifies which tab `WaterfallItems` is rendering (also used to map to `ItemStatus` and to gate the FAB). |
+
+### SharedPreferences Keys (`lib/services/preferences.dart`)
+
+| Key | Type | Default |
+|---|---|---|
+| `${ItemCategory}` (e.g. `ItemCategory.game`) | `bool` | `true` — whether the category is enabled for the list view |
+| `${ItemCategory}/${FilterRange}` (e.g. `ItemCategory.game/FilterRange.list`) | `bool` | `true` — per-category / per-filter-range toggle |
+| `ItemOrder` | `String` (enum name) | `ItemOrder.addedAsc` |
+| `AppThemePreference` | `String` (`"white"` / `"black"` / `"device"`) | `"device"` |
+| `NavBarLabelsEnabled` | `bool` | `false` |
 
 ---
 
@@ -263,8 +292,8 @@ assets:
 - ✅ **`lastChildLayoutTypeBuilder` removed** (`lib/screens/waterfall_items.dart:84-86`) — Dead code removed (condition was always false).
 
 ### Outstanding Performance Issues
-- **`getItemsWithStatus()` runs on every rebuild** (`lib/provider/mosaic_data.dart:104-133`) — Every `notifyListeners()` causes full `.where().toList()` + `.sort()`. Cache the result and invalidate only when items/order/filters change, using a dirty flag or `Selector`.
-- **`Consumer<MosaicData>` wraps entire Scaffold** (`lib/screens/waterfall_items.dart:24`) — Any MosaicData change (theme, nav labels, etc.) rebuilds entire Scaffold + grid. Use `Selector` to scope rebuilds to just the items list and filter/sort state, or move `Consumer` down to just the `body`.
+- **`getItemsWithStatus()` runs on every rebuild** (`lib/provider/mosaic_data.dart:104-134`) — Every `notifyListeners()` causes full `.where().toList()` + `.sort()`. Cache the result and invalidate only when items/order/filters change, using a dirty flag or `Selector`.
+- **`Consumer<MosaicData>` wraps entire Scaffold** (`lib/screens/waterfall_items.dart:23`) — Any MosaicData change (theme, nav labels, etc.) rebuilds entire Scaffold + grid. Use `Selector` to scope rebuilds to just the items list and filter/sort state, or move `Consumer` down to just the `body`.
 - **Computed `@ignore` getters re-traverse nested objects** (`lib/models/item.dart:106-231`) — `name`, `coverBig`, `thumb`, `shortDesc` re-traverse and recompute on every access. Cache these as `late` fields or compute once at insertion time.
 - **`search.dart` uses `ListView` with explicit `for` loop** instead of `ListView.builder`, materializing all widgets regardless of viewport.
 - **`main.dart` watches `MosaicData`** — Theme changes rebuild the entire `MaterialApp` tree, which is acceptable but should be noted if the app grows.
@@ -288,7 +317,6 @@ assets:
 
 ### Current Changes Review
 - **LazyIndexedStack const requirement** - Children MUST be const widgets for proper caching (documented in class dartdoc).
-- **Untracked file** - `AGENTS.md` should be committed if it's part of project documentation.
 
 ### Resolved Issues
 - ✅ **LazyIndexedStack documentation** - Added comprehensive class and member documentation with prominent const requirement warning.
@@ -297,3 +325,14 @@ assets:
 - ✅ **Navigation accessibility** - Added `tooltip` properties for screen reader support.
 - ✅ **Navigation labels** - Labels use proper strings (`'Not Started'`, `'In Progress'`, etc.) with `tooltip`, not empty strings.
 - ✅ **Nav bar height** - Extracted to `AppStyles.navBarCompactHeight` (`app_styles.dart:222`) instead of magic number.
+
+### Modernization (2026-06-28)
+- ✅ **Android toolchain upgraded** - Gradle 8.12→8.14, AGP 8.9.1→8.12.1, Kotlin 2.1.0→2.2.20, Java 11→17.
+- ✅ **Migrated to Flutter Built-in Kotlin** - Removed `id("kotlin-android")` plugin; added top-level `kotlin { compilerOptions { jvmTarget = JvmTarget.JVM_17 } }` DSL; set `builtInKotlin=true` and `newDsl=true` in `gradle.properties`.
+- ✅ **share_plus upgraded to 13.2.0** - Built-in Kotlin compatible; no longer applies KGP. `SharePlus.instance.share(ShareParams(...))` API is already in use in `lib/screens/item_detail.dart:50`.
+- ✅ **Dependency upgrades** - `google_fonts` 6.3.2→8.1.0, `flutter_dotenv` 5.0.2→6.0.1, `flutter_lints` 5.0.0→6.0.0, `isar_community` (+ `_flutter_libs` + `_generator`) 3.3.0→3.3.2.
+- ✅ **Added `build_runner` to `dev_dependencies`** - Was previously missing; `dart run build_runner build` now actually works for regenerating Isar schemas.
+- ✅ **iOS platform pinned to 13.0** - Uncommented `platform :ios, '13.0'` in `ios/Podfile`. Required by `share_plus 13+`.
+- ✅ **Dart SDK constraint bumped to `^3.12.0`** - Matches resolved deps (the lock's `sdks` section now records `dart: ">=3.12.0 <4.0.0"`); `share_plus 13.2.0` alone requires Dart ≥3.10.0.
+- ✅ **Lint fixes for `flutter_lints 6.0.0`** - Added `Future<void>` return types to 3 async methods in `MosaicData` (`init`, `addOrUpdateItem`, `deleteItemApiId`) — newly flagged by `strict_top_level_inference`.
+- ✅ **Isar schema regenerated** - `item.g.dart` schema version string bumped from `'3.3.0'` to `'3.3.2'`. Other `.g.dart` files were rewritten identically (no `version` string in those schemas).
