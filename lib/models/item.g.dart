@@ -108,7 +108,7 @@ const ItemSchema = CollectionSchema(
   getId: _itemGetId,
   getLinks: _itemGetLinks,
   attach: _itemAttach,
-  version: '3.3.0',
+  version: '3.3.2',
 );
 
 int _itemEstimateSize(

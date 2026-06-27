@@ -20,7 +20,7 @@ class MosaicData extends ChangeNotifier {
   Brightness? _appliedBrightness;
   bool navBarLabelsEnabled = false;
 
-  init() async {
+  Future<void> init() async {
     await Database.instance.init(onData);
     navBarLabelsEnabled = Preferences.instance.getNavBarLabelsEnabled();
   }
@@ -86,7 +86,7 @@ class MosaicData extends ChangeNotifier {
     searchResults.clear();
   }
 
-  addOrUpdateItem(Item item, {ItemStatus? status}) async {
+  Future<void> addOrUpdateItem(Item item, {ItemStatus? status}) async {
     if (status != null) {
       item.itemStatus = status;
     }
@@ -95,7 +95,7 @@ class MosaicData extends ChangeNotifier {
     notifyListeners();
   }
 
-  deleteItemApiId(Item item) async {
+  Future<void> deleteItemApiId(Item item) async {
     await Database.instance.deleteItemApiId(item);
     item.isAdded = false;
     notifyListeners();
