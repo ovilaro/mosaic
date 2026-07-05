@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:mosaic/models/item.dart';
 import 'package:mosaic/provider/mosaic_data.dart';
 import 'package:mosaic/screens/filters.dart';
+import 'package:mosaic/screens/item_detail.dart';
 import 'package:mosaic/screens/main_navigation_bar.dart';
+import 'package:mosaic/screens/search.dart';
 import 'package:mosaic/styles/app_styles.dart';
 import 'package:mosaic/widgets/waterfall_item.dart';
 import 'package:provider/provider.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 
-class WaterfallItems extends StatelessWidget {
+class WaterfallItems extends StatefulWidget {
   const WaterfallItems({
     super.key,
     required this.mainAppBarType,
@@ -19,91 +21,149 @@ class WaterfallItems extends StatelessWidget {
   final ScrollController? scrollController;
 
   @override
+  State<WaterfallItems> createState() => _WaterfallItemsState();
+}
+
+class _WaterfallItemsState extends State<WaterfallItems> {
+  static const double _twoPaneBreakpoint = 900;
+  static const double _masterPaneWidth = 380;
+
+  int? _selectedItemId;
+
+  ItemStatus get _status => switch (widget.mainAppBarType) {
+    MainAppBarType.notStarted => ItemStatus.notStarted,
+    MainAppBarType.inProgress => ItemStatus.inProgress,
+    MainAppBarType.finished => ItemStatus.finished,
+    MainAppBarType.settings => ItemStatus.notStarted,
+  };
+
+  @override
   Widget build(BuildContext context) {
+    final isTwoPane =
+        MediaQuery.sizeOf(context).width >= _twoPaneBreakpoint;
     return Consumer<MosaicData>(
       builder: (context, mosaicData, child) {
-        ItemStatus status = switch (mainAppBarType) {
-          MainAppBarType.notStarted => ItemStatus.notStarted,
-          MainAppBarType.inProgress => ItemStatus.inProgress,
-          MainAppBarType.finished => ItemStatus.finished,
-          MainAppBarType.settings => ItemStatus.notStarted,
-        };
-        var items = mosaicData.getItemsWithStatus(status);
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(getAppBarTitle(mainAppBarType)),
-            leading: IconButton(
-              onPressed: () => sortAction(context, mosaicData),
-              icon: Item.getOrderIcon(
-                mosaicData.getItemOrder(),
-                color: AppStyles.darkGrey,
+        var items = mosaicData.getItemsWithStatus(_status);
+
+        if (_selectedItemId != null &&
+            !items.any((i) => i.id == _selectedItemId)) {
+          _selectedItemId = null;
+        }
+
+        final grid = _buildGrid(mosaicData, items, isTwoPane);
+
+        if (!isTwoPane) {
+          return Scaffold(
+            appBar: _buildAppBar(mosaicData),
+            body: grid,
+            floatingActionButton: _buildFab(),
+          );
+        }
+
+        return Row(
+          children: [
+            SizedBox(
+              width: _masterPaneWidth,
+              child: Scaffold(
+                appBar: _buildAppBar(mosaicData),
+                body: grid,
+                floatingActionButton: _buildFab(),
               ),
             ),
-            actions: [
-              IconButton(
-                onPressed: () async {
-                  await showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Filters(filterRange: FilterRange.list);
-                    },
-                    isScrollControlled: true,
-                    useSafeArea: true,
-                  );
-                },
-                icon: Icon(
-                  Icons.filter_alt,
-                  color: mosaicData.isAnyFilterEnabled(FilterRange.list)
-                      ? AppStyles.blue
-                      : AppStyles.darkGrey,
-                ),
-              ),
-            ],
-          ),
-          body: WaterfallFlow.builder(
-            controller: scrollController,
-            itemCount: items.length,
-            gridDelegate: SliverWaterfallFlowDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: MediaQuery.of(context).size.width > 600
-                  ? 250
-                  : 300,
-              // gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
-              //   crossAxisCount: MediaQuery.of(context).size.width > 600 ? 4 : 2,
-              // crossAxisSpacing: 5.0,
-              // mainAxisSpacing: 5.0,
-
-              /// follow max child trailing layout offset and layout with full cross axis extend
-              /// last child as loadmore item/no more item in [GridView] and [WaterfallFlow]
-              /// with full cross axis extend
-              //  LastChildLayoutType.fullCrossAxisExtend,
-
-              /// as foot at trailing and layout with full cross axis extend
-              /// show no more item at trailing when children are not full of viewport
-              /// if children is full of viewport, it's the same as fullCrossAxisExtend
-              //  LastChildLayoutType.foot,
-              // lastChildLayoutTypeBuilder: (index) => index == items.length
-              //     ? LastChildLayoutType.foot
-              //     : LastChildLayoutType.none,
-              // collectGarbage: (List<int> garbages) {
-              //   for (var index in garbages) {
-              //     if (index < items.length) {
-              //       final item = items[index];
-              //       if (item.coverBig != null) {
-              //         final provider = CachedNetworkImageProvider(
-              //           item.coverBig!,
-              //         );
-              //         PaintingBinding.instance.imageCache.evict(provider);
-              //       }
-              //     }
-              //   }
-              // },
-            ),
-            itemBuilder: (BuildContext context, int index) {
-              return WaterfallItem(item: items[index]);
-            },
-          ),
+            VerticalDivider(width: 1),
+            Expanded(child: _buildDetailPane()),
+          ],
         );
       },
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar(MosaicData mosaicData) {
+    return AppBar(
+      title: Text(getAppBarTitle(widget.mainAppBarType)),
+      leading: IconButton(
+        onPressed: () => sortAction(context, mosaicData),
+        icon: Item.getOrderIcon(
+          mosaicData.getItemOrder(),
+          color: AppStyles.darkGrey,
+        ),
+      ),
+      actions: [
+        IconButton(
+          onPressed: () async {
+            await showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return Filters(filterRange: FilterRange.list);
+              },
+              isScrollControlled: true,
+              useSafeArea: true,
+            );
+          },
+          icon: Icon(
+            Icons.filter_alt,
+            color: mosaicData.isAnyFilterEnabled(FilterRange.list)
+                ? AppStyles.blue
+                : AppStyles.darkGrey,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGrid(
+    MosaicData mosaicData,
+    List<Item> items,
+    bool isTwoPane,
+  ) {
+    return WaterfallFlow.builder(
+      controller: widget.scrollController,
+      itemCount: items.length,
+      gridDelegate: SliverWaterfallFlowDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: MediaQuery.sizeOf(context).width > 600
+            ? 250
+            : 300,
+      ),
+      itemBuilder: (BuildContext context, int index) {
+        final item = items[index];
+        return WaterfallItem(
+          item: item,
+          useHero: !isTwoPane,
+          isSelected: isTwoPane && _selectedItemId == item.id,
+          onTap: isTwoPane
+              ? () => setState(() => _selectedItemId = item.id)
+              : () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ItemDetail(itemId: item.id),
+                      ),
+                    ),
+        );
+      },
+    );
+  }
+
+  Widget _buildDetailPane() {
+    if (_selectedItemId == null) {
+      return Scaffold(
+        body: Center(
+          child: Text('Select an item', style: AppStyles.h3),
+        ),
+      );
+    }
+    return ItemDetail(itemId: _selectedItemId!, embedded: true);
+  }
+
+  Widget _buildFab() {
+    return FloatingActionButton(
+      onPressed: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Search(targetStatus: _status),
+        ),
+      ),
+      backgroundColor: AppStyles.blue,
+      child: const Icon(Icons.add, color: AppStyles.white, size: 30),
     );
   }
 

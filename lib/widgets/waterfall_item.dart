@@ -1,15 +1,23 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mosaic/models/item.dart';
-import 'package:mosaic/screens/item_detail.dart';
 import 'package:mosaic/styles/app_styles.dart';
 import 'package:mosaic/widgets/item_category_ribbon.dart';
 
 class WaterfallItem extends StatelessWidget {
-  const WaterfallItem({super.key, required this.item});
+  const WaterfallItem({
+    super.key,
+    required this.item,
+    required this.onTap,
+    this.useHero = true,
+    this.isSelected = false,
+  });
   static const witdh = 300.0;
 
   final Item item;
+  final VoidCallback onTap;
+  final bool useHero;
+  final bool isSelected;
   static const Color _nameOverlayColor = Color(0x99212529);
   static const TextStyle _nameOverlayTextStyle = TextStyle(
     fontSize: 12,
@@ -19,36 +27,43 @@ class WaterfallItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final imageStack = Stack(
+      alignment: AlignmentGeometry.topRight,
+      children: [
+        item.coverBig == null
+            ? AppStyles.coverPlaceholderImage
+            : CachedNetworkImage(
+                memCacheWidth: witdh.toInt(),
+                imageUrl: item.coverBig!,
+                fadeInDuration: const Duration(milliseconds: 120),
+                fadeOutDuration: const Duration(milliseconds: 120),
+                placeholder: (context, url) =>
+                    AppStyles.coverPlaceholderImage,
+                errorWidget: (context, url, error) =>
+                    AppStyles.coverPlaceholderImage,
+              ),
+        ItemCategoryRibbon(itemCategory: item.itemCategory),
+      ],
+    );
+
     return InkWell(
+      onTap: onTap,
       child: Card(
         clipBehavior: Clip.hardEdge,
         color: AppStyles.veryLightGrey,
+        shape: isSelected
+            ? RoundedRectangleBorder(
+                side: BorderSide(color: AppStyles.blue, width: 3),
+                borderRadius: BorderRadius.circular(12),
+              )
+            : null,
         child: SizedBox(
           width: witdh,
           child: Stack(
             children: [
-              Hero(
-                tag: item.id,
-                child: Stack(
-                  alignment: AlignmentGeometry.topRight,
-                  children: [
-                    item.coverBig == null
-                        ? AppStyles.coverPlaceholderImage
-                        : CachedNetworkImage(
-                            memCacheWidth: witdh.toInt(),
-                            imageUrl: item.coverBig!,
-                            fadeInDuration: const Duration(milliseconds: 120),
-                            fadeOutDuration: const Duration(milliseconds: 120),
-                            placeholder: (context, url) =>
-                                AppStyles.coverPlaceholderImage,
-                            errorWidget: (context, url, error) =>
-                                AppStyles.coverPlaceholderImage,
-                          ),
-                    ItemCategoryRibbon(itemCategory: item.itemCategory),
-                  ],
-                ),
-              ),
-
+              useHero
+                  ? Hero(tag: item.id, child: imageStack)
+                  : imageStack,
               Positioned(
                 bottom: 0,
                 left: 0,
@@ -67,12 +82,6 @@ class WaterfallItem extends StatelessWidget {
           ),
         ),
       ),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ItemDetail(itemId: item.id)),
-        );
-      },
     );
   }
 }

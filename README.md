@@ -11,6 +11,7 @@ Mosaic is a leisure management app that lets you catalog and track your games an
 - **Sort options** — Cycle through sort by date added/modified, ascending/descending
 - **Item detail view** — View cover art, description, story info, and metadata table
 - **Share** — Share item details with cover image via the system share sheet
+- **Widescreen layout (WIP)** — On wide screens (≥ 900px, e.g. macOS desktop), the grid and item detail appear side-by-side; the detail body splits into two columns at very wide widths. Currently iterating.
 - **Dark & light themes** — White, Black, or follow device setting
 - **Accessibility** — Toggle navigation bar labels for screen reader support
 - **Offline-first** — All data stored locally via Isar database, no account needed
@@ -27,6 +28,7 @@ Mosaic is a leisure management app that lets you catalog and track your games an
 | Book Data | Open Library API |
 | Image Caching | CachedNetworkImage |
 | Layout | waterfall_flow |
+| Desktop (macOS) | Flutter macOS with App Sandbox + `network.client` entitlement |
 | Env Config | flutter_dotenv |
 | Icons (sort) | flutter_svg |
 | Icons (UI) | material_symbols_icons |
@@ -64,6 +66,16 @@ Mosaic is a leisure management app that lets you catalog and track your games an
    flutter run
    ```
 
+### Running on macOS
+
+Desktop builds target macOS with the App Sandbox enabled. Outgoing network access (IGDB, Open Library, image caching) requires the `com.apple.security.network.client` entitlement, which is already set in `macos/Runner/DebugProfile.entitlements` and `macos/Runner/Release.entitlements`.
+
+```bash
+flutter run -d macos
+```
+
+The default window size is 1100×700 so the widescreen two-pane layout is visible on first launch. Drag the window narrower than 900px to fall back to the single-column layout.
+
 ## Architecture
 
 ```
@@ -87,7 +99,7 @@ lib/
 
 **State flow:** All state flows through `MosaicData` (Provider). Use `context.watch()` for rebuilds, `context.read()` for one-shot calls. `notifyListeners()` triggers UI updates.
 
-**Navigation:** `MainNavigationBar` uses Flutter's `NavigationBar` with `LazyIndexedStack` for preserved page state and lazy loading. The FAB opens `Search`, passing `targetStatus` for proper item categorization.
+**Navigation:** `MainNavigationBar` uses Flutter's `NavigationBar` with `LazyIndexedStack` for preserved page state and lazy loading. Each waterfall tab owns its own `FloatingActionButton`, which opens `Search` with the `targetStatus` of that bucket.
 
 ## Screenshots
 

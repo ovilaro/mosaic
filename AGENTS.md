@@ -19,7 +19,7 @@ The `Splash` screen performs a sequential bootstrap: initializes SharedPreferenc
 ### Navigation Structure
 - **4-tab `NavigationBar`** backed by `LazyIndexedStack` (preserves page state and enables lazy loading).
 - **Tabs:** Not Started, In Progress, Finished, Settings.
-- **FloatingActionButton** appears only on the three waterfall tabs. Tapping it pushes `Search` with the current tab's `targetStatus` so newly added items land in the correct bucket.
+- **FloatingActionButton** is owned by each `WaterfallItems` tab (not `MainNavigationBar`), so it floats over the waterfall grid only. In two-pane mode it anchors to the left master pane. Tapping it pushes `Search` with the current tab's `targetStatus` so newly added items land in the correct bucket.
 - Settings has no FAB.
 
 ### Data Flow
@@ -116,7 +116,7 @@ Static methods on `Item` used by widgets that render the collection and detail s
 | Widget | File | Purpose |
 |---|---|---|
 | `LazyIndexedStack` | `lib/widgets/lazy_indexed_stack.dart` | Lazy-loaded `IndexedStack`. **Children MUST be const** for correct caching. Built index is preserved across rebuilds. |
-| `WaterfallItem` | `lib/widgets/waterfall_item.dart` | Grid card with `Hero` image transition, category ribbon, bottom name overlay. Uses `memCacheWidth` on `CachedNetworkImage`. |
+| `WaterfallItem` | `lib/widgets/waterfall_item.dart` | Grid card with `Hero` image transition, category ribbon, bottom name overlay. Uses `memCacheWidth` on `CachedNetworkImage`. Accepts `onTap` (injected by parent), `useHero` (false in two-pane mode to avoid duplicate-tag assertions), and `isSelected` (blue border on the selected card). |
 | `SearchTile` | `lib/widgets/search_tile.dart` | List tile with thumbnail, title, category icon, short description, and add/delete toggle. |
 | `FiltersCategory` | `lib/widgets/filters_category.dart` | Selectable Card chip for enabling/disabling a category in filters. |
 | `ItemCategoryRibbon` | `lib/widgets/item_category_ribbon.dart` | Small rounded badge in the top-right of cover images showing the category icon. |
@@ -136,13 +136,54 @@ Static methods on `Item` used by widgets that render the collection and detail s
 
 ## Item Detail Screen
 
-- **Entry Parameter:** Receives `itemId` (int). Fetches the live `Item` via `MosaicData.getItem(id)`.
+- **Entry Parameters:** Receives `itemId` (int) and `embedded` (bool, default `false`). Fetches the live `Item` via `MosaicData.getItem(id)`.
+- **Two modes:**
+  - **Pushed route (`embedded: false`):** full-screen `Scaffold` pushed from grid tap; keeps `Hero(tag: item.id)` on the cover for the grid→detail transition.
+  - **Embedded (`embedded: true`):** rendered inside the right pane of two-pane `WaterfallItems`; no `Hero` (would collide with the grid's `Hero` on the same screen). Delete closes the dialog without popping the nav stack — the parent `WaterfallItems` invalidates its `_selectedItemId` when the item leaves the bucket.
 - **Lazy Detail Loading:** If `needsDetailRequest == true`, it triggers `updateDetailInfoIfNeeded()` and displays a `RefreshProgressIndicator`.
-- **Hero Animation:** `Hero(tag: item.id)` wraps the cover image for a seamless transition from grid to detail.
+- **Split body (embedded only, detail pane width ≥ 700):** shared single scroll, no vertical divider:
+  - Row 1 — summary + shortDesc (left, flex 6) | cover (right, flex 4).
+  - Centered full-width — `SegmentedButton` + "Only update" row.
+  - Row 2 — `storyInfo` (left) | `itemInfo` table (right), equal 50/50.
+  - Bottom — centered delete button.
+  - Item name is **not** rendered in the body (AppBar shows it). Narrow embedded panes (< 700) and pushed routes fall back to the single centered column with name below the cover.
 - **Status Toggle:** `SegmentedButton<ItemStatus>` allows immediate state changes.
 - **Only Update Button:** A secondary action (`"Only update"`) calls `updateItemModifiedDate(item)`, which refreshes `dateTimeModified` to now without changing the status — useful for bumping an item to the top of a modified-date sort without altering its progress.
 - **Share:** Downloads cover image bytes via `http.get()`, constructs an `XFile`, and shares via `SharePlus.instance.share()` along with summary text.
 - **Delete:** Requires a confirmation `AlertDialog` via `deleteItemApiId()`.
+
+---
+
+## Widescreen / Two-Pane Mode (WIP — Iterating)
+
+> **Status:** Work in progress. Behavior and breakpoints may change in future iterations.
+
+`WaterfallItems` is adaptive: at window widths ≥ 900 (`_twoPaneBreakpoint`) it renders a two-pane layout; below that it falls back to the single full-width grid with pushed detail routes.
+
+### Layout
+- **Master pane** (`SizedBox(width: 380)`): its own `Scaffold` with the waterfall `AppBar` (title + sort + filter) and the `WaterfallFlow` grid. The FAB anchors here (bottom-right of the master pane), not at the `MainNavigationBar` level.
+- **VerticalDivider** between panes (width: 1).
+- **Detail pane** (`Expanded`): renders `ItemDetail(embedded: true)`, which has its own `Scaffold`/`AppBar` showing the item name.
+
+### Selection State
+- `_selectedItemId` lives in `_WaterfallItemsState` (per-tab; preserved by `LazyIndexedStack`). Not in `MosaicData`.
+- Tapping a grid card sets the selection (no `Navigator.push` in two-pane mode).
+- **Build-time invalidation:** if the selected item is no longer in `getItemsWithStatus(status)` (deleted, or status moved it to another bucket), `_selectedItemId` is cleared to `null` during the `Consumer` builder. No `setState`/pop needed.
+- When no item is selected, the detail pane shows a "Select an item" placeholder `Scaffold`.
+
+### `WaterfallItem` contract in two-pane mode
+- `useHero: false` — avoids duplicate `Hero(tag: item.id)` on the same screen (grid + embedded detail would otherwise assert).
+- `isSelected: _selectedItemId == item.id` — renders a blue border around the selected card.
+- `onTap` is injected (wide → `setState`, narrow → `Navigator.push`).
+
+### macOS window
+- Default window size bumped to 1100×700 (`macos/Runner/MainFlutterWindow.swift`) so two-pane is visible on first launch.
+- **Entitlements:** `com.apple.security.network.client` added to both `DebugProfile.entitlements` and `Release.entitlements` — required for outgoing HTTP (IGDB / Open Library / CachedNetworkImage) under the App Sandbox.
+
+### Open questions for future iteration
+- Breakpoint values (outer 900, inner 700) and master pane width (380) may need tuning.
+- Whether `Search` and `Settings` should gain their own wide layouts.
+- `Consumer<MosaicData>` still wraps the whole `WaterfallItems` `Scaffold` (perf regression flagged below).
 
 ---
 
@@ -325,6 +366,14 @@ assets:
 - ✅ **Navigation accessibility** - Added `tooltip` properties for screen reader support.
 - ✅ **Navigation labels** - Labels use proper strings (`'Not Started'`, `'In Progress'`, etc.) with `tooltip`, not empty strings.
 - ✅ **Nav bar height** - Extracted to `AppStyles.navBarCompactHeight` (`app_styles.dart:222`) instead of magic number.
+
+### Widescreen / Two-Pane Mode (2026-07-06) — WIP
+- ✅ **macOS network entitlement** - Added `com.apple.security.network.client` to `DebugProfile.entitlements` and `Release.entitlements` (required for outgoing HTTP under the App Sandbox).
+- ✅ **macOS default window size** - Bumped to 1100×700 (`macos/Runner/MainFlutterWindow.swift`) so two-pane is visible on first launch.
+- ✅ **Two-pane adaptive layout** - `WaterfallItems` is now a `StatefulWidget` with per-tab `_selectedItemId`. At width ≥ 900 it renders master (grid, 380px) + detail (`ItemDetail` embedded) panes. Below 900, the single full-width grid + pushed detail route is unchanged.
+- ✅ **`WaterfallItem` parameterized** - Now accepts `onTap`, `useHero`, `isSelected`. Hero disabled in two-pane mode (avoids duplicate `Hero(tag: item.id)` assertions); selected card renders a blue border.
+- ✅ **`ItemDetail` embedded mode** - New `embedded` flag. When true: no `Hero` on cover; delete closes the dialog without popping the nav stack; body splits into two columns (summary+shortDesc left / cover right, centered buttons, storyInfo left / itemInfo table right, centered delete) when the detail pane width ≥ 700; name hidden from body (AppBar shows it).
+- ✅ **FAB moved to `WaterfallItems`** - Removed from `MainNavigationBar`. Each waterfall tab owns its FAB; it floats over the grid in narrow mode and over the master pane in two-pane mode. Settings has no FAB.
 
 ### Modernization (2026-06-28)
 - ✅ **Android toolchain upgraded** - Gradle 8.12→8.14, AGP 8.9.1→8.12.1, Kotlin 2.1.0→2.2.20, Java 11→17.
