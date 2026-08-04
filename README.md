@@ -66,6 +66,13 @@ Mosaic is a leisure management app that lets you catalog and track your games an
    flutter run
    ```
 
+### Isar Code Generation
+
+The project currently uses Isar Community 3.3.2. `build_runner 2.15.1` is intentionally
+the newest compatible release because `build_runner 2.16.0` requires Analyzer 13.3 or
+newer, while the Isar Community generator requires Analyzer below 11. An Isar Plus
+migration is deferred until the database layer is intentionally upgraded.
+
 ### Running on macOS
 
 Desktop builds target macOS with the App Sandbox enabled. Outgoing network access (IGDB, Open Library, image caching) requires the `com.apple.security.network.client` entitlement, which is already set in `macos/Runner/DebugProfile.entitlements` and `macos/Runner/Release.entitlements`.
