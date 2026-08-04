@@ -81,7 +81,7 @@ Desktop builds target macOS with the App Sandbox enabled. Outgoing network acces
 flutter run -d macos
 ```
 
-The default window size is 1100×700 so the widescreen two-pane layout is visible on first launch. Drag the window narrower than 900px to fall back to the single-column layout.
+The default window content size is 390×844 so macOS runs in a phone-like portrait viewport for quick UI testing without a simulator. The window remains resizable: widen it beyond 900px to exercise the two-pane desktop layout.
 
 ## Architecture
 
