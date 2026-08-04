@@ -118,9 +118,9 @@ class _ItemDetailState extends State<ItemDetail> {
                   TextButton(
                     style: AppStyles.buttonStyle,
                     onPressed: () async {
-                      await context
-                          .read<MosaicData>()
-                          .updateItemModifiedDate(item);
+                      await context.read<MosaicData>().updateItemModifiedDate(
+                        item,
+                      );
                     },
                     child: Text("Only update"),
                   ),
@@ -166,11 +166,7 @@ class _ItemDetailState extends State<ItemDetail> {
                       padding: EdgeInsets.all(16),
                       child: Column(
                         children: [
-                          for (
-                            int i = 0;
-                            i < item.storyInfo.keys.length;
-                            i++
-                          )
+                          for (int i = 0; i < item.storyInfo.keys.length; i++)
                             Column(
                               children: [
                                 Text(
@@ -179,8 +175,9 @@ class _ItemDetailState extends State<ItemDetail> {
                                 ),
                                 AppStyles.sizedBox10,
                                 Text(
-                                  item.storyInfo[item.storyInfo.keys
-                                      .elementAt(i)]!,
+                                  item.storyInfo[item.storyInfo.keys.elementAt(
+                                    i,
+                                  )]!,
                                   style: AppStyles.normalSecundary.copyWith(
                                     color: AppStyles.darkGrey,
                                   ),
@@ -299,7 +296,15 @@ class _ItemDetailState extends State<ItemDetail> {
         ItemCategoryRibbon(itemCategory: item.itemCategory),
       ],
     );
-    return widget.embedded ? stack : Hero(tag: item.id, child: stack);
+    return widget.embedded
+        ? stack
+        : Hero(
+            tag: item.id,
+            child: ClipRRect(
+              borderRadius: AppStyles.coverBorderRadius,
+              child: stack,
+            ),
+          );
   }
 
   void showDeletePopUp(Item item) {

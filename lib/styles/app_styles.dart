@@ -28,6 +28,9 @@ class _AppPalette {
 class AppStyles {
   static const Color blue = Color(0xFF3B82F6);
   static const Color white = Color(0xFFFFFFFF);
+  static const BorderRadius coverBorderRadius = BorderRadius.all(
+    Radius.circular(12),
+  );
 
   static const _AppPalette _lightPalette = _AppPalette(
     veryDarkGrey: Color(0xFF212529),

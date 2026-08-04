@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 /// - **Index changes:** Builds new visible child only if not previously built
 /// - **Child count changes:** Preserves existing cache, extends or truncates as needed
 /// - **Memory:** O(n) where n is the number of children
+/// - **Hero animations:** Only the visible child participates in Hero animations
 ///
 /// ## Usage Example
 ///
@@ -124,7 +125,10 @@ class _LazyIndexedStackState extends State<LazyIndexedStack> {
       index: _currentIndex,
       children: List.generate(
         _builtChildren.length,
-        (i) => _builtChildren[i] ?? const SizedBox.shrink(),
+        (i) => HeroMode(
+          enabled: i == _currentIndex,
+          child: _builtChildren[i] ?? const SizedBox.shrink(),
+        ),
         growable: false,
       ),
     );

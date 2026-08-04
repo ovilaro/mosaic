@@ -37,8 +37,7 @@ class WaterfallItem extends StatelessWidget {
                 imageUrl: item.coverBig!,
                 fadeInDuration: const Duration(milliseconds: 120),
                 fadeOutDuration: const Duration(milliseconds: 120),
-                placeholder: (context, url) =>
-                    AppStyles.coverPlaceholderImage,
+                placeholder: (context, url) => AppStyles.coverPlaceholderImage,
                 errorWidget: (context, url, error) =>
                     AppStyles.coverPlaceholderImage,
               ),
@@ -62,7 +61,13 @@ class WaterfallItem extends StatelessWidget {
           child: Stack(
             children: [
               useHero
-                  ? Hero(tag: item.id, child: imageStack)
+                  ? Hero(
+                      tag: item.id,
+                      child: ClipRRect(
+                        borderRadius: AppStyles.coverBorderRadius,
+                        child: imageStack,
+                      ),
+                    )
                   : imageStack,
               Positioned(
                 bottom: 0,
