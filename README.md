@@ -39,8 +39,8 @@ Mosaic is a leisure management app that lets you catalog and track your games an
 
 ### Prerequisites
 
-- [Flutter SDK](https://docs.flutter.dev/get-started/install) (^3.12.0)
-- [JDK 17](https://adoptium.net/) (required by share_plus 13+ and AGP 8.12+)
+- [Flutter SDK 3.47.5+](https://docs.flutter.dev/get-started/install) (Dart ^3.12.0)
+- [JDK 17+](https://adoptium.net/) (Gradle 9.3.1 supports through JDK 25; Android Studio's bundled JBR works out of the box)
 - IGDB API credentials — [Get them here](https://dev.igdb.com/)
 - Open Library User-Agent — [Policy here](https://openlibrary.org/developers)
 
@@ -82,6 +82,14 @@ flutter run -d macos
 ```
 
 The default window content size is 390×844 so macOS runs in a phone-like portrait viewport for quick UI testing without a simulator. The window remains resizable: widen it beyond 900px to exercise the two-pane desktop layout.
+
+### Android Build Toolchain
+
+Android uses the Flutter 3.47.5 template toolchain — **Gradle 9.3.1, AGP 9.1.0, Kotlin 2.4.0** — which is compatible with Android Studio's bundled JDK (including JDK 25). `android.enableJetifier` is intentionally absent because AGP 9 removed Jetifier support.
+
+```bash
+flutter build apk --debug
+```
 
 ## Architecture
 

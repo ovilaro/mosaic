@@ -377,7 +377,7 @@ assets:
 
 ### Modernization (2026-06-28)
 - ✅ **Android toolchain upgraded** - Gradle 8.12→8.14, AGP 8.9.1→8.12.1, Kotlin 2.1.0→2.2.20, Java 11→17.
-- ✅ **Migrated to Flutter Built-in Kotlin** - Removed `id("kotlin-android")` plugin; added top-level `kotlin { compilerOptions { jvmTarget = JvmTarget.JVM_17 } }` DSL; set `builtInKotlin=true` and `newDsl=true` in `gradle.properties`.
+- ✅ **Migrated to Flutter Built-in Kotlin** - Removed `id("kotlin-android")` plugin; added top-level `kotlin { compilerOptions { jvmTarget = JvmTarget.JVM_17 } }` DSL; set `builtInKotlin=true` and `newDsl=true` in `gradle.properties`. *(Superseded 2026-09-19 — the Flutter 3.47.5 template defaults `builtInKotlin=false`/`newDsl=false` are used again; see SDK & Android Toolchain below.)*
 - ✅ **share_plus upgraded to 13.2.0** - Built-in Kotlin compatible; no longer applies KGP. `SharePlus.instance.share(ShareParams(...))` API is already in use in `lib/screens/item_detail.dart:50`.
 - ✅ **Dependency upgrades** - `google_fonts` 6.3.2→8.1.0, `flutter_dotenv` 5.0.2→6.0.1, `flutter_lints` 5.0.0→6.0.0, `isar_community` (+ `_flutter_libs` + `_generator`) 3.3.0→3.3.2.
 - ✅ **Added `build_runner` to `dev_dependencies`** - Was previously missing; `dart run build_runner build` now actually works for regenerating Isar schemas.
@@ -385,3 +385,12 @@ assets:
 - ✅ **Dart SDK constraint bumped to `^3.12.0`** - Matches resolved deps (the lock's `sdks` section now records `dart: ">=3.12.0 <4.0.0"`); `share_plus 13.2.0` alone requires Dart ≥3.10.0.
 - ✅ **Lint fixes for `flutter_lints 6.0.0`** - Added `Future<void>` return types to 3 async methods in `MosaicData` (`init`, `addOrUpdateItem`, `deleteItemApiId`) — newly flagged by `strict_top_level_inference`.
 - ✅ **Isar schema regenerated** - `item.g.dart` schema version string bumped from `'3.3.0'` to `'3.3.2'`. Other `.g.dart` files were rewritten identically (no `version` string in those schemas).
+
+### SDK & Android Toolchain (2026-09-19)
+- ✅ **Flutter SDK** - On **3.47.5** stable (Dart 3.13.4). Project is analyzer-clean and builds for both macOS and Android.
+- ✅ **CachedNetworkImage 4.0.0** - Bumped from 3.4.1. It pulls in `material_ui 1.3.0` and `cupertino_ui 1.1.0` (Flutter's decoupling of Material/Cupertino out of the SDK). The three `CachedNetworkImage` call sites (`lib/widgets/waterfall_item.dart:35`, `lib/widgets/search_tile.dart:28`, `lib/screens/item_detail.dart:288`) needed **no code changes** — `imageUrl`, `memCacheWidth`, `placeholder`, and `errorWidget` are unchanged in v4. A full `material_ui` import migration is deferred.
+- ✅ **Android toolchain aligned with the Flutter 3.47.5 template** - Gradle 8.14→**9.3.1**, AGP 8.12.1→**9.1.0**, Kotlin 2.2.20→**2.4.0** (`android/gradle/wrapper/gradle-wrapper.properties`, `android/settings.gradle.kts`). Required because Flutter launches Gradle with Android Studio's bundled **JDK 25**, and Gradle 8.14 only supports up to Java 24. A fresh `flutter create` on 3.47.5 ships the same versions, so no `flutter config --jdk-dir` workaround is needed.
+- ✅ **`android/gradle.properties` aligned with the template** - Removed `android.enableJetifier` (AGP 9 dropped Jetifier support) and set `android.builtInKotlin=false` / `android.newDsl=false` to the template defaults.
+- ✅ **macOS deployment target auto-bumped 10.15 → 12.0** - Flutter rewrote `macos/Podfile` and `macos/Runner.xcodeproj/project.pbxproj` on the first 3.47.x build.
+- ⚠️ **`build_runner` still pinned at 2.15.1** - `isar_community_generator` requires `analyzer <11`, while `build_runner 2.16` needs `analyzer ≥13.3`. Unchanged this round; see the Isar note in README.
+- ⚠️ **Isar Swift Package Manager gap** - `flutter build macos` warns that `isar_community_flutter_libs` has no SPM support and that this "will become an error in a future version of Flutter".
