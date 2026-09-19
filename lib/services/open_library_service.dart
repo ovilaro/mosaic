@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosaic/api_keys.dart';
@@ -11,6 +14,7 @@ class OpenLibraryService {
   static const Duration _intervalBetweenRequestsInMs = Duration(
     milliseconds: 250,
   );
+  static const Duration _requestTimeout = Duration(seconds: 10);
   DateTime? _latestRequest;
 
   Future<List<Item>> search(String str) async {
@@ -37,10 +41,9 @@ class OpenLibraryService {
 
     Uri url = Uri.https("openlibrary.org", "/search.json", params);
 
-    var headers = {'User-Agent': ApiKeys.openLibraryUserAgent};
-
     _latestRequest = DateTime.timestamp();
-    http.Response response = await http.get(url, headers: headers);
+    final response = await _get(url, "search");
+    if (response == null) return emptyList;
 
     if (response.statusCode == 200) {
       var result = openLibrarySearchFromJson(response.body);
@@ -83,10 +86,9 @@ class OpenLibraryService {
 
     Uri url = Uri.https("openlibrary.org", "/works/$olid.json", params);
 
-    var headers = {'User-Agent': ApiKeys.openLibraryUserAgent};
-
     _latestRequest = DateTime.timestamp();
-    http.Response response = await http.get(url, headers: headers);
+    final response = await _get(url, "work");
+    if (response == null) return null;
 
     if (response.statusCode == 200) {
       return openLibraryWorkFromJson(response.body);
@@ -114,10 +116,9 @@ class OpenLibraryService {
 
     Uri url = Uri.https("openlibrary.org", "/works/$olid.json", params);
 
-    var headers = {'User-Agent': ApiKeys.openLibraryUserAgent};
-
     _latestRequest = DateTime.timestamp();
-    http.Response response = await http.get(url, headers: headers);
+    final response = await _get(url, "edition");
+    if (response == null) return null;
 
     if (response.statusCode == 200) {
       return openLibraryEditionFromJson(response.body);
@@ -127,6 +128,28 @@ class OpenLibraryService {
       "[OpenLibrary]Error edition status code: ${response.statusCode},"
       " body: ${response.body}",
     );
+    return null;
+  }
+
+  /// Performs an Open Library GET with a bounded timeout and logs (rather than
+  /// throws) network failures, returning `null` so callers can degrade
+  /// gracefully. See [OpenLibraryService._requestTimeout].
+  Future<http.Response?> _get(Uri url, String action) async {
+    var headers = {'User-Agent': ApiKeys.openLibraryUserAgent};
+    try {
+      return await http.get(url, headers: headers).timeout(_requestTimeout);
+    } on TimeoutException {
+      debugPrint(
+        "[OpenLibrary] $action request timed out after "
+        "${_requestTimeout.inSeconds}s",
+      );
+    } on http.ClientException catch (e) {
+      debugPrint("[OpenLibrary] $action connection failed: ${e.message}");
+    } on SocketException catch (e) {
+      debugPrint("[OpenLibrary] $action socket error: ${e.message}");
+    } catch (e) {
+      debugPrint("[OpenLibrary] $action request failed: $e");
+    }
     return null;
   }
 }

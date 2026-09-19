@@ -16,6 +16,7 @@ class MosaicData extends ChangeNotifier {
   List<Item> allItems = [];
 
   bool searching = false;
+  String? searchError;
   AppThemePreference appThemePreference = AppThemePreference.device;
   Brightness? _appliedBrightness;
   bool navBarLabelsEnabled = false;
@@ -36,8 +37,10 @@ class MosaicData extends ChangeNotifier {
   }
 
   Future<void> search(String str) async {
-    if (str.isEmpty) {
+    final query = str.trim();
+    if (query.isEmpty) {
       searchResults.clear();
+      searchError = null;
       notifyListeners();
       return;
     }
@@ -45,17 +48,30 @@ class MosaicData extends ChangeNotifier {
     List<Item> totalResults = [];
 
     searching = true;
+    searchError = null;
     notifyListeners();
 
     List<Item> gameResults = [];
     List<Item> bookResults = [];
 
     if (getFilterEnabled(ItemCategory.game, FilterRange.search)) {
-      gameResults = await _igdbService.search(str);
+      try {
+        gameResults = await _igdbService.search(query);
+      } catch (e) {
+        debugPrint("[Search] IGDB search failed: $e");
+        searchError = "Couldn't reach IGDB.";
+      }
     }
 
     if (getFilterEnabled(ItemCategory.book, FilterRange.search)) {
-      bookResults = await _openLibraryService.search(str);
+      try {
+        bookResults = await _openLibraryService.search(query);
+      } catch (e) {
+        debugPrint("[Search] Open Library search failed: $e");
+        searchError = searchError == null
+            ? "Couldn't reach Open Library."
+            : "Couldn't reach IGDB or Open Library.";
+      }
     }
 
     int maxIndex = gameResults.length;
@@ -84,6 +100,7 @@ class MosaicData extends ChangeNotifier {
 
   void clearSearchResults() {
     searchResults.clear();
+    searchError = null;
   }
 
   Future<void> addOrUpdateItem(Item item, {ItemStatus? status}) async {

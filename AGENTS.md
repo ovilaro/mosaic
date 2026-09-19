@@ -104,6 +104,7 @@ Static methods on `Item` used by widgets that render the collection and detail s
 - **Edition details:** `openlibrary.org/books/$olid.json` (current bug: uses `/works/`)
 - **Required header:** `User-Agent` (loaded from `.env`)
 - **Rate limiting:** 250ms enforced in `OpenLibraryService`.
+- **`fields` param:** a **Search API-only** feature — honored on `search.json`, but `/works/$olid.json` returns the full record regardless (spot-checked 2026-09-20; author to confirm). `getWorkDetails` sends `fields=description,exerpts`, which therefore has no filtering effect.
 
 ### Image URL Construction
 - **IGDB Covers:** Raw URL is protocol-relative (`//...`). Prefixed with `https:` and `thumb` is replaced by `thumb_2x` (list) or `cover_big_2x` (detail).
@@ -131,6 +132,27 @@ Static methods on `Item` used by widgets that render the collection and detail s
 3. **Interleaving:** Results from both APIs are interleaved (game, book, game, book...) up to the max length of the two result sets.
 4. **Added Check (N+1):** After building the result list, each item individually calls `Database.instance.isApiIdAdded()`. **Known issue:** This is an N+1 query.
 5. **Filter Modal:** A `showModalBottomSheet` with `isScrollControlled: true` allows toggling which categories participate in search.
+6. **Network Resilience:** `IgdbService` / `OpenLibraryService` requests use a 10s timeout and catch `TimeoutException` / `ClientException` / `SocketException`, returning empty results instead of throwing. `MosaicData.search()` trims input, keeps partial results, and exposes `searchError`, which `Search` renders as an inline notice.
+
+### Known gaps / TODO (2026-09-19)
+
+> **Search needs significant work — treat as an active workstream.**
+
+**Correctness / robustness**
+- **Query escaping:** the IGDB body interpolates the raw term (`search "$str";` in `IgdbService.search`). A `"` in the term breaks the query — escape/validate input.
+- **In-flight race:** no cancellation or request-version guard, so a slow earlier search can overwrite a newer one's results.
+- **Pagination:** IGDB is hardcoded to `limit 100`; Open Library uses the API default. Neither paginates.
+- **Remaining error handling:** search is covered, but other async paths still lack guards (see Error Handling Standards).
+
+**Performance**
+- **N+1:** `isApiIdAdded()` is called per result (`mosaic_data.dart`); batch it into one query.
+- **Sequential sources:** IGDB and Open Library run sequentially; run them concurrently and interleave afterward.
+- **`ListView` with an explicit `for`:** `search.dart` materializes every row instead of using `ListView.builder`.
+- **Full rebuild:** every search step calls `notifyListeners()`; scope rebuilds with `Selector`.
+
+**UX**
+- Fixed 750 ms debounce with no per-source loading indication, no retry, no recent-search history, and no empty/zero-result state.
+- `Search` has no wide/two-pane layout (see Widescreen open questions).
 
 ---
 
@@ -204,15 +226,15 @@ Static methods on `Item` used by widgets that render the collection and detail s
 
 ## Critical Issues to Address
 
-### Bugs (All Unfixed - Verified 2026-06-28)
-- **Inverted filter logic** in `MosaicData.isAnyFilterEnabled()` (`lib/provider/mosaic_data.dart:220`) - Returns `true` when a filter is disabled. Should be: `if (getFilterEnabled(category, filterRange)) return true;`
-- **Open Library Edition URL** (`lib/services/open_library_service.dart:115`) - `getEditionDetails()` uses `/works/` but should use `/books/` for the editions API
-- **API field typo** (`lib/services/open_library_service.dart:82`) - `exerpts` should be `excerpts` - excerpts won't be returned from API
+### Bugs (Verified 2026-09-19)
+- **Inverted filter logic** in `MosaicData.isAnyFilterEnabled()` (`lib/provider/mosaic_data.dart:237`) - Returns `true` when a filter is disabled. Should be: `if (getFilterEnabled(category, filterRange)) return true;`
+- **Open Library Edition URL** (`lib/services/open_library_service.dart:117`) - `getEditionDetails()` uses `/works/` but should use `/books/` for the editions API
+- **API field typo (latent)** (`lib/services/open_library_service.dart:85`) - `exerpts` should be `excerpts`. Currently **inert** (to confirm): the `/works/$olid.json` endpoint appears to ignore the `fields` param (see API Integration), so it is not filtering excerpts out. It only becomes a real bug if Open Library starts honoring `fields` there, which would silently drop `excerpts`. Excerpts are also uncommon in work records, so their absence is usually just missing source data.
 - **Stream subscription leak** in `lib/services/database.dart:19` - `.listen()` result is not stored for disposal
-- **Missing error handling** - All async operations lack try-catch blocks, especially in `updateDetailInfoIfNeeded()`
+- **Missing error handling** - Search network calls are now guarded (2026-09-19), but the remaining async operations still lack try-catch, especially `updateDetailInfoIfNeeded()`
 
 ### Code Quality (Unfixed)
-- **N+1 query problem** in search (`lib/provider/mosaic_data.dart:75-77`) - Loops through results calling `isApiIdAdded()` individually instead of batching
+- **N+1 query problem** in search (`lib/provider/mosaic_data.dart:92`) - Loops through results calling `isApiIdAdded()` individually instead of batching
 
 ---
 

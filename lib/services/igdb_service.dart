@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosaic/api_keys.dart';
@@ -9,6 +12,7 @@ class IgdbService {
   static const Duration _intervalBetweenRequestsInMs = Duration(
     milliseconds: 250,
   );
+  static const Duration _requestTimeout = Duration(seconds: 10);
   DateTime? _latestRequest;
   IgdbAuthResult? _igdbAuthResult;
 
@@ -23,7 +27,8 @@ class IgdbService {
       'grant_type': "client_credentials",
     });
 
-    http.Response response = await http.post(url);
+    final response = await _post(url, action: "auth");
+    if (response == null) return false;
 
     if (response.statusCode == 200) {
       _igdbAuthResult = igdbAuthResultFromJson(response.body);
@@ -69,7 +74,13 @@ class IgdbService {
         'game_type.type; limit 100;';
 
     _latestRequest = DateTime.timestamp();
-    http.Response response = await http.post(url, body: body, headers: headers);
+    final response = await _post(
+      url,
+      body: body,
+      headers: headers,
+      action: "games",
+    );
+    if (response == null) return emptyList;
 
     if (response.statusCode == 200) {
       var igdbGames = igdbGameFromJson(response.body);
@@ -93,5 +104,31 @@ class IgdbService {
       items.add(item);
     }
     return items;
+  }
+
+  /// Performs an IGDB POST with a bounded timeout and logs (rather than throws)
+  /// network failures, returning `null` so callers can degrade gracefully.
+  Future<http.Response?> _post(
+    Uri url, {
+    Object? body,
+    Map<String, String>? headers,
+    required String action,
+  }) async {
+    try {
+      return await http
+          .post(url, body: body, headers: headers)
+          .timeout(_requestTimeout);
+    } on TimeoutException {
+      debugPrint(
+        "[IGDB] $action request timed out after ${_requestTimeout.inSeconds}s",
+      );
+    } on http.ClientException catch (e) {
+      debugPrint("[IGDB] $action connection failed: ${e.message}");
+    } on SocketException catch (e) {
+      debugPrint("[IGDB] $action socket error: ${e.message}");
+    } catch (e) {
+      debugPrint("[IGDB] $action request failed: $e");
+    }
+    return null;
   }
 }

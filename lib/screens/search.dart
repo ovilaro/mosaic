@@ -87,6 +87,29 @@ class _SearchState extends State<Search> {
                           ],
                         ),
                 ),
+                if (mosaicData.searchError != null)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                      vertical: 4.0,
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.cloud_off,
+                          color: AppStyles.darkGrey,
+                          size: 18,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            mosaicData.searchError!,
+                            style: AppStyles.normalSecundary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
