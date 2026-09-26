@@ -29,7 +29,11 @@ class Database {
     if (item.id >= 0 && itemsBox.containsKey(item.id)) {
       await itemsBox.put(item.id, item);
     } else {
-      item.id = await itemsBox.add(item);
+      final key = await itemsBox.add(item);
+      item.id = key;
+      // Box.add stores the value before the key is known, so persist again now
+      // that the assigned id is set — otherwise the stored copy keeps id = -1.
+      await itemsBox.put(key, item);
     }
   }
 
@@ -58,10 +62,20 @@ class Database {
   }
 
   Item? get(int id) {
-    return itemsBox.get(id);
+    final item = itemsBox.get(id);
+    if (item != null) {
+      item.id = id;
+    }
+    return item;
   }
 
   Future<List<Item>> getAllItems() async {
-    return itemsBox.values.toList();
+    // The box key is the source of truth for `id`; stamp it on read so items
+    // never surface with a stale/duplicate id.
+    return itemsBox.toMap().entries.map((entry) {
+      final item = entry.value;
+      item.id = entry.key as int;
+      return item;
+    }).toList();
   }
 }
