@@ -4,17 +4,12 @@
 
 import 'dart:convert';
 
-import 'package:isar_community/isar.dart';
-
-part 'igdb_game.g.dart';
-
 List<IgdbGame> igdbGameFromJson(String str) =>
     List<IgdbGame>.from(json.decode(str).map((x) => IgdbGame.fromJson(x)));
 
 String igdbGameToJson(List<IgdbGame> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-@embedded
 class IgdbGame {
   final int? id;
   final IgdbCover? cover;
@@ -97,7 +92,6 @@ class IgdbGame {
   };
 }
 
-@embedded
 class IgdbCover {
   final int? id;
   final String? url;
@@ -110,7 +104,6 @@ class IgdbCover {
   Map<String, dynamic> toJson() => {"id": id, "url": url};
 }
 
-@embedded
 class IgdbGameInfo {
   final int? id;
   final String? name;
@@ -123,7 +116,6 @@ class IgdbGameInfo {
   Map<String, dynamic> toJson() => {"id": id, "name": name};
 }
 
-@embedded
 class GameType {
   final int? id;
   final String? type;

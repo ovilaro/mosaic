@@ -4,17 +4,12 @@
 
 import 'dart:convert';
 
-import 'package:isar_community/isar.dart';
-
-part 'open_library_work.g.dart';
-
 OpenLibraryWork openLibraryWorkFromJson(String str) =>
     OpenLibraryWork.fromJson(json.decode(str));
 
 String openLibraryWorkToJson(OpenLibraryWork data) =>
     json.encode(data.toJson());
 
-@embedded
 class OpenLibraryWork {
   final String? description;
   final String? title;
@@ -154,7 +149,6 @@ class OpenLibraryWork {
   };
 }
 
-@embedded
 class OpenLibraryAuthor {
   final OpenLibraryType? author;
   final OpenLibraryType? type;
@@ -177,7 +171,6 @@ class OpenLibraryAuthor {
   };
 }
 
-@embedded
 class OpenLibraryType {
   final String? key;
 
@@ -189,7 +182,6 @@ class OpenLibraryType {
   Map<String, dynamic> toJson() => {"key": key};
 }
 
-@embedded
 class OpenLibraryCreated {
   final String? type;
   final String? value;
@@ -202,7 +194,6 @@ class OpenLibraryCreated {
   Map<String, dynamic> toJson() => {"type": type, "value": value};
 }
 
-@embedded
 class OpenLibraryExcerpt {
   final String? pages;
   final String? excerpt;
@@ -229,7 +220,6 @@ class OpenLibraryExcerpt {
   };
 }
 
-@embedded
 class OpenLibraryIdentifiers {
   final List<String>? wikidata;
   final List<String>? bookbrainz;
@@ -263,7 +253,6 @@ class OpenLibraryIdentifiers {
   };
 }
 
-@embedded
 class OpenLibraryLink {
   final String? title;
   final String? url;

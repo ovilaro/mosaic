@@ -1,6 +1,6 @@
-import 'package:isar_community/isar.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:mosaic/hive/hive_registrar.g.dart';
 import 'package:mosaic/models/item.dart';
-import 'package:path_provider/path_provider.dart';
 
 class Database {
   static final Database _instance = Database._internal();
@@ -8,31 +8,35 @@ class Database {
   Database._internal();
   static Database get instance => _instance;
 
-  late Isar isar;
+  static const String _boxName = 'items';
 
-  Future<void> init(Function(void event) whatcher) async {
-    final dir = await getApplicationDocumentsDirectory();
-    isar = await Isar.open([ItemSchema], directory: dir.path);
+  bool _initialized = false;
+  late Box<Item> itemsBox;
 
-    Stream<void> itemChanged = isar.items.watchLazy();
+  Future<void> init(Function(void event) watcher) async {
+    if (_initialized) return;
 
-    itemChanged.listen(whatcher);
+    await Hive.initFlutter();
+    Hive.registerAdapters();
+
+    itemsBox = await Hive.openBox<Item>(_boxName);
+    itemsBox.watch().listen((_) => watcher(null));
+
+    _initialized = true;
   }
 
   Future<void> write(Item item) async {
-    await isar.writeTxn(() async {
-      await isar.items.put(item); // insert & update
-    });
+    if (item.id >= 0 && itemsBox.containsKey(item.id)) {
+      await itemsBox.put(item.id, item);
+    } else {
+      item.id = await itemsBox.add(item);
+    }
   }
 
   Future<bool> isApiIdAdded(Item item) async {
-    List<Item> results = await isar.items
-        .filter()
-        .apiIdEqualTo(item.apiId)
-        .findAll();
-    // check item category due diferents apis can have same id maybe?
-    for (var result in results) {
-      if (result.itemCategory == item.itemCategory) {
+    for (final result in itemsBox.values) {
+      if (result.apiId == item.apiId &&
+          result.itemCategory == item.itemCategory) {
         return true;
       }
     }
@@ -40,31 +44,24 @@ class Database {
   }
 
   Future<void> deleteItemApiId(Item item) async {
-    List<Item> results = await isar.items
-        .filter()
-        .apiIdEqualTo(item.apiId)
-        .findAll();
-    // check item category due diferents apis can have same id maybe?
-    for (var result in results) {
-      if (result.itemCategory == item.itemCategory) {
-        await isar.writeTxn(() async {
-          await isar.items.delete(result.id);
-        });
+    final keysToDelete = <dynamic>[];
+    for (final entry in itemsBox.toMap().entries) {
+      final result = entry.value;
+      if (result.apiId == item.apiId &&
+          result.itemCategory == item.itemCategory) {
+        keysToDelete.add(entry.key);
       }
+    }
+    if (keysToDelete.isNotEmpty) {
+      await itemsBox.deleteAll(keysToDelete);
     }
   }
 
-  // Future<void> delete(int id) async {
-  //   await isar.writeTxn(() async {
-  //     await isar.items.delete(id);
-  //   });
-  // }
-
   Item? get(int id) {
-    return isar.items.getSync(id);
+    return itemsBox.get(id);
   }
 
   Future<List<Item>> getAllItems() async {
-    return isar.items.where().findAll();
+    return itemsBox.values.toList();
   }
 }

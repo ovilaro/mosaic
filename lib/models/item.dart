@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:isar_community/isar.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:mosaic/models/igdb/igdb_game.dart';
 import 'package:mosaic/models/open_library/open_library_edition.dart';
 import 'package:mosaic/models/open_library/open_library_search.dart';
 import 'package:mosaic/models/open_library/open_library_work.dart';
-
-part 'item.g.dart';
 
 enum ItemCategory { game, book }
 
@@ -15,9 +12,8 @@ enum ItemStatus { notStarted, inProgress, finished }
 
 enum ItemOrder { addedAsc, addedDesc, modifiedAsc, modifiedDesc }
 
-@collection
 class Item {
-  Id id = Isar.autoIncrement;
+  int id = -1;
 
   IgdbGame? igdbGame;
 
@@ -27,10 +23,8 @@ class Item {
 
   String apiId = "";
 
-  @enumerated
   ItemCategory itemCategory = ItemCategory.game;
 
-  @enumerated
   ItemStatus itemStatus = ItemStatus.notStarted;
 
   bool needsDetailRequest = false;
@@ -38,7 +32,6 @@ class Item {
   DateTime dateTimeCreated = DateTime.timestamp();
   DateTime dateTimeModified = DateTime.timestamp();
 
-  @ignore
   bool isAdded = false;
 
   static IconData getCategoryIcon(ItemCategory itemCategory) {
@@ -102,7 +95,6 @@ class Item {
     }
   }
 
-  @ignore
   String get name {
     var nullStr = "no title";
 
@@ -129,7 +121,6 @@ class Item {
     return nullStr;
   }
 
-  @ignore
   String get shortDesc {
     if (igdbGame != null) {
       var str = "";
@@ -178,7 +169,6 @@ class Item {
     return "no short description";
   }
 
-  @ignore
   String? get thumb {
     if (igdbGame != null) {
       if (igdbGame!.cover != null) {
@@ -204,7 +194,6 @@ class Item {
     return null;
   }
 
-  @ignore
   String? get coverBig {
     if (igdbGame != null) {
       if (igdbGame!.cover != null) {
@@ -230,7 +219,6 @@ class Item {
     return null;
   }
 
-  @ignore
   String? get summary {
     if (igdbGame != null) {
       if (igdbGame!.summary != null) {
@@ -245,7 +233,6 @@ class Item {
     return null;
   }
 
-  @ignore
   Map<String, String> get storyInfo {
     Map<String, String> map = {};
 
@@ -285,7 +272,6 @@ class Item {
     return map;
   }
 
-  @ignore
   Map<String, String> get itemInfo {
     Map<String, String> map = {};
 

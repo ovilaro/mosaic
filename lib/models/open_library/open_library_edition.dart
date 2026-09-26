@@ -4,17 +4,12 @@
 
 import 'dart:convert';
 
-import 'package:isar_community/isar.dart';
-
-part 'open_library_edition.g.dart';
-
 OpenLibraryEdition openLibraryEditionFromJson(String str) =>
     OpenLibraryEdition.fromJson(json.decode(str));
 
 String openLibraryEditionToJson(OpenLibraryEdition data) =>
     json.encode(data.toJson());
 
-@embedded
 class OpenLibraryEdition {
   final OpenLibraryEditionType? type;
   final String? title;
@@ -183,7 +178,6 @@ class OpenLibraryEdition {
   };
 }
 
-@embedded
 class OpenLibraryEditionType {
   final String? key;
 
@@ -195,7 +189,6 @@ class OpenLibraryEditionType {
   Map<String, dynamic> toJson() => {"key": key};
 }
 
-@embedded
 class OpenLibraryEditionClassifications {
   OpenLibraryEditionClassifications();
 
@@ -206,7 +199,6 @@ class OpenLibraryEditionClassifications {
   Map<String, dynamic> toJson() => {};
 }
 
-@embedded
 class OpenLibraryEditionContributor {
   final String? role;
   final String? name;
@@ -219,7 +211,6 @@ class OpenLibraryEditionContributor {
   Map<String, dynamic> toJson() => {"role": role, "name": name};
 }
 
-@embedded
 class OpenLibraryEditionCreated {
   final String? type;
   final DateTime? value;

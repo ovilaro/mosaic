@@ -13,8 +13,8 @@ dependencies:
   flutter_svg: ^2.2.3
   google_fonts: ^8.2.1
   http: ^1.6.0
-  isar_community: ^3.3.2
-  isar_community_flutter_libs: ^3.3.2
+  hive_ce: ^2.20.0
+  hive_ce_flutter: ^2.3.4
   material_symbols_icons: ^4.2960.0
   path_provider: ^2.1.5
   provider: ^6.1.5+1
@@ -28,8 +28,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-  isar_community_generator: ^3.3.2
-  build_runner: ^2.15.1
+  hive_ce_generator: ^1.11.3
+  build_runner: ^2.16.1
   flutter_launcher_icons: ^0.14.4
   package_rename: ^1.10.1
 

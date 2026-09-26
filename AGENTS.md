@@ -14,7 +14,7 @@ Splash
 └── MosaicData.readItems()
     └── MainNavigationBar (pushReplacement)
 ```
-The `Splash` screen performs a sequential bootstrap: initializes SharedPreferences, resolves the theme, opens the Isar database (via `MosaicData.init()`), and finally reads all items into memory before navigating to the main UI.
+The `Splash` screen performs a sequential bootstrap: initializes SharedPreferences, resolves the theme, opens the Hive CE database (via `MosaicData.init()`), and finally reads all items into memory before navigating to the main UI.
 
 ### Navigation Structure
 - **4-tab `NavigationBar`** backed by `LazyIndexedStack` (preserves page state and enables lazy loading).
@@ -35,25 +35,25 @@ APIs (IGDB / Open Library)
 
 ## Data Model
 
-### `Item` (Isar `@Collection`)
-The central domain object. It is polymorphic: an `Item` represents either a **Game** or a **Book**, determined by `itemCategory`.
+### `Item` (Hive CE)
+The central domain object. It is polymorphic: an `Item` represents either a **Game** or a **Book**, determined by `itemCategory`. Persisted in the Hive CE box `items` (`lib/services/database.dart`).
 
 | Property | Type | Notes |
 |---|---|---|
-| `id` | `Id` | Auto-increment primary key |
-| `apiId` | `String` | External API identifier. Collision-avoided by checking `itemCategory` in DB queries |
+| `id` | `int` | Hive key. Defaults to `-1` (unsaved); `Database.write` assigns it from `Box.add()` |
+| `apiId` | `String` | External API identifier. Collision-avoided by checking `itemCategory` during lookups |
 | `itemCategory` | `ItemCategory` | `game` or `book` |
 | `itemStatus` | `ItemStatus` | `notStarted`, `inProgress`, `finished` |
-| `igdbGame` | `IgdbGame?` | `@embedded` IGDB data |
-| `openLibraryBook` | `OpenLibrarySearchDoc?` | `@embedded` Open Library search result |
-| `openLibraryWork` | `OpenLibraryWork?` | `@embedded` Loaded lazily via detail request |
-| `openLibraryEdition` | `OpenLibraryEdition?` | `@embedded` Loaded lazily via detail request |
+| `igdbGame` | `IgdbGame?` | Nested IGDB data |
+| `openLibraryBook` | `OpenLibrarySearchDoc?` | Nested Open Library search result |
+| `openLibraryWork` | `OpenLibraryWork?` | Loaded lazily via detail request |
+| `openLibraryEdition` | `OpenLibraryEdition?` | Loaded lazily via detail request |
 | `needsDetailRequest` | `bool` | True for books until work/edition details are fetched |
 | `dateTimeCreated` | `DateTime` | Timestamp |
 | `dateTimeModified` | `DateTime` | Timestamp |
-| `isAdded` | `bool` | **Runtime-only**, `@ignore`d. Set after search to indicate DB existence |
+| `isAdded` | `bool` | **Runtime-only** — excluded via `AdapterSpec<Item>(ignoredFields: {'isAdded'})`. Set after search to indicate DB existence |
 
-### Computed Getters (`@ignore`)
+### Computed Getters (not persisted)
 These re-traverse nested objects on **every access**:
 - `name` — Game title or book title/subtitle concatenation
 - `shortDesc` — Release year (games) or author + date (books)
@@ -69,13 +69,15 @@ Static methods on `Item` used by widgets that render the collection and detail s
 - `Item.getOrderIcon(ItemOrder, {Color? color})` — Returns a tinted `flutter_svg` `SvgPicture` from `assets/icons/sort-*.svg`, rendered in the `WaterfallItems` app bar leading button.
 - `Item.getOrderString(ItemOrder)` — Returns the snackbar text for the current sort order (e.g. `"Sort by date modified descending"`).
 
-### Embedded Models Requiring `build_runner`
-- `IgdbGame`, `IgdbCover`, `IgdbGameInfo`, `GameType`
-- `OpenLibrarySearch`, `OpenLibrarySearchDoc`, `OpenLibraryEditions`, `OpenLibraryEditionsDoc`
-- `OpenLibraryWork`, `OpenLibraryAuthor`, `OpenLibraryExcerpt`, `OpenLibraryCreated`, `OpenLibraryType`, `OpenLibraryIdentifiers`, `OpenLibraryLink`
-- `OpenLibraryEdition`, `OpenLibraryEditionType`, `OpenLibraryEditionContributor`, `OpenLibraryEditionClassifications`, `OpenLibraryEditionCreated`
+### Nested Models Requiring `build_runner`
+All persisted types are registered in one place — `lib/hive/hive_adapters.dart` (`@GenerateAdapters([...])`) — which generates the adapters plus `Hive.registerAdapters()` (`lib/hive/hive_registrar.g.dart`). No per-class annotations are needed.
+- Root: `Item`, `ItemCategory`, `ItemStatus`
+- IGDB: `IgdbGame`, `IgdbCover`, `IgdbGameInfo`, `GameType`
+- Open Library search: `OpenLibrarySearchDoc`, `OpenLibraryEditions`, `OpenLibraryEditionsDoc`
+- Open Library work: `OpenLibraryWork`, `OpenLibraryAuthor`, `OpenLibraryExcerpt`, `OpenLibraryCreated`, `OpenLibraryType`, `OpenLibraryIdentifiers`, `OpenLibraryLink`
+- Open Library edition: `OpenLibraryEdition`, `OpenLibraryEditionType`, `OpenLibraryEditionContributor`, `OpenLibraryEditionClassifications`, `OpenLibraryEditionCreated`
 
-**Never edit `.g.dart` files manually.**
+**Never edit generated files by hand** (`.g.dart`, and `hive_adapters.g.yaml`). `hive_adapters.g.yaml` is the Hive schema and **must stay in version control**.
 
 ---
 
@@ -249,7 +251,7 @@ Static methods on `Item` used by widgets that render the collection and detail s
 ### Mocking Strategy
 - **HTTP:** Use `http` package mocking or `mockito` for `IgdbService` and `OpenLibraryService`.
 - **SharedPreferences:** Use `shared_preferences` test utilities or mock `Preferences` directly.
-- **Isar:** Use an in-memory Isar instance, or abstract `Database` behind a repository interface for unit tests.
+- **Hive CE:** Call `Hive.init(tempDir)` + `Hive.registerAdapters()` (from `lib/hive/hive_registrar.g.dart`) before opening a box, or abstract `Database` behind a repository interface. Adapters can only be registered **once per isolate**.
 - **Provider Tests:** Use `ChangeNotifierProvider` with `tester.pumpWidget()` to verify `MosaicData` notifies listeners.
 
 ### Priority Areas
@@ -270,10 +272,15 @@ flutter test test/unit   # Run unit tests only (once created)
 
 ## Development Guidelines
 
+### Git Workflow
+- **Never run `git add`, `git commit`, `git push`, or any other history-mutating git command** unless the user explicitly asks for it in the current request.
+- Leave all changes in the working tree for the user to review and commit themselves.
+- When asked, provide a suggested commit subject only — do not create the commit.
+
 ### Before Making Changes
 1. Check existing patterns in similar files.
 2. Follow the singleton pattern for services (`_internal()`).
-3. Use `@ignore` for computed properties in Isar models.
+3. Add new persisted types to `lib/hive/hive_adapters.dart` and regenerate; computed getters are not persisted automatically.
 4. Never edit `.g.dart` files manually.
 
 ### State Management
@@ -282,7 +289,7 @@ flutter test test/unit   # Run unit tests only (once created)
 - **Performance tip:** `Consumer<MosaicData>` wrapping a `Scaffold` rebuilds the entire subtree. Prefer `Selector` to scope rebuilds to specific slices (e.g. only the items list).
 
 ### Data Layer
-- Isar requires `build_runner` regeneration after model changes.
+- Hive CE requires `build_runner` regeneration after model changes (`lib/hive/hive_adapters.dart`).
 - Preferences uses `SharedPreferences` singleton.
 
 ### Common Commands
@@ -290,7 +297,7 @@ flutter test test/unit   # Run unit tests only (once created)
 flutter pub get                     # Install dependencies
 flutter run                         # Run app
 flutter test                        # Run tests
-dart run build_runner build         # Regenerate Isar schemas
+dart run build_runner build         # Regenerate Hive CE adapters
 dart run build_runner watch         # Auto-regenerate on changes
 ```
 
@@ -300,6 +307,7 @@ dart run build_runner watch         # Auto-regenerate on changes
 
 - **State:** `lib/provider/mosaic_data.dart`
 - **Models:** `lib/models/` (Item, IgdbGame, OpenLibrary, AppThemePreference, IgdbAuthResult)
+- **Hive CE adapters:** `lib/hive/hive_adapters.dart` (generated `hive_adapters.g.dart` / `hive_adapters.g.yaml` / `hive_registrar.g.dart`)
 - **Services:** `lib/services/` (Database, Preferences, IgdbService, OpenLibraryService)
 - **Screens:** `lib/screens/` (Splash, MainNavigationBar, WaterfallItems, Search, Filters, ItemDetail, Settings)
 - **Styles:** `lib/styles/app_styles.dart`
@@ -424,3 +432,13 @@ Generated by running a build/`pub get` under Flutter 3.47.5, which enables Swift
 - ✅ **`prepare` build pre-action** - `ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme` runs `xcode_backend.sh prepare` before the build so SPM sees the generated plugin package.
 - ✅ **Plugins moved off CocoaPods** - `path_provider_foundation`, `share_plus`, and `shared_preferences_foundation` dropped from `ios/Podfile.lock` (resolved via SPM now). `isar_community_flutter_libs` remains a Pod. CocoaPods 1.16.2 → 1.17.0.
 - ✅ **UIScene lifecycle** - `ios/Runner/Info.plist` adds `UIApplicationSceneManifest` (single scene, `FlutterSceneDelegate`, `Main` storyboard). `ios/Runner/AppDelegate.swift` now conforms to `FlutterImplicitEngineDelegate` and registers plugins via `didInitializeImplicitFlutterEngine(_:)` instead of `didFinishLaunchingWithOptions`.
+
+### Isar → Hive CE Migration (2026-09-26)
+Replaced the abandoned Isar database with Hive CE. Existing Isar data was test-only and intentionally discarded (no data migration).
+- ✅ **Dependencies** - Removed `isar_community`, `isar_community_flutter_libs`, `isar_community_generator`. Added `hive_ce ^2.20.0`, `hive_ce_flutter ^2.3.4`, `hive_ce_generator ^1.11.3`. `build_runner` bumped `2.15.1 → 2.16.1`, `analyzer` now `14.4.0` — the **`analyzer <11` blocker is gone**; all direct and dev dependencies are up-to-date.
+- ✅ **Adapters** - Single registry `lib/hive/hive_adapters.dart` using `@GenerateAdapters([...])` (20 classes + 2 enums). Generates `hive_adapters.g.dart`, `hive_adapters.g.yaml` (schema — committed) and `hive_registrar.g.dart`.
+- ✅ **Models de-annotated** - Removed all `@collection`, `@embedded`, `@enumerated`, `@ignore` annotations plus every Isar import/`part`. `Item.id` is now a plain `int` (default `-1` = unsaved) assigned from `Box.add()`.
+- ✅ **`Database` rewritten on Hive CE** - `Hive.initFlutter()` + `Hive.registerAdapters()` + `openBox<Item>('items')`; `watch()` replaces `watchLazy()`; `apiId` lookups scan `box.values` (Isar never indexed `apiId` either). Method signatures unchanged, so callers were untouched.
+- ✅ **No native dependency** - Removing `isar_community_flutter_libs` eliminated the last CocoaPods-only plugin on macOS (all plugins are now Swift Packages) and the SPM warning.
+- ✅ **Verified** - `flutter analyze` clean; `build_runner` generates; a Hive round-trip test (game + book payloads, nested objects, lists, enums, `isAdded` exclusion) passed; `flutter build macos --debug` and `flutter build apk --debug` succeeded; app launched on an Xperia XZ2 (Android 15) past the splash with no crashes.
+- ⏭️ **Deferred** - Cloud sync (per-user, multi-device) remains unstarted.

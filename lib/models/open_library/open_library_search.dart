@@ -4,10 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:isar_community/isar.dart';
-
-part 'open_library_search.g.dart';
-
 OpenLibrarySearch openLibrarySearchFromJson(String str) =>
     OpenLibrarySearch.fromJson(json.decode(str));
 
@@ -65,7 +61,6 @@ class OpenLibrarySearch {
   };
 }
 
-@embedded
 class OpenLibrarySearchDoc {
   final List<String>? authorName;
   final int? firstPublishYear;
@@ -129,7 +124,6 @@ class OpenLibrarySearchDoc {
   };
 }
 
-@embedded
 class OpenLibraryEditions {
   final int? numFound;
   final int? start;
@@ -165,7 +159,6 @@ class OpenLibraryEditions {
   };
 }
 
-@embedded
 class OpenLibraryEditionsDoc {
   final String? key;
   final String? title;
